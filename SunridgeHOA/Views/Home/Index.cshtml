@@ -1,4 +1,8 @@
-﻿<html lang="en">
+﻿@{ 
+    ViewData["Title"] = "Home";
+}
+
+<html lang="en">
 <head>
 
     <meta charset="utf-8">
@@ -8,82 +12,10 @@
 
     <title>Home</title>
 
-    <!-- Bootstrap core CSS -->
-    @*<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">*@
-    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-    <!-- Custom fonts for this template -->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-    <link href="vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
-
-    <!-- Custom styles for this template -->
-    <link href="css/landing-page.min.css" rel="stylesheet">
 
 </head>
 
 <body>
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse inline" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="index.html">Home<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="board-members.html">Board Members</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="doc-calendar.html">Event Calendar</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Classified Ads
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="class-land.html">Lots</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="class-cabin.html">Cabins</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="class-other.html">Other Services</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Docs &amp; Forms
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="rules.html">Rules</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="maps.html">Maps</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="forms.html">Forms</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="fire.html">Fire Info</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Latest News
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="2018-s.html">2018 Season</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="2017-s.html">2017 Season</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="2016-s.html">2016 Season</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="photo-gallery.html">Photo Gallery</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
 
     <!-- Masthead -->
 
@@ -153,7 +85,7 @@
                 <div class="col-lg-4">
                     <div class="features-icons-item mx-auto mb-5 mb-lg-3">
                         <div class="features-icons-icon d-flex">
-                            <img style="margin: 0 auto;" src="img/index-icons/clock-icon.svg" alt="rules-icon">
+                            <img style="margin: 0 auto;" src="~/img/index-icons/clock-icon.svg" alt="rules-icon">
                         </div>
                         <h3>Calendar &amp; Events</h3>
                         <p class="lead">See what’s happening around the Sunridge community.</p>
@@ -163,17 +95,17 @@
                 <div class="col-lg-4">
                     <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                         <div class="features-icons-icon d-flex">
-                            <img style="margin: 0 auto;" src="img/index-icons/computer-icon.svg" alt="rules-icon">
+                            <img style="margin: 0 auto;" src="~/img/index-icons/computer-icon.svg" alt="rules-icon">
                         </div>
                         <h3>Classifieds &amp; Ads</h3>
                         <p class="lead">Buy &amp; Sell Property or Advertise a service at Sundridge</p>
-                        <a class="text-white btn btn-primary" asp-controller="Home" asp-action="Classifieds">More Info</a>
+                        <a class="text-white btn btn-primary" asp-controller="Classifieds" asp-action="Lots">More Info</a>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                         <div class="features-icons-icon d-flex">
-                            <img style="margin: 0 auto;" src="img/index-icons/stack-icon.svg" alt="rules-icon">
+                            <img style="margin: 0 auto;" src="/img/index-icons/stack-icon.svg" alt="rules-icon">
                         </div>
                         <h3>Rules</h3>
                         <p class="lead">Click for more information regarding rules, covenants, and by-laws.</p>
@@ -183,41 +115,6 @@
             </div>
         </div>
     </section>
-
-
-
-
-
-    <!-- Footer -->
-    <footer class="footer bg-light">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-xs-6 h-100 text-center text-lg-left my-auto">
-                    <ul class="list-inline mb-2">
-                        <li class="list-inline-item">
-                            <a href="mailto:Webmaster@sunridge.info" target="_top">Contact</a>
-                        </li>
-
-                    </ul>
-                    <p class="text-muted small mb-4 mb-lg-0">© Sunridge 2018. All Rights Reserved.</p>
-                </div>
-                <div class="col-lg-6 col-xs-6 h-100 text-center text-lg-right my-auto">
-                    <ul class="list-inline mb-0">
-                        <li class="list-inline-item mr-3">
-                            <a href="https://www.facebook.com/SunridgePropertyOwnersAssociation/" target="_blank">
-                                <i class="fab fa-facebook-square fa-2x"></i>
-                                <p>Visit / Like us on Facebook</p>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 
 

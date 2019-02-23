@@ -3,9 +3,27 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SunridgeHOA</title>
+    <title>Sunridge - @ViewData["Title"]</title>
 
-    <environment include="Development">
+
+    @* cdn links *@
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet">
+
+    @* do we need this? *@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.css">
+
+
+    @* local files *@
+    <link href="~/css/landing-page.min.css" rel="stylesheet">
+
+
+    @*<environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
@@ -14,7 +32,7 @@
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
+    </environment>*@
 </head>
 <body>
     <ul class="nav navbar-nav">
@@ -23,15 +41,30 @@
         <li><a asp-area="" asp-controller="Home" asp-action="Calendar">Calendar</a></li>
         <li><a asp-area="" asp-controller="Classifieds" asp-action="Lots">Classifieds - Lots</a></li>
         <li><a asp-area="" asp-controller="Classifieds" asp-action="Cabins">Classifieds - Cabins</a></li>
-        <li><a asp-area="" asp-controller="Classifieds" asp-action="Other">Classifieds - Other</a></li>
+        <li><a asp-area="" asp-controller="Classifieds" asp-action="Other">Classifieds - Other Services</a></li>
+        <li><a asp-area="" asp-controller="Home" asp-action="Rules">Docs & Forms - Rules</a></li>
+        <li><a asp-area="" asp-controller="Home" asp-action="Maps">Docs & Forms - Maps</a></li>
+        <li><a asp-area="" asp-controller="Home" asp-action="Forms">Docs & Forms - Forms</a></li>
+        <li><a asp-area="" asp-controller="Home" asp-action="FireInfo">Docs & Forms - Fire Info</a></li>
+        <li><a asp-area="" asp-controller="Home" asp-action="News" asp-route-year="2018">Latest News - 2018 Season</a></li>
+        <li><a asp-area="" asp-controller="Home" asp-action="News" asp-route-year="2017">Latest News - 2017 Season</a></li>
+        <li><a asp-area="" asp-controller="Home" asp-action="News" asp-route-year="2016">Latest News - 2016 Season</a></li>
+        <li><a asp-area="" asp-controller="Photos" asp-action="Index">Photo Gallery</a></li>
+        <li><a asp-area="" asp-controller="Photos" asp-action="Summer">Photo Gallery - Summer</a></li>
+        <li><a asp-area="" asp-controller="Photos" asp-action="Winter">Photo Gallery - Winter</a></li>
+        <li><a asp-area="" asp-controller="Photos" asp-action="People">Photo Gallery - People</a></li>
+
     </ul>
 
     <partial name="_CookieConsentPartial" />
 
-        @RenderBody()
+    @RenderBody()
 
 
 
     @RenderSection("Scripts", required: false)
+
+    @* local files *@
+    <script src="~/js/rules.js"></script>
 </body>
 </html>
