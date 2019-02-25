@@ -1,7 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Winter Pictures";
 }
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,10 +9,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Winter Pictures</title>
-
 </head>
 <body>
-
 
     <!-- inro section Grid -->
     <section class=" p-5">
@@ -23,10 +20,8 @@
             </div>
         </div>
     </section>
-
     <!-- Testimonials -->
     <div class="container gallery-container text-center mt-5 mb-5">
-
         <div class="tz-gallery">
             <div class="row">
                 <div class="col-sm-6 col-md-4 mb-4">
@@ -54,7 +49,6 @@
                     <p class="font-weight-light mb-0">2003</p>
                 </div>
 
-
                 <div class="col-sm-6 col-md-4 mb-4">
                     <a class="lightbox" href="~/img/photo-gal/winter-powder-mtn.png">
                         <img src="~/img/photo-gal/winter-powder-mtn.png" alt="winter-powder-mtn">
@@ -79,7 +73,6 @@
                     <p class="font-weight-light mb-0"><i>Looking down the left handfork</i></p>
                     <p class="font-weight-light mb-0">2017</p>
                 </div>
-
                 <div class="col-sm-6 col-md-4 mb-4">
                     <a class="lightbox" href="~/img/photo-gal/winter-deer2.png">
                         <img src="~/img/photo-gal/winter-deer2.png" alt="winter-deer2">
@@ -104,7 +97,6 @@
                     <p class="font-weight-light mb-0"><i>Coyote Sunridge</i></p>
                     <p class="font-weight-light mb-0">2003</p>
                 </div>
-
                 <div class="col-sm-6 col-md-4 mb-4">
                     <a class="lightbox" href="~/img/photo-gal/winter-coyote5.png">
                         <img src="~/img/photo-gal/winter-coyote5.png" alt="winter-coyote5">
@@ -129,7 +121,6 @@
                     <p class="font-weight-light mb-0"><i>Coyote Sunridge</i></p>
                     <p class="font-weight-light mb-0">2003</p>
                 </div>
-
                 <div class="col-sm-6 col-md-4 mb-4">
                     <a class="lightbox" href="~/img/photo-gal/winter-coyote2.png">
                         <img src="~/img/photo-gal/winter-coyote2.png" alt="winter-coyote2">
@@ -157,11 +148,15 @@
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.js"></script>
-    <script>baguetteBox.run('.tz-gallery');</script>
-
 
 
 
 </body>
 </html>
+
+
+@section Scripts
+    {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.js"></script>
+    <script>baguetteBox.run('.tz-gallery');</script>
+}

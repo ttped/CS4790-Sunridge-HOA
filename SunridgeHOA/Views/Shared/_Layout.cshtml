@@ -33,33 +33,105 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>*@
+
 </head>
 <body>
-    <ul class="nav navbar-nav">
-        <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-        <li><a asp-area="" asp-controller="Home" asp-action="BoardMembers">Board Members</a></li>
-        <li><a asp-area="" asp-controller="Home" asp-action="Calendar">Calendar</a></li>
-        <li><a asp-area="" asp-controller="Classifieds" asp-action="Lots">Classifieds - Lots</a></li>
-        <li><a asp-area="" asp-controller="Classifieds" asp-action="Cabins">Classifieds - Cabins</a></li>
-        <li><a asp-area="" asp-controller="Classifieds" asp-action="Other">Classifieds - Other Services</a></li>
-        <li><a asp-area="" asp-controller="Home" asp-action="Rules">Docs & Forms - Rules</a></li>
-        <li><a asp-area="" asp-controller="Home" asp-action="Maps">Docs & Forms - Maps</a></li>
-        <li><a asp-area="" asp-controller="Home" asp-action="Forms">Docs & Forms - Forms</a></li>
-        <li><a asp-area="" asp-controller="Home" asp-action="FireInfo">Docs & Forms - Fire Info</a></li>
-        <li><a asp-area="" asp-controller="Home" asp-action="News" asp-route-year="2018">Latest News - 2018 Season</a></li>
-        <li><a asp-area="" asp-controller="Home" asp-action="News" asp-route-year="2017">Latest News - 2017 Season</a></li>
-        <li><a asp-area="" asp-controller="Home" asp-action="News" asp-route-year="2016">Latest News - 2016 Season</a></li>
-        <li><a asp-area="" asp-controller="Photos" asp-action="Index">Photo Gallery</a></li>
-        <li><a asp-area="" asp-controller="Photos" asp-action="Summer">Photo Gallery - Summer</a></li>
-        <li><a asp-area="" asp-controller="Photos" asp-action="Winter">Photo Gallery - Winter</a></li>
-        <li><a asp-area="" asp-controller="Photos" asp-action="People">Photo Gallery - People</a></li>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse inline" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="BoardMembers">Board Members</a></li>
+                <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Calendar">Event Calendar</a></li>
 
-    </ul>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Classified Ads
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" asp-area="" asp-controller="Classifieds" asp-action="Lots">Lots</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" asp-area="" asp-controller="Classifieds" asp-action="Cabins">Cabins</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" asp-area="" asp-controller="Classifieds" asp-action="Other">Other Services</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Docs &amp; Forms
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Rules">Rules</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Maps">Maps</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Forms">Forms</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="FireInfo">Fire Info</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Latest News
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="News" asp-route-year="2018">2018 Season</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="News" asp-route-year="2017">2017 Season</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="News" asp-route-year="2016">2016 Season</a>
+                    </div>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link" asp-area="" asp-controller="Photos" asp-action="Index">Photo Gallery</a>
+                </li>
+
+                @*<li><a asp-area="" asp-controller="Photos" asp-action="Summer">Photo Gallery - Summer</a></li>
+                <li><a asp-area="" asp-controller="Photos" asp-action="Winter">Photo Gallery - Winter</a></li>
+                <li><a asp-area="" asp-controller="Photos" asp-action="People">Photo Gallery - People</a></li>*@
+
+            </ul>
+        </div>
+        @*<div>
+            <partial name="_LoginPartial" />
+        </div>*@
+    </nav>
 
     <partial name="_CookieConsentPartial" />
 
-    @RenderBody()
-
+    <div>
+        @RenderBody()
+        <hr />
+        <footer class="footer bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-xs-6 h-100 text-center text-lg-left my-auto">
+                        <ul class="list-inline mb-2">
+                            <li class="list-inline-item">
+                                <a href="mailto:Webmaster@sunridge.info" target="_top">Contact</a>
+                            </li>
+                        </ul>
+                        <p class="text-muted small mb-4 mb-lg-0">&copy; Sunridge 2019. All Rights Reserved.</p>
+                    </div>
+                    <div class="col-lg-6 col-xs-6 h-100 text-center text-lg-right my-auto">
+                        <ul class="list-inline mb-0">
+                            <li class="list-inline-item mr-3">
+                                <a href="https://www.facebook.com/SunridgePropertyOwnersAssociation/" target="_blank">
+                                    <i class="fab fa-facebook-square fa-2x"></i>
+                                    <p>Visit / Like us on Facebook</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
 
 
     @RenderSection("Scripts", required: false)
