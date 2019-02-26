@@ -10,7 +10,7 @@ namespace SunridgeHOA.Models
     {
         public int OwnerId { get; set; }
         public int AddressId { get; set; }
-        public int CoOwnerId { get; set; }
+        public int? CoOwnerId { get; set; }
 
         public bool IsPrimary { get; set; }
         public string FirstName { get; set; }
