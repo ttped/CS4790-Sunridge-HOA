@@ -1,123 +1,104 @@
-﻿@{ 
+﻿@{
     ViewData["Title"] = "Home";
 }
 
-<html lang="en">
-<head>
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="7000">
+    <div class="carousel-inner">
+        <div class="carousel-item">
+            <header class="masthead9 text-white text-center">
+                <div style="background-color: #1F5687; opacity: 0.8;" class="container w-4 p-4">
+                    <h1>Welcome to Sunridge</h1>
+                    <p style="font-size: 18pt;">
+                        Located in Weber County, Utah, Sunridge is a home away from home for owners seeking the solitude and scenery of the Wasatch mountains.
+                        Tucked away behind Powder Mountain Ski Resort, Sunridge is just the place for those hoping to "get away from it all" and get close to nature!
+                    </p>
+                </div>
+            </header>
+        </div>
+        <div class="carousel-item">
+            <header class="masthead6 text-white text-center">
+                <div style="background-color: #1F5687; opacity: 0.8;" class="container w-4 p-4">
+                    <h1>2019 HOA Dues</h1>
+                    <p style="font-size: 18pt;">
+                        2019 HOA dues invoices will be sent out by February 1,2019. Payment must be received no later than March 1,2019.  The accountant cannot accept credit cards.  Checks should be payable to Sunridge Property Owners Association and mailed to the address on the invoice. 2019 dues will be $375.00.
+                    </p>
+                </div>
+            </header>
+        </div>
+        <div class="carousel-item active">
+            <header class="masthead11 text-white text-center">
+                <div style="background-color: #1F5687; opacity: 0.8;" class="container w-4 p-4">
+                    <h1>Hunting Regulations</h1>
+                    <p style="font-size: 18pt;">There will not be any hunting cards sent out this year. The hunting rules are the same as in the past. Hoping all hunters will abide by the rules and police themselves. The hunting rules and hunting area map can be found on our website.</p>
+                </div>
+            </header>
+        </div>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+        <div class="carousel-item">
+            <header class="masthead8 text-white text-center">
+                <div style="background-color: #1F5687; opacity: 0.8;" class="container w-4 p-4">
+                    <h1>Buy &amp; Sell Property or Advertise a service at Sundridge</h1>
+                    <p style="font-size: 18pt;">Interested in buying a lot or cabin up at Sunridge?  <br>Have one to sell, or want to promote your Sunridge friendly business for free. See our classifieds section for more information.</p>
+                </div>
+            </header>
+        </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
 
-    <title>Home</title>
+
+<a class="weatherwidget-io" href="https://forecast7.com/en/41d30n111d81/eden/?unit=us" data-label_1="Sunridge" data-label_2="WEATHER" data-theme="original" style="display: block; position: relative; height: 98px; padding: 0px; overflow: hidden; text-align: left; text-indent: -299rem;">EDEN WEATHER<iframe id="weatherwidget-io-0" class="weatherwidget-io-frame" scrolling="no" frameborder="0" width="100%" src="https://weatherwidget.io/w/" style="display: block; position: absolute; top: 0px; height: 98px;"></iframe></a>
 
 
-</head>
-
-<body>
-
-    <!-- Masthead -->
-
-    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="7000">
-        <div class="carousel-inner">
-            <div class="carousel-item">
-                <header class="masthead9 text-white text-center">
-                    <div style="background-color: #1F5687; opacity: 0.8;" class="container w-4 p-4">
-                        <h1>Welcome to Sunridge</h1>
-                        <p style="font-size: 18pt;">
-                            Located in Weber County, Utah, Sunridge is a home away from home for owners seeking the solitude and scenery of the Wasatch mountains.
-                            Tucked away behind Powder Mountain Ski Resort, Sunridge is just the place for those hoping to "get away from it all" and get close to nature!
-                        </p>
+<!-- Icons Grid -->
+<section class="features-icons  text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="features-icons-item mx-auto mb-5 mb-lg-3">
+                    <div class="features-icons-icon d-flex">
+                        <img style="margin: 0 auto;" src="~/img/index-icons/clock-icon.svg" alt="rules-icon">
                     </div>
-                </header>
+                    <h3>Calendar &amp; Events</h3>
+                    <p class="lead">See what’s happening around the Sunridge community.</p>
+                    <a class="text-white btn btn-primary" asp-controller="Home" asp-action="Calendar">More Info</a>
+                </div>
             </div>
-            <div class="carousel-item">
-                <header class="masthead6 text-white text-center">
-                    <div style="background-color: #1F5687; opacity: 0.8;" class="container w-4 p-4">
-                        <h1>2019 HOA Dues</h1>
-                        <p style="font-size: 18pt;">
-                            2019 HOA dues invoices will be sent out by February 1,2019. Payment must be received no later than March 1,2019.  The accountant cannot accept credit cards.  Checks should be payable to Sunridge Property Owners Association and mailed to the address on the invoice. 2019 dues will be $375.00.
-                        </p>
+            <div class="col-lg-4">
+                <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                    <div class="features-icons-icon d-flex">
+                        <img style="margin: 0 auto;" src="~/img/index-icons/computer-icon.svg" alt="rules-icon">
                     </div>
-                </header>
+                    <h3>Classifieds &amp; Ads</h3>
+                    <p class="lead">Buy &amp; Sell Property or Advertise a service at Sundridge</p>
+                    <a class="text-white btn btn-primary" asp-controller="Classifieds" asp-action="Lots">More Info</a>
+                </div>
             </div>
-            <div class="carousel-item active">
-                <header class="masthead11 text-white text-center">
-                    <div style="background-color: #1F5687; opacity: 0.8;" class="container w-4 p-4">
-                        <h1>Hunting Regulations</h1>
-                        <p style="font-size: 18pt;">There will not be any hunting cards sent out this year. The hunting rules are the same as in the past. Hoping all hunters will abide by the rules and police themselves. The hunting rules and hunting area map can be found on our website.</p>
+            <div class="col-lg-4">
+                <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                    <div class="features-icons-icon d-flex">
+                        <img style="margin: 0 auto;" src="/img/index-icons/stack-icon.svg" alt="rules-icon">
                     </div>
-                </header>
-            </div>
-
-            <div class="carousel-item">
-                <header class="masthead8 text-white text-center">
-                    <div style="background-color: #1F5687; opacity: 0.8;" class="container w-4 p-4">
-                        <h1>Buy &amp; Sell Property or Advertise a service at Sundridge</h1>
-                        <p style="font-size: 18pt;">Interested in buying a lot or cabin up at Sunridge?  <br>Have one to sell, or want to promote your Sunridge friendly business for free. See our classifieds section for more information.</p>
-                    </div>
-                </header>
+                    <h3>Rules</h3>
+                    <p class="lead">Click for more information regarding rules, covenants, and by-laws.</p>
+                    <a class="text-white btn btn-primary" asp-controller="Home" asp-action="Rules">More Info</a>
+                </div>
             </div>
         </div>
-        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
     </div>
+</section>
 
-
-    <a class="weatherwidget-io" href="https://forecast7.com/en/41d30n111d81/eden/?unit=us" data-label_1="Sunridge" data-label_2="WEATHER" data-theme="original" style="display: block; position: relative; height: 98px; padding: 0px; overflow: hidden; text-align: left; text-indent: -299rem;">EDEN WEATHER<iframe id="weatherwidget-io-0" class="weatherwidget-io-frame" scrolling="no" frameborder="0" width="100%" src="https://weatherwidget.io/w/" style="display: block; position: absolute; top: 0px; height: 98px;"></iframe></a>
+@section Scripts {
+    @* scripts for weather widget *@
     <script id="weatherwidget-io-js" src="https://weatherwidget.io/js/widget.min.js"></script>
     <script>
-!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+        !function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = 'https://weatherwidget.io/js/widget.min.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'weatherwidget-io-js');
     </script>
-
-
-    <!-- Icons Grid -->
-    <section class="features-icons  text-center">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="features-icons-item mx-auto mb-5 mb-lg-3">
-                        <div class="features-icons-icon d-flex">
-                            <img style="margin: 0 auto;" src="~/img/index-icons/clock-icon.svg" alt="rules-icon">
-                        </div>
-                        <h3>Calendar &amp; Events</h3>
-                        <p class="lead">See what’s happening around the Sunridge community.</p>
-                        <a class="text-white btn btn-primary" asp-controller="Home" asp-action="Calendar">More Info</a>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                        <div class="features-icons-icon d-flex">
-                            <img style="margin: 0 auto;" src="~/img/index-icons/computer-icon.svg" alt="rules-icon">
-                        </div>
-                        <h3>Classifieds &amp; Ads</h3>
-                        <p class="lead">Buy &amp; Sell Property or Advertise a service at Sundridge</p>
-                        <a class="text-white btn btn-primary" asp-controller="Classifieds" asp-action="Lots">More Info</a>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                        <div class="features-icons-icon d-flex">
-                            <img style="margin: 0 auto;" src="/img/index-icons/stack-icon.svg" alt="rules-icon">
-                        </div>
-                        <h3>Rules</h3>
-                        <p class="lead">Click for more information regarding rules, covenants, and by-laws.</p>
-                        <a class="text-white btn btn-primary" asp-controller="Home" asp-action="Rules">More Info</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-
-
-</body>
-</html>
+}
