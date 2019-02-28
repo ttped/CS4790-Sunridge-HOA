@@ -1,0 +1,388 @@
+﻿body {
+    font-family: Lato,'Helvetica Neue',Helvetica,Arial,sans-serif
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: Lato,'Helvetica Neue',Helvetica,Arial,sans-serif;
+    font-weight: 700
+}
+
+header.masthead {
+    position: relative;
+    background-color: #343a40;
+    background: url(../img/bg-masthead.jpg) no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding-top: 8rem;
+    padding-bottom: 8rem
+}
+
+    header.masthead .overlay {
+        position: absolute;
+        background-color: #212529;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        opacity: .3
+    }
+
+    header.masthead h1 {
+        font-size: 2rem
+    }
+
+@media (min-width:768px) {
+    header.masthead {
+        padding-top: 12rem;
+        padding-bottom: 12rem
+    }
+
+        header.masthead h1 {
+            font-size: 3rem
+        }
+}
+
+.showcase .showcase-text {
+    padding: 3rem
+}
+
+.showcase .showcase-img {
+    min-height: 30rem;
+    background-size: cover
+}
+
+@media (min-width:768px) {
+    .showcase .showcase-text {
+        padding: 7rem
+    }
+}
+
+.features-icons {
+    padding-top: 7rem;
+    padding-bottom: 7rem
+}
+
+    .features-icons .features-icons-item {
+        max-width: 20rem
+    }
+
+        .features-icons .features-icons-item .features-icons-icon {
+            height: 7rem
+        }
+
+            .features-icons .features-icons-item .features-icons-icon i {
+                font-size: 4.5rem
+            }
+
+        .features-icons .features-icons-item:hover .features-icons-icon i {
+            font-size: 5rem
+        }
+
+.testimonials {
+    margin-bottom: 12%;
+    padding-top: 3rem;
+    padding-bottom: 7rem
+}
+
+    .testimonials .testimonial-item {
+        max-width: 18rem
+    }
+
+        .testimonials .testimonial-item img {
+            max-width: 12rem;
+            box-shadow: 0 5px 5px 0 #adb5bd
+        }
+
+.call-to-action {
+    position: relative;
+    background-color: #343a40;
+    background: url(../img/bg-masthead.jpg) no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding-top: 7rem;
+    padding-bottom: 7rem
+}
+
+    .call-to-action .overlay {
+        position: absolute;
+        background-color: #212529;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        opacity: .3
+    }
+
+footer.footer {
+    padding-top: 4rem;
+    padding-bottom: 4rem
+}
+
+.nav-link {
+    color: black;
+}
+
+    .nav-link:hover {
+        opacity: 0.5;
+    }
+
+    .nav-link:active {
+        color: #007bff;
+        opacity: 0.5;
+    }
+
+nav {
+    font-size: 14pt;
+    color: black;
+}
+
+.main-icons {
+    width: 40%;
+}
+
+.toxic-links {
+    list-style-type: none;
+    display: block;
+}
+
+header.masthead {
+    position: relative;
+    background-color: #343a40;
+    background: url("../img/bg-masthead.png") no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding-top: 8rem;
+    padding-bottom: 6rem;
+}
+
+header.masthead2 {
+    position: relative;
+    background-color: #343a40;
+    background: url("../img/bg-masthead2.png") no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding-top: 8rem;
+    padding-bottom: 6rem;
+}
+
+header.masthead3 {
+    position: relative;
+    background-color: #343a40;
+    background: url("../img/bg-masthead3.png") no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding-top: 5rem;
+    padding-bottom: 12rem;
+}
+
+header.masthead4 {
+    position: relative;
+    background-color: #343a40;
+    background: url("../img/bg-masthead4.png") no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding-top: 6rem;
+    padding-bottom: 12rem;
+}
+
+header.masthead5 {
+    position: relative;
+    background-color: #343a40;
+    background: url("../img/bg-masthead5.png") no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding-top: 6rem;
+    padding-bottom: 12rem;
+}
+
+header.masthead6 {
+    position: relative;
+    background-color: #343a40;
+    background: url("../img/bg-masthead6.png") no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding-top: 8rem;
+    padding-bottom: 6rem;
+}
+
+header.masthead7 {
+    position: relative;
+    background-color: #343a40;
+    background: url("../img/bg-masthead7.png") no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding-top: 6rem;
+    padding-bottom: 12rem;
+}
+
+header.masthead8 {
+    position: relative;
+    background-color: #343a40;
+    background: url("../img/bg-masthead8.png") no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding-top: 8rem;
+    padding-bottom: 6rem;
+}
+
+header.masthead9 {
+    position: relative;
+    background-color: #343a40;
+    background: url("../img/bg-masthead9.png") no-repeat center bottom;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding-top: 8rem;
+    padding-bottom: 6rem;
+}
+
+header.masthead10 {
+    position: relative;
+    background-color: #343a40;
+    background: url("../img/bg-masthead10.png") no-repeat center bottom;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding-top: 6rem;
+    padding-bottom: 12rem;
+}
+
+header.masthead11 {
+    position: relative;
+    background-color: #343a40;
+    background: url("../img/bg-masthead11.png") no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding-top: 8rem;
+    padding-bottom: 6rem;
+}
+
+header.masthead12 {
+    position: relative;
+    background-color: #343a40;
+    background: url("../img/bg-masthead12.png") no-repeat center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding-top: 6rem;
+    padding-bottom: 12rem;
+}
+
+.ng-scope {
+    padding: 20%;
+}
+
+.navbar-brand {
+    margin-right: none;
+}
+
+
+.gallery-container h1 {
+    text-align: center;
+    margin-top: 70px;
+    font-family: 'Droid Sans', sans-serif;
+    font-weight: bold;
+}
+
+.gallery-container p.page-description {
+    text-align: center;
+    max-width: 800px;
+    margin: 25px auto;
+    color: #888;
+    font-size: 18px;
+}
+
+.tz-gallery {
+    padding: 40px;
+}
+
+    .tz-gallery .lightbox img {
+        width: 80%;
+        margin-bottom: 30px;
+        transition: 0.2s ease-in-out;
+        box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+    }
+
+
+        .tz-gallery .lightbox img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+        }
+
+    .tz-gallery img {
+        border-radius: 4px;
+    }
+
+.baguetteBox-button {
+    background-color: transparent !important;
+}
+
+.pg > img {
+    border-radius: 4px;
+    width: 90%;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+}
+
+    .pg > img:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+    }
+
+
+
+
+
+@media(max-width: 768px) {
+    body {
+        padding: 0;
+    }
+
+    .container.gallery-container {
+        border-radius: 0;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .index-info > h1 {
+        font-size: 12pt;
+    }
+
+        .index-info > h1 > p {
+            font-size: 10pt;
+        }
+}
+
+@media only screen and (max-width: 768px) {
+    .features-icons {
+        margin-bottom: 9%;
+    }
+}
+
+.carousel-inner > .item > img {
+    margin: 0 auto;
+}

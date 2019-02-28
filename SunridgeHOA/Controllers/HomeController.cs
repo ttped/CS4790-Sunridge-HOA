@@ -12,26 +12,46 @@ namespace SunridgeHOA.Controllers
     {
         public IActionResult Index()
         {
+            // maybe need to send a model with the carousel news data to the view?
             return View();
         }
 
-        public IActionResult About()
+        public IActionResult BoardMembers()
         {
-            ViewData["Message"] = "Your application description page.";
-
             return View();
         }
 
-        public IActionResult Contact()
+        public IActionResult Calendar()
         {
-            ViewData["Message"] = "Your contact page.";
-
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Rules()
         {
             return View();
+        }
+
+        public IActionResult Maps()
+        {
+            return View();
+        }
+
+        public IActionResult Forms()
+        {
+            return View();
+        }
+
+        public IActionResult FireInfo()
+        {
+            return View();
+        }
+
+        public IActionResult News(int year)
+        {
+            // Change this to pull in news from the db for the given year
+            // Change to populate a single view rather than one for each year
+            var viewName = $"News{year}";
+            return View(viewName);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
