@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Admin Navbar";
+}
+
+
+<link rel="Stylesheet" href="~/css/adminnavbar.css?version=51" type="text/css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+<div id="adminNavBar">
+    <nav>
+        <ul class="nav flex-column unselectable" id="adminNavBar">
+            <li class="nav-item">
+                <p>General</p>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active fas fa-tachometer-alt" href="#"> Dashboard </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link fas fa-home" href="#"> My Lots</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link fas fa-dollar-sign" href="#"> Billing History</a>
+            </li>
+
+            <li class="nav-item">
+                <a data-toggle="collapse" data-target="#accordian" href="javascript:void(0)">
+                    <span class="fas fa-file-alt"></span> Classifieds <span class="caret"></span>
+                </a>
+                <div id="accordian" class="collapse">
+                    <ul>
+                        <li class="nav-item"><a id="accordian" class="nav-link far fa-circle" href="#">&nbsp;View&nbsp;Ads</a></li>
+                        <li class="nav-item"><a id="accordian" class="nav-link far fa-circle" href="#">&nbsp;Post&nbsp;a&nbsp;New&nbsp;Ad</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <p>Owners</p>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link fas fa-users" href="#"> Owners</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link fas fa-history" href="#"> Owner Activity</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link fas fa-key" href="#"> Keys</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link fas fa-map" href="#"> HOA Lots</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link fas fa-money-check-alt" href="#"> Transactions</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link fas fa-wrench" href="#"> Common Area Assets</a>
+            </li>
+        </ul>
+    </nav>
+</div>
