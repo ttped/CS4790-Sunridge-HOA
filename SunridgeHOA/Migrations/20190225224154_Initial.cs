@@ -444,7 +444,7 @@ namespace SunridgeHOA.Migrations
                         column: x => x.OwnerId,
                         principalTable: "Owner",
                         principalColumn: "OwnerId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -579,7 +579,7 @@ namespace SunridgeHOA.Migrations
                         column: x => x.OwnerId,
                         principalTable: "Owner",
                         principalColumn: "OwnerId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Transaction_TransactionType_TransactionTypeId",
                         column: x => x.TransactionTypeId,
@@ -621,7 +621,7 @@ namespace SunridgeHOA.Migrations
                         column: x => x.OwnerHistoryId,
                         principalTable: "OwnerHistory",
                         principalColumn: "OwnerHistoryId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(
