@@ -33,5 +33,10 @@ namespace SunridgeHOA.Controllers
         {
             return View();
         }
+
+        public IActionResult HoaLots()
+        {
+            return View();
+        }
     }
 }

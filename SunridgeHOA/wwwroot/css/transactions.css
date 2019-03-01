@@ -1,0 +1,7 @@
+﻿#title p{
+    display:inline-block;
+}
+
+div#title p#money{
+    color: forestgreen;
+}
