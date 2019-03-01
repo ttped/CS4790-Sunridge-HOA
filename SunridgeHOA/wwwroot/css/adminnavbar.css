@@ -1,10 +1,10 @@
 ﻿#adminNavBar ul {
+    margin-left:20px;
     list-style-type: none;
-    margin: 5px;
     height: 100vh;
     background-color: #303a44;
-    width: 25%;
-    
+    display: inline-block;
+    width:300px;
 }
 
 #adminNavBar li a:hover:not(#accordian) {
@@ -18,7 +18,7 @@
 }
 
 #adminNavBar li a {
-    color: #d5d7d9;
+    color: #d9dbdc;
 }
 
 #adminNavBar li p {
@@ -26,7 +26,6 @@
     background-color: #252d35;
     font-size: 115%;
     padding: 5px;
-    padding-left:10px;
 
 }
 
@@ -36,7 +35,7 @@
 #accordian ul {
     list-style-type: none;
     height: auto;
-
+    width:50%;
 }
 
 #accordian ul li:first-child {
