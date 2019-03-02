@@ -1,7 +1,47 @@
-﻿#title p{
-    display:inline-block;
+﻿div#titleDiv p#title {
+    font-size: 25px;
+    color: #6ca6ca;
+    float:left;
 }
 
-div#title p#money{
+
+#titleDiv p {
+    margin-top:12px;
+    display: inline-block;
+    font-family: Abel;
+    font-size: 16px;
+    line-height: 28px;
+    float: right;
+    font-weight: bold;
+}
+
+div#titleDiv p#money {
     color: forestgreen;
+    font-size: 18px;
+    margin-left:5px;
+}
+
+#windowFrame {
+    background-color: white;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: solid;
+    border-top-color: darkgray;
+    border-left-color: darkgray;
+    border-right-color: lightgray;
+    border-bottom-color: lightgray;
+    border-width: 1px;
+}
+
+#searchBar{
+    width:20%;
+}
+
+#searchIcon {
+    position: relative;
+    left: -25px;
+}
+
+#table {
+    margin-top: 10px;
 }
