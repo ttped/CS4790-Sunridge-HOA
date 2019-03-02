@@ -1,0 +1,16 @@
+﻿#table {
+    margin-top: 10px;
+}
+#table{
+    width:100%;
+}
+
+#table #actionsRow {
+    width:auto;
+}
+
+#table #actionsRow button {
+    width:auto;
+    margin-left:2px;
+    margin-right:2px;
+}

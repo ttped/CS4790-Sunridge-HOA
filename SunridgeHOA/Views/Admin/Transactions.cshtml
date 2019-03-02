@@ -3,9 +3,13 @@
     ViewData["Title"] = "Transactions";
 }
 
+<link rel="Stylesheet" href="~/css/Admin/transactions.css" type="text/css" />
 
-<link rel="Stylesheet" href="~/css/adminnavbar.css?version=51" type="text/css" />
-<link rel="Stylesheet" href="~/css/transactions.css" type="text/css" />
+<link rel="Stylesheet" href="~/css/Admin/adminnavbar.css?version=51" type="text/css" />
+<link rel="Stylesheet" href="~/css/Admin/window.css" type="text/css" />
+<link rel="Stylesheet" href="~/css/Admin/table.css" type="text/css" />
+<link rel="Stylesheet" href="~/css/Admin/search-bar.css" type="text/css" />
+
 
 
 <div class="row col-12">
@@ -44,7 +48,7 @@
                             <th>Status</th>
                             <th>Account</th>
                             <th>Notes</th>
-                            <th class="text-center">Actions</th>
+                            <th id="actionsHeader">Actions</th>
                         </tr>
                         @for (int i = 0; i < 5; i++)
                         {
@@ -56,7 +60,7 @@
                                 <td>Open</td>
                                 <td><a>Richard Fry</a></td>
                                 <td><a>View</a></td>
-                                <td class="text-center">
+                                <td id="actionsRow">
                                     <button class="btn btn-primary fas fa-file-alt"> Add</button>
                                     <button class="btn btn-warning fas fa-edit"> Edit</button>
                                     <button class="btn btn-danger fas fa-trash-alt"> Delete</button>

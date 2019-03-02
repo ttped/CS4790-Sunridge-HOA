@@ -1,0 +1,8 @@
+﻿#searchBar {
+    width: 20%;
+}
+
+#searchIcon {
+    position: relative;
+    left: -25px;
+}
