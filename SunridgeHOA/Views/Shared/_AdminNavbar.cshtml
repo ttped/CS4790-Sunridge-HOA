@@ -1,0 +1,57 @@
+﻿@*
+<link rel="Stylesheet" href="~/css/adminnavbar.css?version=51" type="text/css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+*@
+<div id="adminNavBar">
+    <nav>
+        <ul class="nav flex-column unselectable" id="adminNavBar">
+            <li class="nav-item">
+                <p>General</p>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active fas fa-tachometer-alt" href="#"> Dashboard </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link fas fa-home" href="#"> My Lots</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link fas fa-dollar-sign" href="#"> Billing History</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link fas fa-file-alt" data-toggle="collapse" data-target="#accordian" href="javascript:void(0)">
+                    Classifieds <span class="fas fa-caret-down pull-right"></span>
+                </a>
+                <div id="accordian" class="collapse">
+                    <ul>
+                        <li class="nav-item"><a id="accordian" class="nav-link far fa-circle" href="#">&nbsp;View&nbsp;Ads</a></li>
+                        <li class="nav-item"><a id="accordian" class="nav-link far fa-circle" href="#">&nbsp;Post&nbsp;a&nbsp;New&nbsp;Ad</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="nav-item" style="margin-top:10px;">
+                <p>Admin</p>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link fas fa-users" href="~/Admin/Owners"> Owners</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link fas fa-history" href="~/Admin/OwnerActivity"> Owner Activity</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link fas fa-key" href="~/Admin/Keys"> Keys</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link fas fa-map" href="~/Admin/HOALots"> HOA Lots</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link fas fa-money-check-alt" href="~/Admin/Transactions"> Transactions</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link fas fa-wrench" href="CommonAreaAssets"> Common Area Assets</a>
+            </li>
+        </ul>
+    </nav>
+</div>
