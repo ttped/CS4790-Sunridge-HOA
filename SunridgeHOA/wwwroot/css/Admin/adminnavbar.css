@@ -4,7 +4,7 @@
     height: 100vh;
     background-color: #303a44;
     display: inline-block;
-    width:90%;
+    width:100%;
 }
 
 #adminNavBar li a:hover:not(#accordian) {
