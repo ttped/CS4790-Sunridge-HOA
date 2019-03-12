@@ -3,14 +3,67 @@
     ViewData["Title"] = "Owners";
 }
 
-<link rel="Stylesheet" href="~/css/Admin/adminnavbar.css?version=51" type="text/css" />
+<link rel="Stylesheet" href="~/css/Admin/transactions.css" type="text/css" />
 
-<div class="row">
+<link rel="Stylesheet" href="~/css/Admin/adminnavbar.css?version=51" type="text/css" />
+<link rel="Stylesheet" href="~/css/Admin/window.css" type="text/css" />
+<link rel="Stylesheet" href="~/css/Admin/table.css" type="text/css" />
+<link rel="Stylesheet" href="~/css/Admin/search-bar.css" type="text/css" />
+
+
+
+<div class="row col-12">
     <div class="col-2">
         <partial name="~/Views/Shared/_AdminNavbar.cshtml" />
     </div>
 
-    <div class="col-3">
-        <h2>Owners</h2>
+    <div id="windowFrame" class="col-10">
+        <div class="col-12">
+            <div class="row">
+                <div id="titleDiv" class="col-12">
+                    <p id="title">Sunridge Users</p>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-12">
+                    <input id="searchBar" type="text" placeholder="Search..."> <span id="searchIcon" class="fa fa-search"></span>
+                    <button class="btn btn-primary float-right">Add Owner</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <table id="table" class="table table-striped table-bordered table-sm">
+                        <tr>
+                            <th>Is Primary</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Occupation</th>
+                            <th>Birthday</th>
+                            <th>Emergency Contact Name</th>
+                            <th>Emergency Contact Phone</th>
+                            <th id="actionsHeader">Actions</th>
+                        </tr>
+                        @for (int i = 0; i < 5; i++)
+                        {
+                            <tr>
+                                <td>True</td>
+                                <td>Richard</td>
+                                <td>Fry</td>
+                                <td>Professor</td>
+                                <td>1/2/34</td>
+                                <td>John Doe</td>
+                                <td>123-456-7890</td>
+                                <td id="actionsRow">
+                                    <a class="fas fa-edit" id="edit" href="#"></a>
+                                    <a class="fas fa-trash-alt" id="delete" href="#"></a>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
