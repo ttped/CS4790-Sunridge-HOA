@@ -1,0 +1,69 @@
+﻿#adminNavBar ul {
+
+    list-style-type: none;
+    height: 100vh;
+    background-color: #303a44;
+
+}
+
+#adminNavBar li a:hover:not(#accordian) {
+    background-color: #3b4753;
+    color: #eaebec;
+}
+
+#adminNavBar li a:focus:not(#accordian) {
+    background-color: #252d35;
+    color: #eaebec;
+}
+
+#adminNavBar li a {
+    color: #d9dbdc;
+    font-size: 100%;
+    font-size: 1vw;
+}
+
+#adminNavBar li p {
+    color: #979ca1;
+    background-color: #252d35;
+    font-size: 115%;
+    font-size: 1.25vw;
+    padding: 5px;
+}
+
+#adminNavBar {
+    display: flex;
+    display: inline-block;
+    width: -webkit-calc(100% - 10px);
+    width: -moz-calc(100% - 10px);
+    width: calc(100% - 10px);
+    align-items: stretch;
+    margin-left: 10px;
+}
+
+#accordian ul {
+    list-style-type: none;
+    height: auto;
+    width: 100%;
+    padding-left: 15px !important;
+}
+
+#accordian ul li:first-child {
+    margin-top: 10px;
+}
+
+#accordian ul li {
+    margin-bottom: 10px;
+}
+
+#accordian ul a {
+    text-decoration: none;     
+}
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
