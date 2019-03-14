@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SunridgeHOA.Models
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityOwner>
+    public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
