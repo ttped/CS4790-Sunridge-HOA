@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SunridgeHOA.Data;
 using SunridgeHOA.Models;
 
 namespace SunridgeHOA
@@ -48,7 +49,7 @@ namespace SunridgeHOA
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -80,6 +81,61 @@ namespace SunridgeHOA
                 //  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             });
 
+            SeedData.EnsurePopulated(app);
+            CreateRoles(serviceProvider).Wait();
+        }
+
+        private async Task CreateRoles(IServiceProvider serviceProvider)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+            string[] roles = { "SuperAdmin", "Admin", "Owner" };
+
+            foreach (var role in roles)
+            {
+                var roleExists = await roleManager.RoleExistsAsync(role);
+                if (!roleExists)
+                {
+                    var result = await roleManager.CreateAsync(new IdentityRole(role));
+                }
+            }
+
+            var superAdmin = new ApplicationUser
+            {
+                UserName = "admin",
+                Email = "admin@email.com",
+                OwnerId = 1
+            };
+
+            var pass = "Password123$";
+            var user = await userManager.FindByEmailAsync("admin@email.com");
+
+            if (user == null)
+            {
+                var result = await userManager.CreateAsync(superAdmin, pass);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(superAdmin, "SuperAdmin");
+                }
+            }
+
+            var owner = new ApplicationUser
+            {
+                UserName = "owner",
+                Email = "owner@email.com",
+                OwnerId = 2
+            };
+
+            user = await userManager.FindByEmailAsync("owner@email.com");
+            if (user == null)
+            {
+                var result = await userManager.CreateAsync(owner, pass);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(owner, "Owner");
+                }
+            }
         }
     }
 }

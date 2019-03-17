@@ -204,8 +204,6 @@ namespace SunridgeHOA.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("OwnerId");
-
                     b.ToTable("AspNetUsers");
                 });
 
@@ -724,14 +722,6 @@ namespace SunridgeHOA.Migrations
                     b.HasOne("SunridgeHOA.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SunridgeHOA.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("SunridgeHOA.Models.Owner", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
