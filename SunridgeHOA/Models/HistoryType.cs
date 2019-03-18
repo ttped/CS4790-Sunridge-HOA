@@ -15,7 +15,7 @@ namespace SunridgeHOA.Models
         public DateTime LastModifiedDate { get; set; }
 
         //Nav properties
-        public virtual ICollection<OwnerHistory> OwnerHistories { get; set; }
+        public virtual ICollection<LotHistory> LotHistories { get; set; }
 
     }
 }

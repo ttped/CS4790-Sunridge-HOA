@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
     <h2>Index</h2>
@@ -26,15 +27,6 @@
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Date)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.IsArchive)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.LastModifiedBy)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.LastModifiedDate)
                 </th>
                 <th></th>
             </tr>
