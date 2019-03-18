@@ -1,0 +1,109 @@
+﻿@model SunridgeHOA.Models.Owner
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Owner</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FullName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsPrimary)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsPrimary)
+        </dd>
+        @if (Model.CoOwner != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.CoOwner)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CoOwner.OwnerId)
+            </dd>
+        }
+        <dt>
+            @Html.DisplayNameFor(model => model.Occupation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Occupation)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Birthday)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Birthday)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EmergencyContactName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EmergencyContactName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EmergencyContactPhone)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EmergencyContactPhone)
+        </dd>
+        @*<dt>
+                @Html.DisplayNameFor(model => model.IsArchive)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.IsArchive)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.LastModifiedBy)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.LastModifiedBy)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.LastModifiedDate)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.LastModifiedDate)
+            </dd>*@
+        <dt>
+            @Html.DisplayNameFor(model => model.Address.StreetAddress)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address.StreetAddress)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address.City)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address.City)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address.Zip)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address.Zip)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address.State)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address.State)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="OwnerId" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

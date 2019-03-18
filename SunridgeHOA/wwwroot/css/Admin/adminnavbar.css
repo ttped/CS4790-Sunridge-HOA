@@ -1,10 +1,9 @@
 ﻿#adminNavBar ul {
-    margin-left:20px;
+
     list-style-type: none;
     height: 100vh;
     background-color: #303a44;
-    display: inline-block;
-    width:90%;
+
 }
 
 #adminNavBar li a:hover:not(#accordian) {
@@ -19,23 +18,33 @@
 
 #adminNavBar li a {
     color: #d9dbdc;
+    font-size: 100%;
+    font-size: 1vw;
 }
 
 #adminNavBar li p {
     color: #979ca1;
     background-color: #252d35;
     font-size: 115%;
+    font-size: 1.25vw;
     padding: 5px;
-
 }
 
-#adminNavBar div {
+#adminNavBar {
+    display: flex;
+    display: inline-block;
+    width: -webkit-calc(100% - 10px);
+    width: -moz-calc(100% - 10px);
+    width: calc(100% - 10px);
+    align-items: stretch;
+    margin-left: 10px;
 }
 
 #accordian ul {
     list-style-type: none;
     height: auto;
-    width:50%;
+    width: 100%;
+    padding-left: 15px !important;
 }
 
 #accordian ul li:first-child {

@@ -1,16 +1,24 @@
-﻿#table {
+﻿
+#table {
     margin-top: 10px;
-}
-#table{
-    width:100%;
+    width: 100%;
+    font-size: 100%;
+
 }
 
 #table #actionsRow {
-    width:auto;
+    
 }
 
-#table #actionsRow button {
-    width:auto;
-    margin-left:2px;
-    margin-right:2px;
+#table #actionsRow a {
+    
+}
+
+#table #actionsRow a#edit {
+    color: #3b4753;
+    margin-right: 30px;
+}
+
+#table #actionsRow a#delete {
+    color: #3b4753;
 }
