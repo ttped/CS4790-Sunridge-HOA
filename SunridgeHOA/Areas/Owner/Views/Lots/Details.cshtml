@@ -1,0 +1,51 @@
+﻿@model SunridgeHOA.Models.Lot
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Lot</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.LotNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LotNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TaxId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TaxId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address.StreetAddress)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+    </dl>
+</div>
+@* May need to use an api key like this: https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=Eiffel+Tower,Paris+France *@
+<div>
+        @{
+            var addr = Model.Address.ToString();
+            var src = $"https://www.maps.google.it/maps?q={addr}&output=embed";
+        }
+        <iframe src="@src"></iframe>
+    </div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.LotId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

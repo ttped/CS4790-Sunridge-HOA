@@ -1,0 +1,48 @@
+﻿@model SunridgeHOA.Areas.Owner.Models.LotAddressVM
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+<h4>Lot</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Lot.LotId" />
+            <input type="hidden" asp-for="Address.Id" />
+            <div class="form-group">
+                <label asp-for="Lot.LotNumber" class="control-label"></label>
+                <input asp-for="Lot.LotNumber" class="form-control" />
+                <span asp-validation-for="Lot.LotNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Lot.TaxId" class="control-label"></label>
+                <input asp-for="Lot.TaxId" class="form-control" />
+                <span asp-validation-for="Lot.TaxId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address.StreetAddress" class="control-label"></label>
+                <input asp-for="Address.StreetAddress" class="form-control" />
+                <span asp-validation-for="Address.StreetAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Lot.Status" class="control-label"></label>
+                <input asp-for="Lot.Status" class="form-control" />
+                <span asp-validation-for="Lot.Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

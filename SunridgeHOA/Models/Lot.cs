@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,7 +12,11 @@ namespace SunridgeHOA.Models
         public int AddressId { get; set; }
         //public int OwnerId { get; set; }
 
+        [Display(Name = "Lot Number")]
+        [Required]
         public string LotNumber { get; set; }
+
+        [Display(Name = "Tax ID")]
         public string TaxId { get; set; }
         public string Status { get; set; }
         public bool IsArchive { get; set; }

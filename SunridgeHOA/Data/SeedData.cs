@@ -72,9 +72,35 @@ namespace SunridgeHOA.Data
                         LastModifiedBy = "Seed",
                         LastModifiedDate = DateTime.Now
                     });
-
-                context.SaveChanges();
             }
+
+            if (!context.Lot.Any())
+            {
+                // Add temporary lots
+                context.Lot.AddRange(
+                    new Lot
+                    {
+                        AddressId = 1,
+                        LotNumber = "A1",
+                        TaxId = "ABC123",
+                        Status = "Something",
+                        IsArchive = false,
+                        LastModifiedBy = "Seed",
+                        LastModifiedDate = DateTime.Now
+                    },
+                    new Lot
+                    {
+                        AddressId = 2,
+                        LotNumber = "B2",
+                        TaxId = "XYZ789",
+                        Status = "Something",
+                        IsArchive = false,
+                        LastModifiedBy = "Seed",
+                        LastModifiedDate = DateTime.Now
+                    });
+            }
+
+            context.SaveChanges();
         }
     }
 }
