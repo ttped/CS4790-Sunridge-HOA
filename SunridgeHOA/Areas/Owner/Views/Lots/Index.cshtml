@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SunridgeHOA.Models.Lot>
+﻿@model IEnumerable<LotIndexVM>
 
 @{
     ViewData["Title"] = "Index";
@@ -14,19 +14,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.LotNumber)
+                @Html.DisplayNameFor(model => model.Lot.LotNumber)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Address.StreetAddress)
             </th>
             <th>
-                Owner (todo)
+                @Html.DisplayNameFor(model => model.Owners)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TaxId)
+                @Html.DisplayNameFor(model => model.Lot.TaxId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Status)
+                @Html.DisplayNameFor(model => model.Lot.Status)
             </th>
             <th>
                 Stuff on the lot
@@ -38,27 +38,29 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.LotNumber)
+                @Html.DisplayFor(modelItem => item.Lot.LotNumber)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Address.StreetAddress)
             </td>
             <td>
-                coming eventually
+                @Html.DisplayFor(modelItem => item.PrimaryOwner.FullName)
+                <br/>
+                Also iterate through list of other owners
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TaxId)
+                @Html.DisplayFor(modelItem => item.Lot.TaxId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Status)
+                @Html.DisplayFor(modelItem => item.Lot.Status)
             </td>
             <td>
                 Lot items here
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.LotId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.LotId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.LotId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Lot.LotId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Lot.LotId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Lot.LotId">Delete</a>
             </td>
         </tr>
 }

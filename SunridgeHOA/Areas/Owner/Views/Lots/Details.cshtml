@@ -1,4 +1,4 @@
-﻿@model SunridgeHOA.Models.Lot
+﻿@model LotIndexVM
 
 @{
     ViewData["Title"] = "Details";
@@ -12,16 +12,31 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.LotNumber)
+            @Html.DisplayNameFor(model => model.Lot.LotNumber)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.LotNumber)
+            @Html.DisplayFor(model => model.Lot.LotNumber)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.TaxId)
+            @Html.DisplayNameFor(model => model.PrimaryOwner)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.TaxId)
+            @Html.DisplayFor(model => model.PrimaryOwner.FullName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Owners)
+        </dt>
+        <dd>
+            @foreach (var owner in Model.Owners)
+            {
+                @:owner.FullName
+            }
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Lot.TaxId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Lot.TaxId)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Address)
@@ -29,12 +44,12 @@
         <dd>
             @Html.DisplayFor(model => model.Address.StreetAddress)
         </dd>
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.Status)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Status)
-        </dd>
+        </dd>*@
     </dl>
 </div>
 @* May need to use an api key like this: https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=Eiffel+Tower,Paris+France *@
@@ -46,6 +61,6 @@
         <iframe src="@src"></iframe>
     </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.LotId">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Lot.LotId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

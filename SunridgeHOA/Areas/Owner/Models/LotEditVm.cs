@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace SunridgeHOA.Areas.Owner.Models
 {
-    public class LotAddressVM
+    public class LotEditVM
     {
         public Lot Lot { get; set; }
         public Address Address { get; set; }
+        public int OwnerId { get; set; }
     }
 }

@@ -47,7 +47,7 @@ namespace SunridgeHOA.Data
                     new Owner
                     {
                         AddressId = 1,
-                        IsPrimary = true,
+                        //IsPrimary = true,
                         FirstName = "Test",
                         LastName = "Guy",
                         Occupation = "Some sort of admin",
@@ -61,7 +61,7 @@ namespace SunridgeHOA.Data
                     new Owner
                     {
                         AddressId = 2,
-                        IsPrimary = true,
+                       // IsPrimary = true,
                         FirstName = "Richard",
                         LastName = "Guy",
                         Occupation = "Data tester",
