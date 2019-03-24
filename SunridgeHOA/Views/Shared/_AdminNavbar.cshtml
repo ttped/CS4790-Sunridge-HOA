@@ -59,7 +59,10 @@
                 <a class="nav-link fas fa-money-check-alt" href="~/Admin/Transactions"> Transactions</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link fas fa-wrench" href="CommonAreaAssets"> Common Area Assets</a>
+                <!--
+    <a class="nav-link fas fa-wrench" href="CommonAreaAssets"> Common Area Assets</a>
+        -->
+                <a class="nav-link fas fa-wrench" asp-area="Admin" asp-controller="CommonAreaAssets" asp-action="Index">Common Area Assets</a>
             </li>
         </ul>
     </nav>

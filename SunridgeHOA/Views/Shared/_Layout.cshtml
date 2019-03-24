@@ -88,13 +88,12 @@
                     </div>
                 </li>
 
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" asp-area="" asp-controller="Photos" asp-action="Index">Photo Gallery</a>
                 </li>
 
-                <li class="nav-item active">
-                    @*<a class="nav-link" asp-area="" asp-controller="Admin" asp-action="Transactions">Admin</a>*@
-                    <a class="nav-link" asp-area="" asp-controller="General" asp-action="Dashboard">Admin</a>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="Transactions">Admin</a>
                 </li>
 
                 @*<li><a asp-area="" asp-controller="Photos" asp-action="Summer">Photo Gallery - Summer</a></li>
@@ -103,9 +102,9 @@
 
             </ul>
         </div>
-        @*<div>
+        <div>
             <partial name="_LoginPartial" />
-        </div>*@
+        </div>
     </nav>
 
     <partial name="_CookieConsentPartial" />
