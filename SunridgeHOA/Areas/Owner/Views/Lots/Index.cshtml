@@ -26,7 +26,7 @@
                 @Html.DisplayNameFor(model => model.Lot.TaxId)
             </th>
             <th>
-                Stuff on the lot
+                @Html.DisplayNameFor(model => model.InventoryItems)
             </th>
             <th></th>
         </tr>
@@ -53,7 +53,10 @@
                 @Html.DisplayFor(modelItem => item.Lot.TaxId)
             </td>
             <td>
-                Lot items here
+                @foreach (var inv in item.InventoryItems)
+                {
+                    @Html.DisplayFor(modelItem => inv.Description)
+                }
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Lot.LotId">Edit</a> |

@@ -40,6 +40,13 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                     .Where(u => u.LotId == lot.LotId)
                     .Where(u => u.EndDate == DateTime.MinValue);
 
+                var lotItems = await _context.LotInventory
+                    .Include(u => u.Inventory)
+                    .Where(u => u.LotId == lot.LotId)
+                    .Select(u => u.Inventory)
+                    .ToListAsync();
+
+
                 if (!owners.Any())
                 {
                     vm.Add(new LotIndexVM
@@ -47,7 +54,8 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                         Lot = lot,
                         Address = lot.Address,
                         PrimaryOwner = null,
-                        Owners = null
+                        Owners = null,
+                        InventoryItems = lotItems
                     });
                 }
                 else
@@ -57,7 +65,8 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                         Lot = lot,
                         Address = lot.Address,
                         PrimaryOwner = owners.Where(u => u.IsPrimary).First().Owner,
-                        Owners = owners.Where(u => !u.IsPrimary).Select(u => u.Owner).ToList()
+                        Owners = owners.Where(u => !u.IsPrimary).Select(u => u.Owner).ToList(),
+                        InventoryItems = lotItems
                     });
                 }
 
@@ -82,12 +91,19 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            var lotItems = await _context.LotInventory
+                    .Include(u => u.Inventory)
+                    .Where(u => u.LotId == lot.LotId)
+                    .Select(u => u.Inventory)
+                    .ToListAsync();
+
             var vm = new LotIndexVM
             {
                 Lot = lot,
                 Address = lot.Address,
                 PrimaryOwner = await GetPrimaryOwnerAsync(lot.LotId),
-                Owners = await GetNonPrimaryOwnerAsync(lot.LotId)
+                Owners = await GetNonPrimaryOwnerAsync(lot.LotId),
+                InventoryItems = lotItems
             };
 
             return View(vm);
