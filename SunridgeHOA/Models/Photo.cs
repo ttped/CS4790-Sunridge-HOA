@@ -9,16 +9,17 @@ namespace SunridgeHOA.Models
     public class Photo
     {
         public int PhotoId { get; set; }
-        public int FileId { get; set; }
+        public int OwnerId { get; set; }
         public string Category { get; set; }
-        public string Writer { get; set; }
+        //public string Writer { get; set; }
         public string Title { get; set; }
         public int Year { get; set; }
         public string Image { get; set; }
 
 
         //Nav props
-        [ForeignKey("FileId")]
-        public virtual File File { get; set; }
+        [ForeignKey("OwnerId")]
+        public virtual Owner Owner { get; set; }
+
     }
 }
