@@ -139,7 +139,6 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                     LotNumber = vm.Lot.LotNumber,
                     TaxId = vm.Lot.TaxId,
                     Address = address,
-                    Status = "Something",
                     LastModifiedBy = loggedInUser.FullName,
                     LastModifiedDate = DateTime.Now
                 };
@@ -226,7 +225,6 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                     // Update Lot entry
                     var lot = _context.Lot.Find(vm.Lot.LotId);
                     lot.LotNumber = vm.Lot.LotNumber;
-                    lot.Status = vm.Lot.Status;
                     lot.TaxId = vm.Lot.TaxId;
                     lot.LastModifiedBy = loggedInUser.FullName;
                     lot.LastModifiedDate = DateTime.Now;
