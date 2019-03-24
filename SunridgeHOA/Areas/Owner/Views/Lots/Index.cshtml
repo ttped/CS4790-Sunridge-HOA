@@ -26,9 +26,6 @@
                 @Html.DisplayNameFor(model => model.Lot.TaxId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Lot.Status)
-            </th>
-            <th>
                 Stuff on the lot
             </th>
             <th></th>
@@ -44,15 +41,16 @@
                 @Html.DisplayFor(modelItem => item.Address.StreetAddress)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PrimaryOwner.FullName)
+                <span style="font-weight:bold;">@Html.DisplayFor(modelItem => item.PrimaryOwner.FullName)</span>
                 <br/>
-                Also iterate through list of other owners
+                @foreach (var owner in item.Owners)
+                {
+                    @Html.DisplayFor(modelItem => owner.FullName)
+                    <br />
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Lot.TaxId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lot.Status)
             </td>
             <td>
                 Lot items here

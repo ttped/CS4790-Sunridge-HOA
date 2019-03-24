@@ -124,6 +124,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 // We can auto fill these details because all lots will have same city/state/zip
                 var address = new Address
                 {
+                    StreetAddress = vm.Address.StreetAddress,
                     City = "Some City",
                     State = "Utah",
                     Zip = "12345",
@@ -131,9 +132,12 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                     LastModifiedDate = DateTime.Now
                 };
                 _context.Add(address);
+                await _context.SaveChangesAsync();
 
                 var lot = new Lot
                 {
+                    LotNumber = vm.Lot.LotNumber,
+                    TaxId = vm.Lot.TaxId,
                     Address = address,
                     Status = "Something",
                     LastModifiedBy = loggedInUser.FullName,
@@ -161,12 +165,25 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var currOwner = await GetPrimaryOwnerAsync(id.Value);
+            var currPrimary = await GetPrimaryOwnerAsync(id.Value);
+            var currOwnerIds = await _context.OwnerLot
+                .Include(u => u.Owner)
+                .Where(u => u.LotId == id)
+                .Where(u => u.EndDate == DateTime.MinValue)
+                .Select(u => u.Owner.OwnerId)
+                .ToListAsync();
 
-            //ViewData["AddressId"] = new SelectList(_context.Address, "Id", "Id", lot.AddressId);
-            var list = new SelectList(_context.Owner, "OwnerId", "FullName", currOwner.OwnerId);
-            ViewData["Owner"] = new SelectList(_context.Owner, "OwnerId", "FullName", currOwner.OwnerId);
-            return View(new LotEditVM { Lot = lot, Address = lot.Address });
+            //ViewData["Owner"] = new SelectList(_context.Owner, "OwnerId", "FullName", currPrimary.OwnerId);
+            ViewData["OwnerList"] = _context.Owner.ToList();
+
+            var vm = new LotEditVM
+            {
+                Lot = lot,
+                Address = lot.Address,
+                OwnerId = currPrimary?.OwnerId ?? -1,
+                OwnerIds = currOwnerIds
+            };
+            return View(vm);
         }
 
         // POST: Admin/Lots/Edit/5
@@ -181,10 +198,15 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            if (vm.OwnerId == -1)
+            //if (vm.OwnerId == -1)
+            //{
+            //    // Assuming that a lot must always have an owner
+            //    ModelState.AddModelError("OwnerId", "You must select an owner");
+            //}
+            if (vm.OwnerIds != null && !vm.OwnerIds.Contains(vm.OwnerId))
             {
-                // Assuming that a lot must always have an owner
-                ModelState.AddModelError("OwnerId", "You must select an owner");
+                // This shouldn't come up, BUT JUST IN CASE
+                ModelState.AddModelError("OwnerIds", "List of owners must contain the primary owner");
             }
 
             if (ModelState.IsValid)
@@ -217,36 +239,61 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                         .Where(u => u.IsPrimary)
                         .FirstOrDefaultAsync();
 
-                    // Nobody owns this lot right now
-                    if (currOwnerLot == null)
+                    // Nobody owns this lot right now and we have owners
+                    if (currOwnerLot == null && vm.OwnerIds != null)
                     {
-                        // Create a new entry
-                        var newOwnerLot = new OwnerLot
+                        // Create a new entry for every owner
+                        foreach (var oid in vm.OwnerIds)
                         {
-                            OwnerId = vm.OwnerId,
-                            LotId = id,
-                            IsPrimary = true,
-                            StartDate = DateTime.Now
-                        };
+                            var newOwnerLot = new OwnerLot
+                            {
+                                OwnerId = vm.OwnerId,
+                                LotId = id,
+                                IsPrimary = oid == vm.OwnerId,
+                                StartDate = DateTime.Now
+                            };
 
-                        _context.Add(newOwnerLot);
+                            _context.Add(newOwnerLot);
+                        }
                     }
-                    // Someone else is set as the owner
-                    else if (vm.OwnerId != currOwnerLot.OwnerId)
+                    // There is at least one existing relationship
+                    else if (currOwnerLot != null && vm.OwnerIds != null)
                     {
-                        // End the existing relationship
-                        currOwnerLot.EndDate = DateTime.Now;
+                        var prevOwnerLots = await _context.OwnerLot
+                            .Where(u => u.LotId == id)
+                            .Where(u => u.EndDate == DateTime.MinValue)
+                            .ToListAsync();
 
-                        // Create a new entry
-                        var newOwnerLot = new OwnerLot
+                        // Check previous OwnerLot entities to see if any were removed
+                        foreach (var ol in prevOwnerLots)
                         {
-                            OwnerId = vm.OwnerId,
-                            LotId = id,
-                            IsPrimary = true,
-                            StartDate = DateTime.Now
-                        };
+                            // User was removed from the user list, end the relationship
+                            if (!vm.OwnerIds.Contains(ol.OwnerId))
+                            {
+                                ol.EndDate = DateTime.Now;
+                            }
+                            // The user already has a relationship - don't do anything in the next step
+                            else
+                            {
+                                // Make sure that the primary user is set correctly
+                                ol.IsPrimary = ol.OwnerId == vm.OwnerId;
+                                vm.OwnerIds.Remove(ol.OwnerId);
+                            }
+                        }
 
-                        _context.Add(newOwnerLot);
+                        // Create new relationships if necessary
+                        foreach (var oid in vm.OwnerIds)
+                        {
+                            var newOwnerLot = new OwnerLot
+                            {
+                                OwnerId = oid,
+                                LotId = id,
+                                IsPrimary = oid == vm.OwnerId,
+                                StartDate = DateTime.Now
+                            };
+
+                            _context.Add(newOwnerLot);
+                        }
                     }
 
                     await _context.SaveChangesAsync();
@@ -265,7 +312,8 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
             //ViewData["AddressId"] = new SelectList(_context.Address, "Id", "Id", lot.AddressId);
-            ViewData["Owner"] = new SelectList(_context.Owner, "OwnerId", "FullName");
+            //ViewData["Owner"] = new SelectList(_context.Owner, "OwnerId", "FullName");
+            ViewData["OwnerList"] = _context.Owner.ToList();
             return View(vm);
         }
 
