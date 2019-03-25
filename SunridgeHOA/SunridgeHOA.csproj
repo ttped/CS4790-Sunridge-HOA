@@ -16,7 +16,6 @@
     <Folder Include="Areas\Identity\Services\" />
 
     <Folder Include="Areas\Owner\Data\" />
-    <Folder Include="Areas\Owner\Models\" />
   </ItemGroup>
 
 </Project>

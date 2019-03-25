@@ -11,6 +11,8 @@ namespace SunridgeHOA.Models
         public int OwnerId { get; set; }
         public int LotId { get; set; }
 
+        public bool IsPrimary { get; set; }
+
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
