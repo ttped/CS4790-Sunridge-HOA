@@ -22,7 +22,7 @@
 
     <Folder Include="Areas\Owner\Data\" />
 
-//=======
+
     <Folder Include="Areas\Owner\Models\" />
     <Folder Include="wwwroot\img\BannerImages\" />
   </ItemGroup>
@@ -34,7 +34,7 @@
     <Content Update="Areas\Owner\_ViewStart.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-//>>>>>>> master
+
   </ItemGroup>
 
 </Project>
