@@ -21,7 +21,7 @@ namespace SunridgeHOA.Models
         public DbSet<Inventory> Inventory { get; set; }
         public DbSet<Address> Address { get; set; }
         public DbSet<Transaction> Transaction { get; set; }
-        public DbSet<OwnerHistory> OwnerHistory { get; set; }
+        public DbSet<LotHistory> LotHistory { get; set; }
         public DbSet<HistoryType> HistoryType { get; set; }
         public DbSet<Owner> Owner { get; set; }
         public DbSet<TransactionType> TransactionType { get; set; }
@@ -34,8 +34,14 @@ namespace SunridgeHOA.Models
         public DbSet<ContactType> ContactType { get; set; }
         public DbSet<CommonAreaAsset> CommonAreaAsset { get; set; }
         public DbSet<Maintenance> Maintenance { get; set; }
-        public DbSet<SunridgeHOA.Models.BannerItem> BannerItem { get; set; }
+        //public DbSet<BannerItem> BannerItem { get; set; }
+        public DbSet<NewsItem> NewsItem { get; set; }
+        public DbSet<OwnerHistory> OwnerHistory { get; set; }
+        public DbSet<OwnerLot> OwnerLot { get; set; }
+        public DbSet<Comment> Comment { get; set; }
+        //public DbSet<SunridgeHOA.Models.BannerItem> BannerItem { get; set; }
         public DbSet<SunridgeHOA.Models.Banner> Banner { get; set; }
+
 
     }
 }

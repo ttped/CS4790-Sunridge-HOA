@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SunridgeHOA.Models;
 
 namespace SunridgeHOA.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190319134554_SeparatedHistoriesAddedOwnerLot")]
+    partial class SeparatedHistoriesAddedOwnerLot
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,8 +147,7 @@ namespace SunridgeHOA.Migrations
 
                     b.Property<string>("State");
 
-                    b.Property<string>("StreetAddress")
-                        .IsRequired();
+                    b.Property<string>("StreetAddress");
 
                     b.Property<string>("Zip");
 
@@ -210,26 +211,6 @@ namespace SunridgeHOA.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-
-//=======
-            modelBuilder.Entity("SunridgeHOA.Models.Banner", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Body");
-
-                    b.Property<string>("Header");
-
-                    b.Property<string>("Image");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Banner");
-                });
-
-//>>>>>>> master
             modelBuilder.Entity("SunridgeHOA.Models.BannerItem", b =>
                 {
                     b.Property<int>("BannerItemId")
@@ -527,8 +508,7 @@ namespace SunridgeHOA.Migrations
 
                     b.Property<DateTime>("LastModifiedDate");
 
-                    b.Property<string>("LotNumber")
-                        .IsRequired();
+                    b.Property<string>("LotNumber");
 
                     b.Property<string>("Status");
 
@@ -663,7 +643,6 @@ namespace SunridgeHOA.Migrations
 
                     b.Property<DateTime>("Birthday");
 
-
                     b.Property<string>("EmergencyContactName")
                         .IsRequired();
 
@@ -674,6 +653,8 @@ namespace SunridgeHOA.Migrations
                         .IsRequired();
 
                     b.Property<bool>("IsArchive");
+
+                    b.Property<bool>("IsPrimary");
 
                     b.Property<string>("LastModifiedBy");
 
@@ -760,8 +741,6 @@ namespace SunridgeHOA.Migrations
                     b.Property<DateTime>("EndDate");
 
                     b.Property<bool>("IsArchive");
-
-                    b.Property<bool>("IsPrimary");
 
                     b.Property<string>("LastModifiedBy");
 

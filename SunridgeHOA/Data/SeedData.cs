@@ -47,7 +47,7 @@ namespace SunridgeHOA.Data
                     new Owner
                     {
                         AddressId = 1,
-                        IsPrimary = true,
+                        //IsPrimary = true,
                         FirstName = "Test",
                         LastName = "Guy",
                         Occupation = "Some sort of admin",
@@ -61,7 +61,7 @@ namespace SunridgeHOA.Data
                     new Owner
                     {
                         AddressId = 2,
-                        IsPrimary = true,
+                       // IsPrimary = true,
                         FirstName = "Richard",
                         LastName = "Guy",
                         Occupation = "Data tester",
@@ -72,10 +72,37 @@ namespace SunridgeHOA.Data
                         LastModifiedBy = "Seed",
                         LastModifiedDate = DateTime.Now
                     });
-
-                context.SaveChanges();
             }
 
+            if (!context.Lot.Any())
+            {
+                // Add temporary lots
+                context.Lot.AddRange(
+                    new Lot
+                    {
+                        AddressId = 1,
+                        LotNumber = "A1",
+                        TaxId = "ABC123",
+                        Status = "Something",
+                        IsArchive = false,
+                        LastModifiedBy = "Seed",
+                        LastModifiedDate = DateTime.Now
+                    },
+                    new Lot
+                    {
+                        AddressId = 2,
+                        LotNumber = "B2",
+                        TaxId = "XYZ789",
+                        Status = "Something",
+                        IsArchive = false,
+                        LastModifiedBy = "Seed",
+                        LastModifiedDate = DateTime.Now
+                    });
+            }
+
+// Sean
+            context.SaveChanges();
+//---------
             if (!context.ClassifiedCategory.Any())
             {
                 context.ClassifiedCategory.AddRange(
@@ -88,6 +115,7 @@ namespace SunridgeHOA.Data
                     );
                 context.SaveChanges();
             }
+//>>>>>>> master
         }
     }
 }

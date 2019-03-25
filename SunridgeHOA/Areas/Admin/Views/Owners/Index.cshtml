@@ -16,36 +16,36 @@
             <th>
                 @Html.DisplayNameFor(model => model.FullName)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.IsPrimary)
-            </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.Occupation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Birthday)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmergencyContactName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmergencyContactPhone)
             </th>*@
             @*<th>
-                @Html.DisplayNameFor(model => model.IsArchive)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastModifiedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastModifiedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.CoOwner)
-            </th>
+            @Html.DisplayNameFor(model => model.Occupation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Birthday)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmergencyContactName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmergencyContactPhone)
+        </th>*@
+            @*<th>
+            @Html.DisplayNameFor(model => model.IsArchive)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastModifiedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastModifiedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CoOwner)
+        </th>*@
             <th>
                 Lot(s)
             </th>
@@ -58,36 +58,36 @@
             <td>
                 @Html.DisplayFor(modelItem => item.FullName)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.IsPrimary)
-            </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.Occupation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Birthday)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EmergencyContactName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EmergencyContactPhone)
             </td>*@
             @*<td>
-                @Html.DisplayFor(modelItem => item.IsArchive)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastModifiedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastModifiedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address.Id)
-            </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.CoOwner.OwnerId)
-            </td>
+            @Html.DisplayFor(modelItem => item.Occupation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Birthday)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmergencyContactName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmergencyContactPhone)
+        </td>*@
+            @*<td>
+            @Html.DisplayFor(modelItem => item.IsArchive)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastModifiedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastModifiedDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CoOwner.OwnerId)
+        </td>*@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.OwnerId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.OwnerId">Details</a> |

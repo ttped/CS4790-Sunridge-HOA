@@ -11,10 +11,8 @@ namespace SunridgeHOA.Models
     {
         public int OwnerId { get; set; }
         public int AddressId { get; set; }
-        public int? CoOwnerId { get; set; }
-
-        [Display(Name = "Primary")]
-        public bool IsPrimary { get; set; }
+        //public int? CoOwnerId { get; set; }
+ 
 
         [Required]
         [Display(Name = "First Name")]
@@ -46,10 +44,11 @@ namespace SunridgeHOA.Models
 
         //Navigation properties
         public virtual Address Address { get; set; }
+        public virtual ICollection<OwnerLot> OwnerLots { get; set; }
 
-        [Display(Name = "Co-owner")]
-        [ForeignKey("CoOwnerId")]
-        public virtual Owner CoOwner { get; set; }
+        //[Display(Name = "Co-owner")]
+        //[ForeignKey("CoOwnerId")]
+        //public virtual Owner CoOwner { get; set; }
         public virtual ICollection<Transaction> Transactions { get; set; }
         public virtual ICollection<OwnerHistory> OwnerHistories { get; set; }
         public virtual ICollection<ClassifiedListing> ClassifiedListings { get; set; }

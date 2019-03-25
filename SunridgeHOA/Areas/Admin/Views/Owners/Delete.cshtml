@@ -18,12 +18,13 @@
         <dd>
             @Html.DisplayFor(model => model.FullName)
         </dd>
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.IsPrimary)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.IsPrimary)
-        </dd>
+        </dd>*@
+        @*
         @if (Model.CoOwner != null)
         {
             <dt>
@@ -33,6 +34,7 @@
                 @Html.DisplayFor(model => model.CoOwner.OwnerId)
             </dd>
         }
+        *@
         <dt>
             @Html.DisplayNameFor(model => model.Occupation)
         </dt>
@@ -58,23 +60,23 @@
             @Html.DisplayFor(model => model.EmergencyContactPhone)
         </dd>
         @*<dt>
-                @Html.DisplayNameFor(model => model.IsArchive)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.IsArchive)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.LastModifiedBy)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.LastModifiedBy)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.LastModifiedDate)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.LastModifiedDate)
-            </dd>*@
+            @Html.DisplayNameFor(model => model.IsArchive)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsArchive)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastModifiedBy)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastModifiedBy)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastModifiedDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastModifiedDate)
+        </dd>*@
         <dt>
             @Html.DisplayNameFor(model => model.Address.StreetAddress)
         </dt>

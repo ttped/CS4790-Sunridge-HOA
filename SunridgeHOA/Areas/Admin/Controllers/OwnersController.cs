@@ -25,7 +25,9 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         // GET: Admin/Owners
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Owner.Include(o => o.Address).Include(o => o.CoOwner);
+            //var applicationDbContext = _context.Owner.Include(o => o.Address).Include(o => o.CoOwner);
+            var applicationDbContext = _context.Owner.Include(o => o.Address);
+
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -39,7 +41,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
 
             var owner = await _context.Owner
                 .Include(o => o.Address)
-                .Include(o => o.CoOwner)
+                //.Include(o => o.CoOwner)
                 .FirstOrDefaultAsync(m => m.OwnerId == id);
             if (owner == null)
             {
@@ -53,7 +55,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         public IActionResult Create()
         {
             //ViewData["AddressId"] = new SelectList(_context.Address, "Id", "Id");
-            ViewData["CoOwnerId"] = new SelectList(_context.Owner, "OwnerId", "OwnerId");
+            //ViewData["CoOwnerId"] = new SelectList(_context.Owner, "OwnerId", "OwnerId");
             return View();
         }
 
@@ -86,7 +88,8 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
             //ViewData["AddressId"] = new SelectList(_context.Address, "Id", "Id", owner.AddressId);
-            ViewData["CoOwnerId"] = new SelectList(_context.Owner, "OwnerId", "OwnerId", owner.CoOwnerId);
+            //ViewData["CoOwnerId"] = new SelectList(_context.Owner, "OwnerId", "OwnerId", owner.CoOwnerId);
+
             return View(owner);
         }
 
@@ -104,7 +107,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 return NotFound();
             }
             //ViewData["AddressId"] = new SelectList(_context.Address, "Id", "Id", owner.AddressId);
-            ViewData["CoOwnerId"] = new SelectList(_context.Owner, "OwnerId", "OwnerId", owner.CoOwnerId);
+            //ViewData["CoOwnerId"] = new SelectList(_context.Owner, "OwnerId", "OwnerId", owner.CoOwnerId);
             return View(owner);
         }
 
@@ -154,7 +157,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
             //ViewData["AddressId"] = new SelectList(_context.Address, "Id", "Id", owner.AddressId);
-            ViewData["CoOwnerId"] = new SelectList(_context.Owner, "OwnerId", "OwnerId", owner.CoOwnerId);
+            //ViewData["CoOwnerId"] = new SelectList(_context.Owner, "OwnerId", "OwnerId", owner.CoOwnerId);
             return View(owner);
         }
 
@@ -168,7 +171,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
 
             var owner = await _context.Owner
                 .Include(o => o.Address)
-                .Include(o => o.CoOwner)
+                //.Include(o => o.CoOwner)
                 .FirstOrDefaultAsync(m => m.OwnerId == id);
             if (owner == null)
             {

@@ -3,19 +3,21 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SunridgeHOA.Models;
 
 namespace SunridgeHOA.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190322011447_AddPrimaryToOwnerLot")]
+    partial class AddPrimaryToOwnerLot
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -210,26 +212,6 @@ namespace SunridgeHOA.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-
-//=======
-            modelBuilder.Entity("SunridgeHOA.Models.Banner", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Body");
-
-                    b.Property<string>("Header");
-
-                    b.Property<string>("Image");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Banner");
-                });
-
-//>>>>>>> master
             modelBuilder.Entity("SunridgeHOA.Models.BannerItem", b =>
                 {
                     b.Property<int>("BannerItemId")
@@ -662,7 +644,6 @@ namespace SunridgeHOA.Migrations
                     b.Property<int>("AddressId");
 
                     b.Property<DateTime>("Birthday");
-
 
                     b.Property<string>("EmergencyContactName")
                         .IsRequired();
