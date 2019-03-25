@@ -102,29 +102,31 @@ namespace SunridgeHOA.Controllers
                 return NotFound();
             }
             return View(news);
+
+            //return View();
         }
 
         //GET: Edit NewsItem
         public async Task<IActionResult> Edit(int? id)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-            //var news = await _db.NewsItem
-            //    .Include(m => m.File)
-            //    .SingleOrDefaultAsync(m => m.NewsItemId == id);
+            var news = await _db.NewsItem
+                .Include(m => m.File)
+                .SingleOrDefaultAsync(m => m.NewsItemId == id);
 
-            //if (news == null)
-            //{
-            //    return NotFound();
-            //}
+            if (news == null)
+            {
+                return NotFound();
+            }
 
-            //ViewData["Year"] = new SelectList(new string[] { "2019", "2018", "2017", "2016" });
-            //return View(news);
+            ViewData["Year"] = new SelectList(new string[] { "2019", "2018", "2017", "2016" });
+            return View(news);
 
-            return View();
+            //return View();
         }
 
         //POST: Edit NewsItem
@@ -171,6 +173,8 @@ namespace SunridgeHOA.Controllers
                 return NotFound();
             }
             return View(news);
+
+            //return View();
         }
 
         //POST: Delete NewsItem
@@ -196,5 +200,6 @@ namespace SunridgeHOA.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
+
     }
 }

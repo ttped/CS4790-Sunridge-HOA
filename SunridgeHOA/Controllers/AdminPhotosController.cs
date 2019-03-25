@@ -99,19 +99,122 @@ namespace SunridgeHOA.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Details()
+        //GET: AdminPhoto Details
+        public async Task<IActionResult> Details(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var photo = await _db.Photo
+                .Include(m => m.Owner)
+                .FirstOrDefaultAsync(m => m.PhotoId == id);
+
+            if (photo == null)
+            {
+                return NotFound();
+            }
+            return View(photo);
+
+            //return View();
         }
 
-        public IActionResult Edit()
+        //GET: AdminPhoto Edit
+        public async Task<IActionResult> Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var photo = await _db.Photo
+                .Include(m => m.Owner)
+                .SingleOrDefaultAsync(m => m.PhotoId == id);
+
+            if (photo == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["Category"] = new SelectList(new string[] { "Summer", "Winter", "People" });
+            return View(photo);
+
+            //return View();
         }
 
-        public IActionResult Delete()
+        //POST: AdminPhoto Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Image, Title, Year, Category")] Models.Photo photo, Owner owner)
         {
-            return View();
+            if (id != photo.PhotoId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                var photoFromDb = _db.Photo.Where(m => m.PhotoId == photo.PhotoId).FirstOrDefault();
+
+                photoFromDb.Image = photo.Image;
+                photoFromDb.Title = photo.Title;
+                photoFromDb.Year = photo.Year;
+                photoFromDb.Category = photo.Category;
+                photoFromDb.OwnerId = photo.OwnerId;
+
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewData["Category"] = new SelectList(new string[] { "Summer", "Winter", "People" });
+            return View(photo);
         }
+
+        //GET: AdminPhoto Delete
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var photo = await _db.Photo
+                .Include(m => m.Owner)
+                .FirstOrDefaultAsync(m => m.PhotoId == id);
+
+            if (photo == null)
+            {
+                return NotFound();
+            }
+            return View(photo);
+
+            //return View();
+        }
+
+        //POST: AdminPhoto Delete
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            //var photo = await _db.Photo
+            //    .Include(m => m.Owner)
+            //    .FirstOrDefaultAsync(m => m.PhotoId == id);
+
+            var photo = await _db.Photo.FindAsync(id);
+
+            if (photo == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                _db.Photo.Remove(photo);
+                await _db.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
     }
 }
