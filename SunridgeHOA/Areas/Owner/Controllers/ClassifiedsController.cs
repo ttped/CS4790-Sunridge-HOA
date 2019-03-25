@@ -26,7 +26,7 @@ namespace SunridgeHOA.Areas.Owner.Controllers
             _hostingEnvironment = hostingEnvironment;
             classifiedListingViewModel = new ClassifiedListingViewModel()
             {
-                ClassifiedListing = new Models.ClassifiedListing(),
+                ClassifiedListing = new SunridgeHOA.Models.ClassifiedListing(),
                 ClassifiedCategory = _context.ClassifiedCategory.ToList(),
                 Owner = _context.Owner.ToList()
             };
