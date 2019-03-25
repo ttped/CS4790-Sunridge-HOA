@@ -34,5 +34,8 @@ namespace SunridgeHOA.Models
         public DbSet<CommonAreaAsset> CommonAreaAsset { get; set; }
         public DbSet<Maintenance> Maintenance { get; set; }
 
+        //gk
+        public DbSet<Photo> Photo { get; set; }
+        public DbSet<NewsItem> NewsItem { get; set; }
     }
 }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SunridgeHOA.Models;
 
 namespace SunridgeHOA.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190324072549__AddPhoto")]
+    partial class _AddPhoto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -521,33 +523,6 @@ namespace SunridgeHOA.Migrations
                     b.ToTable("Maintenance");
                 });
 
-            modelBuilder.Entity("SunridgeHOA.Models.NewsItem", b =>
-                {
-                    b.Property<int>("NewsItemId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Content");
-
-                    b.Property<int>("FileId");
-
-                    b.Property<string>("Header");
-
-                    b.Property<bool>("IsArchive");
-
-                    b.Property<string>("LastModifiedBy");
-
-                    b.Property<DateTime>("LastModifiedDate");
-
-                    b.Property<DateTime>("Year");
-
-                    b.HasKey("NewsItemId");
-
-                    b.HasIndex("FileId");
-
-                    b.ToTable("NewsItem");
-                });
-
             modelBuilder.Entity("SunridgeHOA.Models.Owner", b =>
                 {
                     b.Property<int>("OwnerId")
@@ -859,14 +834,6 @@ namespace SunridgeHOA.Migrations
                     b.HasOne("SunridgeHOA.Models.CommonAreaAsset", "CommonAreaAsset")
                         .WithMany()
                         .HasForeignKey("CommonAreaAssetId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SunridgeHOA.Models.NewsItem", b =>
-                {
-                    b.HasOne("SunridgeHOA.Models.File", "File")
-                        .WithMany()
-                        .HasForeignKey("FileId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
