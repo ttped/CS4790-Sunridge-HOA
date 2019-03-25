@@ -13,7 +13,7 @@
                 <a class="nav-link active fas fa-tachometer-alt" href="#"> Dashboard </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link fas fa-home" href="#"> My Lots</a>
+                <a class="nav-link fas fa-home" > My Lots</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link fas fa-dollar-sign" href="#"> Billing History</a>
@@ -35,25 +35,22 @@
                 <p>Admin</p>
             </li>
             <li class="nav-item">
-                <a class="nav-link fas fa-users" href="~/Admin/Owners"> Owners</a>
+                <a class="nav-link fas fa-users"  asp-area="Admin" asp-controller="Admin" asp-action="Owners"> Owners</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link fas fa-history" href="~/Admin/OwnerActivity"> Owner Activity</a>
+                <a class="nav-link fas fa-history"  asp-area="Admin" asp-controller="Admin" asp-action="OwnerActivity"> Owner Activity</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link fas fa-key" href="~/Admin/Keys"> Keys</a>
+                <a class="nav-link fas fa-key"  asp-area="Admin" asp-controller="Admin" asp-action="Keys"> Keys</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link fas fa-map" href="~/Admin/HOALots"> HOA Lots</a>
+                <a class="nav-link fas fa-map"  asp-area="Admin" asp-controller="Admin" asp-action="HoaLots"> HOA Lots</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link fas fa-money-check-alt" href="~/Admin/Transactions"> Transactions</a>
+                <a class="nav-link fas fa-money-check-alt"  asp-area="Admin" asp-controller="Admin" asp-action="Transactions"> Transactions</a>
             </li>
             <li class="nav-item">
-                <!--
-    <a class="nav-link fas fa-wrench" href="CommonAreaAssets"> Common Area Assets</a>
-        -->
-                <a class="nav-link fas fa-wrench" asp-area="Admin" asp-controller="CommonAreaAssets" asp-action="Index">Common Area Assets</a>
+                <a class="nav-link fas fa-wrench"  asp-area="Admin" asp-controller="Admin" asp-action="CommonAreaAssets"> Common Area Assets</a>
             </li>
         </ul>
     </nav>

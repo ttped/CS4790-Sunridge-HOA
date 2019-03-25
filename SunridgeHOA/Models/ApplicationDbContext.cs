@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SunridgeHOA.Models;
 
 namespace SunridgeHOA.Models
 {
@@ -33,6 +34,8 @@ namespace SunridgeHOA.Models
         public DbSet<ContactType> ContactType { get; set; }
         public DbSet<CommonAreaAsset> CommonAreaAsset { get; set; }
         public DbSet<Maintenance> Maintenance { get; set; }
+        public DbSet<SunridgeHOA.Models.BannerItem> BannerItem { get; set; }
+        public DbSet<SunridgeHOA.Models.Banner> Banner { get; set; }
 
     }
 }
