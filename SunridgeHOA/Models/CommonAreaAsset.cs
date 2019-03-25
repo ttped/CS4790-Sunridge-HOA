@@ -18,5 +18,9 @@ namespace SunridgeHOA.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime Date { get; set; }
 
+        // Nav properties
+        public ICollection<Maintenance> Maintenances { get; set; }
+
+
     }
 }

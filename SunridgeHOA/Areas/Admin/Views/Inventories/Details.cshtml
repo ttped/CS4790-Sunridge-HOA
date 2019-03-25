@@ -1,0 +1,43 @@
+﻿@model SunridgeHOA.Models.Inventory
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Inventory</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsArchive)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsArchive)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastModifiedBy)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastModifiedBy)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastModifiedDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastModifiedDate)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.InventoryId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

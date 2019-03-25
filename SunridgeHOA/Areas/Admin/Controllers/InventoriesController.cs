@@ -11,24 +11,24 @@ using SunridgeHOA.Models;
 namespace SunridgeHOA.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class CommonAreaAssetsController : Controller
+    public class InventoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public CommonAreaAssetsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public InventoriesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-        // GET: Admin/CommonAreaAssets
+        // GET: Admin/Inventories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.CommonAreaAsset.ToListAsync());
+            return View(await _context.Inventory.ToListAsync());
         }
 
-        // GET: Admin/CommonAreaAssets/Details/5
+        // GET: Admin/Inventories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -36,46 +36,46 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var commonAreaAsset = await _context.CommonAreaAsset
-                .FirstOrDefaultAsync(m => m.CommonAreaAssetId == id);
-            if (commonAreaAsset == null)
+            var inventory = await _context.Inventory
+                .FirstOrDefaultAsync(m => m.InventoryId == id);
+            if (inventory == null)
             {
                 return NotFound();
             }
 
-            return View(commonAreaAsset);
+            return View(inventory);
         }
 
-        // GET: Admin/CommonAreaAssets/Create
+        // GET: Admin/Inventories/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Admin/CommonAreaAssets/Create
+        // POST: Admin/Inventories/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CommonAreaAssetId,AssetName,PurchasePrice,Description,Status,Date")] CommonAreaAsset commonAreaAsset)
+        public async Task<IActionResult> Create([Bind("InventoryId,Description,IsArchive,LastModifiedBy,LastModifiedDate")] Inventory inventory)
         {
             if (ModelState.IsValid)
             {
                 var identityUser = await _userManager.GetUserAsync(HttpContext.User);
                 var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
 
-                commonAreaAsset.IsArchive = false;
-                commonAreaAsset.LastModifiedBy = loggedInUser.FullName;
-                commonAreaAsset.LastModifiedDate = DateTime.Now;
+                inventory.IsArchive = false;
+                inventory.LastModifiedBy = loggedInUser.FullName;
+                inventory.LastModifiedDate = DateTime.Now;
 
-                _context.Add(commonAreaAsset);
+                _context.Add(inventory);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(commonAreaAsset);
+            return View(inventory);
         }
 
-        // GET: Admin/CommonAreaAssets/Edit/5
+        // GET: Admin/Inventories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,22 +83,22 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var commonAreaAsset = await _context.CommonAreaAsset.FindAsync(id);
-            if (commonAreaAsset == null)
+            var inventory = await _context.Inventory.FindAsync(id);
+            if (inventory == null)
             {
                 return NotFound();
             }
-            return View(commonAreaAsset);
+            return View(inventory);
         }
 
-        // POST: Admin/CommonAreaAssets/Edit/5
+        // POST: Admin/Inventories/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CommonAreaAssetId,AssetName,PurchasePrice,Description,Status,Date,IsArchive,LastModifiedBy,LastModifiedDate")] CommonAreaAsset commonAreaAsset)
+        public async Task<IActionResult> Edit(int id, [Bind("InventoryId,Description,IsArchive,LastModifiedBy,LastModifiedDate")] Inventory inventory)
         {
-            if (id != commonAreaAsset.CommonAreaAssetId)
+            if (id != inventory.InventoryId)
             {
                 return NotFound();
             }
@@ -110,15 +110,15 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                     var identityUser = await _userManager.GetUserAsync(HttpContext.User);
                     var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
 
-                    commonAreaAsset.LastModifiedBy = loggedInUser.FullName;
-                    commonAreaAsset.LastModifiedDate = DateTime.Now;
+                    inventory.LastModifiedBy = loggedInUser.FullName;
+                    inventory.LastModifiedDate = DateTime.Now;
 
-                    _context.Update(commonAreaAsset);
+                    _context.Update(inventory);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CommonAreaAssetExists(commonAreaAsset.CommonAreaAssetId))
+                    if (!InventoryExists(inventory.InventoryId))
                     {
                         return NotFound();
                     }
@@ -129,10 +129,10 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(commonAreaAsset);
+            return View(inventory);
         }
 
-        // GET: Admin/CommonAreaAssets/Delete/5
+        // GET: Admin/Inventories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -140,37 +140,37 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var commonAreaAsset = await _context.CommonAreaAsset
-                .FirstOrDefaultAsync(m => m.CommonAreaAssetId == id);
-            if (commonAreaAsset == null)
+            var inventory = await _context.Inventory
+                .FirstOrDefaultAsync(m => m.InventoryId == id);
+            if (inventory == null)
             {
                 return NotFound();
             }
 
-            return View(commonAreaAsset);
+            return View(inventory);
         }
 
-        // POST: Admin/CommonAreaAssets/Delete/5
+        // POST: Admin/Inventories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var commonAreaAsset = await _context.CommonAreaAsset.FindAsync(id);
+            var inventory = await _context.Inventory.FindAsync(id);
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
             var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
-            //_context.CommonAreaAsset.Remove(commonAreaAsset);
+            //_context.Inventory.Remove(inventory);
 
-            commonAreaAsset.IsArchive = true;
-            commonAreaAsset.LastModifiedBy = loggedInUser.FullName;
-            commonAreaAsset.LastModifiedDate = DateTime.Now;
+            inventory.IsArchive = true;
+            inventory.LastModifiedBy = loggedInUser.FullName;
+            inventory.LastModifiedDate = DateTime.Now;
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CommonAreaAssetExists(int id)
+        private bool InventoryExists(int id)
         {
-            return _context.CommonAreaAsset.Any(e => e.CommonAreaAssetId == id);
+            return _context.Inventory.Any(e => e.InventoryId == id);
         }
     }
 }
