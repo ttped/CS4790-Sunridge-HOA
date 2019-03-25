@@ -100,7 +100,22 @@ namespace SunridgeHOA.Data
                     });
             }
 
+// Sean
             context.SaveChanges();
+//---------
+            if (!context.ClassifiedCategory.Any())
+            {
+                context.ClassifiedCategory.AddRange(
+                    new ClassifiedCategory
+                    {
+                    },
+                    new ClassifiedCategory
+                    {
+                    }
+                    );
+                context.SaveChanges();
+            }
+//>>>>>>> master
         }
     }
 }

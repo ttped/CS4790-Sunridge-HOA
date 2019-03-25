@@ -4,16 +4,24 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SunridgeHOA.Models;
 
 namespace SunridgeHOA.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly ApplicationDbContext _context;
+
+        public HomeController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<IActionResult> Index()
         {
             // maybe need to send a model with the carousel news data to the view?
-            return View();
+            return View(await _context.Banner.ToListAsync());
         }
 
         public IActionResult BoardMembers()
