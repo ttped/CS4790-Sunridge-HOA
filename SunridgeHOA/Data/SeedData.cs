@@ -100,6 +100,30 @@ namespace SunridgeHOA.Data
                     });
             }
 
+            if (!context.Inventory.Any())
+            {
+                // Add temporary inventory items
+                context.Inventory.AddRange(
+                    new Inventory
+                    {
+                        Description = "Septic tank",
+                        LastModifiedBy = "Seed",
+                        LastModifiedDate = DateTime.Now
+                    },
+                    new Inventory
+                    {
+                        Description = "Solar panel",
+                        LastModifiedBy = "Seed",
+                        LastModifiedDate = DateTime.Now
+                    },
+                    new Inventory
+                    {
+                        Description = "Outhouse",
+                        LastModifiedBy = "Seed",
+                        LastModifiedDate = DateTime.Now
+                    });
+            }
+
             context.SaveChanges();
         }
     }

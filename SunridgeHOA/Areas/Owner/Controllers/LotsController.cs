@@ -75,6 +75,167 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             return View(vm);
         }
 
+        public async Task<IActionResult> MyLots()
+        {
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+
+            var myLots = await _context.OwnerLot
+                .Include(u => u.Lot)
+                .Where(u => u.OwnerId == loggedInUser.OwnerId)
+                .Where(u => u.EndDate != DateTime.MinValue)
+                .Select(u => u.Lot)
+                .ToListAsync();
+
+            var lotList = new List<LotIndexVM>();
+            foreach (var lot in myLots)
+            {
+                var owners = _context.OwnerLot
+                    .Include(u => u.Owner)
+                    .Where(u => u.LotId == lot.LotId)
+                    .Where(u => u.EndDate != DateTime.MinValue);
+
+                var lotItems = await _context.LotInventory
+                    .Include(u => u.Inventory)
+                    .Where(u => u.LotId == lot.LotId)
+                    .Select(u => u.Inventory)
+                    .ToListAsync();
+
+                var lotVM = new LotIndexVM
+                {
+                    Lot = lot,
+                    Address = _context.Address.Find(lot.AddressId),
+                    PrimaryOwner = owners.Where(u => u.IsPrimary).First().Owner,
+                    Owners = owners.Where(u => !u.IsPrimary).Select(u => u.Owner).ToList(),
+                    InventoryItems = lotItems
+                };
+
+                lotList.Add(lotVM);
+            }
+
+            return View(lotList);
+        }
+
+        public async Task<IActionResult> EditLotItems(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var lot = await _context.Lot
+                .Include(u => u.Address)
+                .FirstOrDefaultAsync(u => u.LotId == id);
+            if (lot == null)
+            {
+                return NotFound();
+            }
+
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+            var isOwner = _context.OwnerLot
+                .Where(u => u.LotId == id)
+                .Where(u => u.OwnerId == loggedInUser.OwnerId)
+                .Where(u => u.EndDate != DateTime.MinValue)
+                .Any();
+            if (!isOwner)
+            {
+                return NotFound();
+            }
+
+            var lotItems = await _context.LotInventory
+                .Include(u => u.Inventory)
+                .Where(u => u.LotId == id)
+                .Select(u => u.Inventory.InventoryId)
+                .ToListAsync();
+
+            var vm = new LotEditInventoryVM
+            {
+                Lot = lot,
+                Address = lot.Address,
+                SelectedItems = lotItems
+            };
+
+            ViewData["Inventory"] = _context.Inventory.ToList();
+            return View(vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditLotItems(int? id, LotEditInventoryVM vm)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            else if (id != vm.Lot.LotId)
+            {
+                return NotFound();
+            }
+
+            var lot = await _context.Lot
+                .Include(u => u.Address)
+                .FirstOrDefaultAsync(u => u.LotId == id);
+            if (lot == null)
+            {
+                return NotFound();
+            }
+
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+            var isOwner = _context.OwnerLot
+                .Where(u => u.LotId == id)
+                .Where(u => u.OwnerId == loggedInUser.OwnerId)
+                .Where(u => u.EndDate != DateTime.MinValue)
+                .Any();
+            if (!isOwner)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                // Get the current inventory relationships
+                var currItems = _context.LotInventory
+                    .Where(u => u.LotId == id)
+                    .ToList();
+
+
+                foreach (var item in currItems)
+                {
+                    // Item is still selected - remove it for next step
+                    if (vm.SelectedItems.Contains(item.InventoryId))
+                    {
+                        vm.SelectedItems.Remove(item.InventoryId);
+                    }
+                    // Item is not selected anymore - need to remove the relationship
+                    else
+                    {
+                        _context.LotInventory.Remove(item);
+                    }
+                }
+
+                // Any items still in SelectedItems need to be added in the relationship table
+                foreach (var invId in vm.SelectedItems)
+                {
+                    _context.LotInventory.Add(new LotInventory
+                    {
+                        LotId = id.Value,
+                        InventoryId = invId,
+                        LastModifiedBy = loggedInUser.FullName,
+                        LastModifiedDate = DateTime.Now
+                    });
+                }
+
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(MyLots));
+            }
+
+            ViewData["Inventory"] = _context.Inventory.ToList();
+            return View(null);
+        }
+
         // GET: Admin/Lots/Details/5
         public async Task<IActionResult> Details(int? id)
         {
