@@ -1,4 +1,5 @@
-﻿@{
+﻿@model List<SunridgeHOA.Models.Photo>
+@{
     ViewData["Title"] = "People Pictures";
 }
 
@@ -14,6 +15,27 @@
 <!-- Testimonials -->
 <div class="container gallery-container text-center mt-5 mb-5">
 
+    <div class="tz-gallery">
+        <div class="row">
+            @foreach (var p in Model)
+            {
+                @if (p.Category == "People")
+                {
+                    <div class="col-sm-6 col-md-4 mb-4">
+                        <a class="lightbox" href="~/images/PhotoGallery/@(p.PhotoId).png">
+                            <img src="@p.Image" alt="@p.Title" />
+                        </a>
+                        <h5>@p.Owner.FullName</h5>
+                        <p class="font-weight-light mb-0"><i>@p.Title</i></p>
+                        <p class="font-weight-light mb-0">@p.Year</p>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+
+    <!-- Hard-coded part from the existing project-->
     <div class="tz-gallery">
         <div class="row">
             <div class="col-sm-6 col-md-4 mb-4">

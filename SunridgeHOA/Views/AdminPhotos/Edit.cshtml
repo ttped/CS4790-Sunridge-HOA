@@ -2,6 +2,7 @@
 @*@model GraniteWarehouse.Models.ViewModels.ProductViewModels
     @using GraniteWarehouse.Extensions*@
 
+
 @model SunridgeHOA.Models.Photo
 @{
     ViewData["Title"] = "Edit";
@@ -70,26 +71,29 @@
                             <label asp-for="Category"></label>
                         </div>
                         <div class="col-5">
-                            <select asp-for="Category" class="form-control" />
+                            <select asp-for="Category" class="form-control" asp-items="ViewBag.Category" >
+                                
+                            </select>
+
                             @*<select asp-for="@Model.Products.SpecialTagsId" asp-items="Model.SpecialTags.ToSelectListItem(Model.Products.SpecialTagsId)" class="form-control"></select>*@
                         </div>
                     </div>
                     <div class="col-1">
                     </div>
                     <div class="col-3">
-                        <img src="Image" width="100%" style="border-radius: 5px; border:1px solid #bbb9b9;" />
+                        <img src="@Model.Image" width="100%" style="border-radius: 5px; border:1px solid #bbb9b9;" />
                     </div>
                     <br />
                     <div class="form-group">
-                        <input type="submit" class="btn btn-primary" value="Edit" />
+                        <input type="submit" class="btn btn-primary" value="Save" />
                         <a asp-action="Index" class="btn btn-success">Back to List</a>
                     </div>
                 </div>
             </form>
 
             @*@section Scripts{
-                    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-              }*@
+                      @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+                }*@
         </div>
     </div>
 </div>

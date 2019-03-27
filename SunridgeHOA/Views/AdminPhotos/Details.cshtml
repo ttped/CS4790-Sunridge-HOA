@@ -73,11 +73,11 @@
 
                 </div>
                 <div class="col-3">
-                    <img src="Image" width="100%" style="border-radius: 5px; border:1px solid #bbb9b9;" />
+                    <img src="@Model.Image" width="100%" style="border-radius: 5px; border:1px solid #bbb9b9;" />
                 </div>
                 <br />
                 <div class="form-group">
-                    <a asp-action="Edit" asp-route-id="PhotoId" class="btn btn-primary">Edit</a>
+                    <a asp-action="Edit" asp-route-id="@Model.PhotoId" class="btn btn-primary">Edit</a>
                     <a asp-action="Index" class="btn btn-success">Back to List</a>
                 </div>
             </div>
