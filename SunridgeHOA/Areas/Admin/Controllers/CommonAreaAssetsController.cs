@@ -25,7 +25,11 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         // GET: Admin/CommonAreaAssets
         public async Task<IActionResult> Index()
         {
-            return View(await _context.CommonAreaAsset.ToListAsync());
+            // Get non-archived assets
+            var assets = await _context.CommonAreaAsset.Where(a => a.IsArchive != true).ToListAsync();
+
+            //return View(await _context.CommonAreaAsset.ToListAsync());
+            return View(assets);
         }
 
         // GET: Admin/CommonAreaAssets/Details/5

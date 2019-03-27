@@ -1,8 +1,16 @@
-﻿@*
-<link rel="Stylesheet" href="~/css/adminnavbar.css?version=51" type="text/css" />
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+﻿@using SunridgeHOA.Utility;
+@*
+    <link rel="Stylesheet" href="~/css/adminnavbar.css?version=51" type="text/css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 *@
+
+<link rel="Stylesheet" href="~/css/Admin/transactions.css" type="text/css" />
+
+<link rel="Stylesheet" href="~/css/Admin/adminnavbar.css?version=51" type="text/css" />
+<link rel="Stylesheet" href="~/css/Admin/window.css" type="text/css" />
+<link rel="Stylesheet" href="~/css/Admin/table.css" type="text/css" />
+<link rel="Stylesheet" href="~/css/Admin/search-bar.css" type="text/css" />
 <div id="adminNavBar">
     <nav>
         <ul class="nav flex-column unselectable" id="adminNavBar">
@@ -13,7 +21,7 @@
                 <a class="nav-link active fas fa-tachometer-alt" href="#"> Dashboard </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link fas fa-home" > My Lots</a>
+                <a class="nav-link fas fa-home"> My Lots</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link fas fa-dollar-sign" href="#"> Billing History</a>
@@ -21,7 +29,7 @@
 
             <li class="nav-item">
                 <a class="nav-link fas fa-file-alt dropdown-toggle" data-toggle="collapse" data-target="#accordian">
-                    Classifieds 
+                    Classifieds
                 </a>
                 <div id="accordian" class="collapse">
                     <ul>
@@ -30,28 +38,34 @@
                     </ul>
                 </div>
             </li>
+            @if (User.IsInRole(StaticData.SuperAdminEndUser) || User.IsInRole(StaticData.AdminEndUser))
+            {
+                <li class="nav-item" style="margin-top:10px;">
+                    <p>Admin</p>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fas fa-users" asp-area="Admin" asp-controller="Owners" asp-action="Index"> Owners</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fas fa-history" asp-area="Admin" asp-controller="Admin" asp-action="OwnerActivity"> Owner Activity</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fas fa-key" asp-area="Admin" asp-controller="Admin" asp-action="Keys"> Keys</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fas fa-map" asp-area="Admin" asp-controller="Admin" asp-action="HoaLots"> HOA Lots</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fas fa-money-check-alt" asp-area="Admin" asp-controller="Admin" asp-action="Transactions"> Transactions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fas fa-wrench" asp-area="Admin" asp-controller="CommonAreaAssets" asp-action="Index"> Common Area Assets</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fas fa-burn" asp-area="Admin" asp-controller="Inventories" asp-action="Index"> Inventory Items</a>
+                </li>
+            }
 
-            <li class="nav-item" style="margin-top:10px;">
-                <p>Admin</p>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link fas fa-users"  asp-area="Admin" asp-controller="Admin" asp-action="Owners"> Owners</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link fas fa-history"  asp-area="Admin" asp-controller="Admin" asp-action="OwnerActivity"> Owner Activity</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link fas fa-key"  asp-area="Admin" asp-controller="Admin" asp-action="Keys"> Keys</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link fas fa-map"  asp-area="Admin" asp-controller="Admin" asp-action="HoaLots"> HOA Lots</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link fas fa-money-check-alt"  asp-area="Admin" asp-controller="Admin" asp-action="Transactions"> Transactions</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link fas fa-wrench"  asp-area="Admin" asp-controller="Admin" asp-action="CommonAreaAssets"> Common Area Assets</a>
-            </li>
         </ul>
     </nav>
 </div>

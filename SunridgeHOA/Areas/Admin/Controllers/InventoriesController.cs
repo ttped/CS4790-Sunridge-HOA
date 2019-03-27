@@ -25,7 +25,11 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         // GET: Admin/Inventories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Inventory.ToListAsync());
+            var inventories = await _context.Inventory.Where(i => i.IsArchive == false).ToListAsync();
+
+            //return View(await _context.Inventory.ToListAsync());
+            return View(inventories);
+
         }
 
         // GET: Admin/Inventories/Details/5

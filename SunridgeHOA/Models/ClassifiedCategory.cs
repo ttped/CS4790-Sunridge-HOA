@@ -8,5 +8,7 @@ namespace SunridgeHOA.Models
     public class ClassifiedCategory : DbItem
     {
         public int ClassifiedCategoryId { get; set; }
+        public string Description { get; set; }
+
     }
 }
