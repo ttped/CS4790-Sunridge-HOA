@@ -222,10 +222,10 @@ namespace SunridgeHOA.Controllers
                     photo.Image = @"\" + SD.ImageFolder + @"\" + photo.PhotoId + extension_new;
                 }
 
-                //if (photo.Image != null)
-                //{
-                //    photoFromDb.Image = photo.Image;
-                //}
+                if (photo.Image != null)
+                {
+                    photoFromDb.Image = photo.Image;
+                }
 
                 photoFromDb.Image = photo.Image;
                 photoFromDb.Title = photo.Title;
