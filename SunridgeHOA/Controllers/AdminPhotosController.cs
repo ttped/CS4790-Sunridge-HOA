@@ -50,7 +50,9 @@ namespace SunridgeHOA.Controllers
                 return RedirectToAction("Index", "Home");               
             }
 
-            var photos = _db.Photo.Include(m => m.Owner);
+            //var photos = _db.Photo.Include(m => m.Owner);
+            //var photos = _db.Photo.Include(m => m.OwnerId);
+            var photos = _db.Photo;
             return View(await photos.ToListAsync());
         }
 
@@ -137,6 +139,7 @@ namespace SunridgeHOA.Controllers
 
             var photo = await _db.Photo
                     //.Include(m => m.Owner)
+                    //.Include(m => m.OwnerId)
                     .FirstOrDefaultAsync(m => m.PhotoId == id);
 
             photo.OwnerId = loggedInUser.OwnerId;
@@ -158,7 +161,8 @@ namespace SunridgeHOA.Controllers
             }
 
             var photo = await _db.Photo
-                .Include(m => m.Owner)
+                //.Include(m => m.Owner)
+                //.Include(m => m.OwnerId)
                 .SingleOrDefaultAsync(m => m.PhotoId == id);
 
             if (photo == null)
@@ -181,7 +185,7 @@ namespace SunridgeHOA.Controllers
         //POST: AdminPhoto Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, [Bind("Image, Title, Year, Category")] Models.Photo photo, Owner owner)
+        public async Task<IActionResult> Edit(int? id, [Bind("Image, Title, Year, Category")] Models.Photo photo)
         {
             //if (id != photo.PhotoId)
             //{
@@ -252,7 +256,8 @@ namespace SunridgeHOA.Controllers
             }
 
             var photo = await _db.Photo
-                .Include(m => m.Owner)
+                //.Include(m => m.Owner)
+                //.Include(m => m.OwnerId)
                 .FirstOrDefaultAsync(m => m.PhotoId == id);
 
             if (photo == null)

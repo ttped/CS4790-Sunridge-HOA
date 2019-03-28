@@ -33,30 +33,32 @@
                         <tr>
                             <th>@Html.DisplayNameFor(m => m.Category)</th>
                             <th>@Html.DisplayNameFor(m => m.Title)</th>
-                            <th>@Html.DisplayNameFor(m => m.Owner.FullName)</th>
+                            @*<th>@Html.DisplayNameFor(m => m.Owner.FullName)</th>*@
+                            <th>@Html.DisplayNameFor(m => m.OwnerId)</th>
                             <th>@Html.DisplayNameFor(m => m.Year)</th>
                             <th id="actionsHeader">Actions</th>
 
                             @*<th>Category</th>
-                            <th>Title</th>
-                            <th>Writer</th>
-                            <th>Year</th>
-                            <th id="actionsHeader">Actions</th>*@
+        <th>Title</th>
+        <th>Writer</th>
+        <th>Year</th>
+        <th id="actionsHeader">Actions</th>*@
                         </tr>
 
                         @foreach (var item in Model)
                         {
-                            <tr>
-                                <td>@Html.DisplayFor(m => item.Category)</td>
-                                <td>@Html.DisplayFor(m => item.Title)</td>
-                                <td>@Html.DisplayFor(m => item.Owner.FullName)</td>
-                                <td>@Html.DisplayFor(m => item.Year)</td>
-                                <td id="actionsRow">
-                                    <a asp-action="Details" class="fas fa-file-alt" asp-route-id="@item.PhotoId"></a>
-                                    <a asp-action="Edit" class="fas fa-edit" asp-route-id="@item.PhotoId"></a>
-                                    <a asp-action="Delete" class="fas fa-trash-alt" asp-route-id="@item.PhotoId"></a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>@Html.DisplayFor(m => item.Category)</td>
+                            <td>@Html.DisplayFor(m => item.Title)</td>
+                            @*<td>@Html.DisplayFor(m => item.Owner.FullName)</td>*@
+                            <td>@Html.DisplayFor(m => item.OwnerId)</td>
+                            <td>@Html.DisplayFor(m => item.Year)</td>
+                            <td id="actionsRow">
+                                <a asp-action="Details" class="fas fa-file-alt" asp-route-id="@item.PhotoId"></a>
+                                <a asp-action="Edit" class="fas fa-edit" asp-route-id="@item.PhotoId"></a>
+                                <a asp-action="Delete" class="fas fa-trash-alt" asp-route-id="@item.PhotoId"></a>
+                            </td>
+                        </tr>
                         }
 
                         @*@for (int i = 0; i < 5; i++)
