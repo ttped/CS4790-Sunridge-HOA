@@ -162,13 +162,9 @@ namespace SunridgeHOA.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditLotItems(int? id, LotEditInventoryVM vm)
+        public async Task<IActionResult> EditLotItems(int id, LotEditInventoryVM vm)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            else if (id != vm.Lot.LotId)
+            if (id != vm.Lot.LotId)
             {
                 return NotFound();
             }
@@ -220,7 +216,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 {
                     _context.LotInventory.Add(new LotInventory
                     {
-                        LotId = id.Value,
+                        LotId = id,
                         InventoryId = invId,
                         LastModifiedBy = loggedInUser.FullName,
                         LastModifiedDate = DateTime.Now
@@ -349,16 +345,23 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 .Select(u => u.Owner.OwnerId)
                 .ToListAsync();
 
-            //ViewData["Owner"] = new SelectList(_context.Owner, "OwnerId", "FullName", currPrimary.OwnerId);
-            ViewData["OwnerList"] = _context.Owner.ToList();
+            var lotItems = await _context.LotInventory
+                .Include(u => u.Inventory)
+                .Where(u => u.LotId == id)
+                .Select(u => u.Inventory.InventoryId)
+                .ToListAsync();
 
             var vm = new LotEditVM
             {
                 Lot = lot,
                 Address = lot.Address,
                 OwnerId = currPrimary?.OwnerId ?? -1,
-                OwnerIds = currOwnerIds
+                OwnerIds = currOwnerIds,
+                SelectedItems = lotItems
             };
+
+            ViewData["OwnerList"] = _context.Owner.ToList();
+            ViewData["Inventory"] = _context.Inventory.ToList();
             return View(vm);
         }
 
@@ -374,11 +377,6 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            //if (vm.OwnerId == -1)
-            //{
-            //    // Assuming that a lot must always have an owner
-            //    ModelState.AddModelError("OwnerId", "You must select an owner");
-            //}
             if (vm.OwnerIds != null && !vm.OwnerIds.Contains(vm.OwnerId))
             {
                 // This shouldn't come up, BUT JUST IN CASE
@@ -469,6 +467,37 @@ namespace SunridgeHOA.Areas.Admin.Controllers
 
                             _context.Add(newOwnerLot);
                         }
+                    }
+
+                    // Need to check the inventory relationships
+                    var currItems = _context.LotInventory
+                       .Where(u => u.LotId == id)
+                       .ToList();
+
+                    foreach (var item in currItems)
+                    {
+                        // Item is still selected - remove it for next step
+                        if (vm.SelectedItems.Contains(item.InventoryId))
+                        {
+                            vm.SelectedItems.Remove(item.InventoryId);
+                        }
+                        // Item is not selected anymore - need to remove the relationship
+                        else
+                        {
+                            _context.LotInventory.Remove(item);
+                        }
+                    }
+
+                    // Any items still in SelectedItems need to be added in the relationship table
+                    foreach (var invId in vm.SelectedItems)
+                    {
+                        _context.LotInventory.Add(new LotInventory
+                        {
+                            LotId = id,
+                            InventoryId = invId,
+                            LastModifiedBy = loggedInUser.FullName,
+                            LastModifiedDate = DateTime.Now
+                        });
                     }
 
                     await _context.SaveChangesAsync();
