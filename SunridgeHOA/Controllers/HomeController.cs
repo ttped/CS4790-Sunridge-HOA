@@ -4,12 +4,20 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SunridgeHOA.Models;
 
 namespace SunridgeHOA.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ApplicationDbContext _db;
+
+        public HomeController(ApplicationDbContext db)
+        {
+            _db = db;
+        }
+
         public IActionResult Index()
         {
             // maybe need to send a model with the carousel news data to the view?
@@ -52,6 +60,12 @@ namespace SunridgeHOA.Controllers
             // Change to populate a single view rather than one for each year
             var viewName = $"News{year}";
             return View(viewName);
+        }
+
+        public async Task<IActionResult> News2019()
+        {
+            var news = _db.NewsItem;
+            return View(await news.ToListAsync());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

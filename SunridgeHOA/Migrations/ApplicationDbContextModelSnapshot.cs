@@ -529,21 +529,13 @@ namespace SunridgeHOA.Migrations
 
                     b.Property<string>("Content");
 
-                    b.Property<int>("FileId");
-
                     b.Property<string>("Header");
 
-                    b.Property<bool>("IsArchive");
+                    b.Property<string>("Image");
 
-                    b.Property<string>("LastModifiedBy");
-
-                    b.Property<DateTime>("LastModifiedDate");
-
-                    b.Property<DateTime>("Year");
+                    b.Property<int>("Year");
 
                     b.HasKey("NewsItemId");
-
-                    b.HasIndex("FileId");
 
                     b.ToTable("NewsItem");
                 });
@@ -859,14 +851,6 @@ namespace SunridgeHOA.Migrations
                     b.HasOne("SunridgeHOA.Models.CommonAreaAsset", "CommonAreaAsset")
                         .WithMany()
                         .HasForeignKey("CommonAreaAssetId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SunridgeHOA.Models.NewsItem", b =>
-                {
-                    b.HasOne("SunridgeHOA.Models.File", "File")
-                        .WithMany()
-                        .HasForeignKey("FileId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

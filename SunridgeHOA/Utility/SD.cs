@@ -9,6 +9,7 @@ namespace SunridgeHOA.Utility
     {
         public const string DefaultImage = "default_image.jpg";
         public const string ImageFolder = @"images\PhotoGallery";
+        public const string NewsImageFolder = @"images\News";
 
         public const string AdminEndUser = "Admin";
         public const string SuperAdminEndUser = "Super Admin";

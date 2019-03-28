@@ -5,8 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190315011533_AddApplicationUser.cs" />
+    <Compile Remove="Migrations\20190315011533_AddApplicationUser.Designer.cs" />
     <Compile Remove="Migrations\20190324070222__AddPhotoNewsItem.cs" />
     <Compile Remove="Migrations\20190324070222__AddPhotoNewsItem.Designer.cs" />
+    <Compile Remove="Migrations\20190324072549__AddPhoto.cs" />
+    <Compile Remove="Migrations\20190324072549__AddPhoto.Designer.cs" />
+    <Compile Remove="Migrations\20190328043336_newInitial.cs" />
+    <Compile Remove="Migrations\20190328043336_newInitial.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

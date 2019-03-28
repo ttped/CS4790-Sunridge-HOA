@@ -16,11 +16,11 @@ namespace SunridgeHOA.Models
         [Display(Name = "Primary")]
         public bool IsPrimary { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
@@ -30,11 +30,11 @@ namespace SunridgeHOA.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime Birthday { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "Emergency Contact")]
         public string EmergencyContactName { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "Emergency Contact #")]
         public string EmergencyContactPhone { get; set; }
 

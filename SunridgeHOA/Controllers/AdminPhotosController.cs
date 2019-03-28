@@ -44,15 +44,13 @@ namespace SunridgeHOA.Controllers
         public async Task<IActionResult> Index()
         {
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            //var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
             if (identityUser == null)
             {
-                return RedirectToAction("Index", "Home");
-                
+                return RedirectToAction("Index", "Home");               
             }
 
-
             var photos = _db.Photo.Include(m => m.Owner);
-            //var photos = _db.Photo;
             return View(await photos.ToListAsync());
         }
 
@@ -76,22 +74,19 @@ namespace SunridgeHOA.Controllers
             }
 
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
-
             if (identityUser == null)
             {
                 return RedirectToPage(nameof(Index));
             }
 
             var loggedInUser = _db.Owner.Find(identityUser.OwnerId);
-            
+            //var loggedInUser = _db.Owner.Find(1);
             photo.OwnerId = loggedInUser.OwnerId;
 
             //_db.Photo.Add(AdminPhotoVM.Photo);
             _db.Photo.Add(photo);
             await _db.SaveChangesAsync();
            
-            //var loggedInUser = _db.Owner.Find(1);
-
 
             //Save Physical Image
             string webRootPath = _hostingEnvironment.WebRootPath;
@@ -133,31 +128,24 @@ namespace SunridgeHOA.Controllers
                 return NotFound();
             }
 
-
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var loggedInUser = _db.Owner.Find(identityUser.OwnerId);
             if (identityUser == null)
             {
                 return RedirectToAction("Index");
             }
 
-            var loggedInUser = _db.Owner.Find(identityUser.OwnerId);
-            
             var photo = await _db.Photo
                     //.Include(m => m.Owner)
                     .FirstOrDefaultAsync(m => m.PhotoId == id);
 
-                photo.OwnerId = loggedInUser.OwnerId;
+            photo.OwnerId = loggedInUser.OwnerId;
           
-
-
-
-
             if (photo == null)
             {
                 return NotFound();
             }
             return View(photo);
-
             //return View();
         }
 
@@ -193,30 +181,65 @@ namespace SunridgeHOA.Controllers
         //POST: AdminPhoto Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Image, Title, Year, Category")] Models.Photo photo, Owner owner)
+        public async Task<IActionResult> Edit(int? id, [Bind("Image, Title, Year, Category")] Models.Photo photo, Owner owner)
         {
-            if (id != photo.PhotoId)
+            //if (id != photo.PhotoId)
+            //{
+            //    return NotFound();
+            //}
+
+            if (id == null)
             {
                 return NotFound();
             }
+
+            //var aaa = ModelState.Values.SelectMany(v => v.Errors);
 
             if (ModelState.IsValid)
             {
                 var identityUser = await _userManager.GetUserAsync(HttpContext.User);
                 var loggedInUser = _db.Owner.Find(identityUser.OwnerId);
-                var photoFromDb = _db.Photo.Where(m => m.PhotoId == photo.PhotoId).FirstOrDefault();
+                var photoFromDb = _db.Photo.Where(m => m.PhotoId == id).FirstOrDefault();
+
+                string webRootPath = _hostingEnvironment.WebRootPath;
+                var files = HttpContext.Request.Form.Files;
+
+                if (files.Count > 0 && files[0] != null)
+                {
+                    //if user uploads a new image
+                    var uploads = Path.Combine(webRootPath, SD.ImageFolder);
+                    var extension_new = Path.GetExtension(files[0].FileName);
+                    var extension_old = Path.GetExtension(photoFromDb.Image);
+
+                    if (System.IO.File.Exists(Path.Combine(uploads, photo.PhotoId + extension_old)))
+                    {
+                        System.IO.File.Delete(Path.Combine(uploads, photo.PhotoId + extension_old));
+                    }
+                    using (var filestream = new FileStream(Path.Combine(uploads, photo.PhotoId + extension_new), FileMode.Create))
+                    {
+                        files[0].CopyTo(filestream);
+                    }
+                    photo.Image = @"\" + SD.ImageFolder + @"\" + photo.PhotoId + extension_new;
+                }
+
+                //if (photo.Image != null)
+                //{
+                //    photoFromDb.Image = photo.Image;
+                //}
 
                 photoFromDb.Image = photo.Image;
                 photoFromDb.Title = photo.Title;
                 photoFromDb.Year = photo.Year;
                 photoFromDb.Category = photo.Category;
-                photoFromDb.OwnerId = photo.OwnerId;
+                //photoFromDb.OwnerId = photo.OwnerId;
+                
 
                 await _db.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
 
-            ViewData["Category"] = new SelectList(new string[] { "Summer", "Winter", "People" });
+            //ViewData["Category"] = new SelectList(new string[] { "Summer", "Winter", "People" });
             return View(photo);
         }
 
