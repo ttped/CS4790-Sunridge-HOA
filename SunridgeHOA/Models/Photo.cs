@@ -20,8 +20,8 @@ namespace SunridgeHOA.Models
         
         public string Image { get; set; }
 
-        ////Nav props
-        //[ForeignKey("OwnerId")]
-        //public virtual Owner Owner { get; set; }
+        //Nav props
+        [ForeignKey("OwnerId")]
+        public virtual Owner Owner { get; set; }
     }
 }

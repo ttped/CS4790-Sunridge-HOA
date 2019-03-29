@@ -50,9 +50,8 @@ namespace SunridgeHOA.Controllers
                 return RedirectToAction("Index", "Home");               
             }
 
-            //var photos = _db.Photo.Include(m => m.Owner);
-            //var photos = _db.Photo.Include(m => m.OwnerId);
-            var photos = _db.Photo;
+            var photos = _db.Photo.Include(m => m.Owner);
+            //var photos = _db.Photo.Include(u => u.Owner).Find(OwnerId);
             return View(await photos.ToListAsync());
         }
 
@@ -138,8 +137,7 @@ namespace SunridgeHOA.Controllers
             }
 
             var photo = await _db.Photo
-                    //.Include(m => m.Owner)
-                    //.Include(m => m.OwnerId)
+                    .Include(m => m.Owner)
                     .FirstOrDefaultAsync(m => m.PhotoId == id);
 
             photo.OwnerId = loggedInUser.OwnerId;
@@ -161,8 +159,7 @@ namespace SunridgeHOA.Controllers
             }
 
             var photo = await _db.Photo
-                //.Include(m => m.Owner)
-                //.Include(m => m.OwnerId)
+                .Include(m => m.Owner)
                 .SingleOrDefaultAsync(m => m.PhotoId == id);
 
             if (photo == null)
@@ -243,7 +240,7 @@ namespace SunridgeHOA.Controllers
                 return RedirectToAction("Index");
             }
 
-            //ViewData["Category"] = new SelectList(new string[] { "Summer", "Winter", "People" });
+            ViewData["Category"] = new SelectList(new string[] { "Summer", "Winter", "People" });
             return View(photo);
         }
 
@@ -256,8 +253,7 @@ namespace SunridgeHOA.Controllers
             }
 
             var photo = await _db.Photo
-                //.Include(m => m.Owner)
-                //.Include(m => m.OwnerId)
+                .Include(m => m.Owner)
                 .FirstOrDefaultAsync(m => m.PhotoId == id);
 
             if (photo == null)

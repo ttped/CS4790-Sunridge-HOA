@@ -62,11 +62,11 @@ namespace SunridgeHOA.Controllers
             return View(viewName);
         }
 
-        public async Task<IActionResult> News2019()
-        {
-            var news = _db.NewsItem;
-            return View(await news.ToListAsync());
-        }
+        //public async Task<IActionResult> News2019()
+        //{
+        //    var news = _db.NewsItem;
+        //    return View(await news.ToListAsync());
+        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -29,22 +29,22 @@ namespace SunridgeHOA.Controllers
          */
         public async Task<IActionResult> Summer()
         {
-            //var summerPhoto = _db.Photo.Include(m => m.Owner);
-            var summerPhoto = _db.Photo;
+            var summerPhoto = _db.Photo.Include(m => m.Owner);
+            //var summerPhoto = _db.Photo;
             return View(await summerPhoto.ToListAsync());
         }
 
         public async Task<IActionResult> Winter()
         {
-            //var winterPhoto = _db.Photo.Include(m => m.Owner);
-            var winterPhoto = _db.Photo;
+            var winterPhoto = _db.Photo.Include(m => m.Owner);
+            //var winterPhoto = _db.Photo;
             return View(await winterPhoto.ToListAsync());
         }
 
         public async Task<IActionResult> People()
         {
-            //var peoplePhoto = _db.Photo.Include(m => m.Owner);
-            var peoplePhoto = _db.Photo;
+            var peoplePhoto = _db.Photo.Include(m => m.Owner);
+            //var peoplePhoto = _db.Photo;
             return View(await peoplePhoto.ToListAsync());
         }
 
