@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using SunridgeHOA.Areas.Admin.Models;
 using SunridgeHOA.Models;
 
 namespace SunridgeHOA.Areas.Admin.Controllers
@@ -64,33 +65,60 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FirstName,LastName,Occupation,Birthday,EmergencyContactName,EmergencyContactPhone")] Models.Owner owner, Address address)
+        public async Task<IActionResult> Create(OwnerCreateVM vm)
         {
+            var existingUser = await _userManager.FindByEmailAsync(vm.Email);
+            if (existingUser != null)
+            {
+                ModelState.AddModelError("Email", "There is an existing user with that email address");
+            }
+
             if (ModelState.IsValid)
             {
-                
-
                 var identityUser = await _userManager.GetUserAsync(HttpContext.User);
                 var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
 
-                address.LastModifiedBy = loggedInUser.FullName;
-                address.LastModifiedDate = DateTime.Now;
-                _context.Add(address);
+                vm.Address.LastModifiedBy = loggedInUser.FullName;
+                vm.Address.LastModifiedDate = DateTime.Now;
+                _context.Add(vm.Address);
 
-                owner.Address = address;
-                owner.LastModifiedBy = loggedInUser.FullName;
-                owner.LastModifiedDate = DateTime.Now;
-
-                // Add in check for primary or co-owner
-
-                _context.Add(owner);
+                vm.Owner.Address = vm.Address;
+                vm.Owner.LastModifiedBy = loggedInUser.FullName;
+                vm.Owner.LastModifiedDate = DateTime.Now;
+                _context.Add(vm.Owner);
                 await _context.SaveChangesAsync();
+
+                // Find a default username - adds a number to the end if there is a duplicate
+                var username = $"{vm.Owner.FirstName}{vm.Owner.LastName}";
+                int count = 0;
+                while (await _userManager.FindByEmailAsync(username) != null)
+                {
+                    count++;
+                    username = $"{username}{count}";
+                }
+
+                // Create user with default credentials
+                var newOwner = new ApplicationUser
+                {
+                    UserName = username,
+                    Email = vm.Email,
+                    OwnerId = vm.Owner.OwnerId
+                };
+
+                var houseNumber = vm.Address.StreetAddress.Split(' ')[0];
+                var defaultPassword = $"{vm.Owner.FirstName}{vm.Owner.LastName}#{houseNumber}";
+                var result = await _userManager.CreateAsync(newOwner, defaultPassword);
+                if (result.Succeeded)
+                {
+                    var role = vm.IsAdmin ? "Admin" : "Owner";
+                    await _userManager.AddToRoleAsync(newOwner, role);
+                }
+
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["AddressId"] = new SelectList(_context.Address, "Id", "Id", owner.AddressId);
-            //ViewData["CoOwnerId"] = new SelectList(_context.Owner, "OwnerId", "OwnerId", owner.CoOwnerId);
 
-            return View(owner);
+            return View(vm);
+
         }
 
         // GET: Admin/Owners/Edit/5
@@ -116,7 +144,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OwnerId,AddressId,FirstName,LastName,Occupation,Birthday,EmergencyContactName,EmergencyContactPhone")] Models.Owner owner, Address address)
+        public async Task<IActionResult> Edit(int id, [Bind("OwnerId,AddressId,FirstName,LastName,Occupation,Birthday,EmergencyContactName,EmergencyContactPhone")] SunridgeHOA.Models.Owner owner, Address address)
         {
             if (id != owner.OwnerId)
             {

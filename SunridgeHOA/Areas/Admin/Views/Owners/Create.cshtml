@@ -1,4 +1,4 @@
-﻿@model SunridgeHOA.Models.Owner
+﻿@model SunridgeHOA.Areas.Admin.Models.OwnerCreateVM
 
 @{
     ViewData["Title"] = "Create";
@@ -14,14 +14,19 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+                <label asp-for="Owner.FirstName" class="control-label"></label>
+                <input asp-for="Owner.FirstName" class="form-control" />
+                <span asp-validation-for="Owner.FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
+                <label asp-for="Owner.LastName" class="control-label"></label>
+                <input asp-for="Owner.LastName" class="form-control" />
+                <span asp-validation-for="Owner.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             @*<div class="form-group">
             <label asp-for="AddressId" class="control-label"></label>
@@ -60,24 +65,28 @@
             </div>*@
 
             <div class="form-group">
-                <label asp-for="Occupation" class="control-label"></label>
-                <input asp-for="Occupation" class="form-control" />
-                <span asp-validation-for="Occupation" class="text-danger"></span>
+                <label asp-for="Owner.Occupation" class="control-label"></label>
+                <input asp-for="Owner.Occupation" class="form-control" />
+                <span asp-validation-for="Owner.Occupation" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Birthday" class="control-label"></label>
-                <input asp-for="Birthday" class="form-control" />
-                <span asp-validation-for="Birthday" class="text-danger"></span>
+                <label asp-for="Owner.Birthday" class="control-label"></label>
+                <input asp-for="Owner.Birthday" class="form-control" />
+                <span asp-validation-for="Owner.Birthday" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EmergencyContactName" class="control-label"></label>
-                <input asp-for="EmergencyContactName" class="form-control" />
-                <span asp-validation-for="EmergencyContactName" class="text-danger"></span>
+                <label asp-for="Owner.EmergencyContactName" class="control-label"></label>
+                <input asp-for="Owner.EmergencyContactName" class="form-control" />
+                <span asp-validation-for="Owner.EmergencyContactName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EmergencyContactPhone" class="control-label"></label>
-                <input asp-for="EmergencyContactPhone" class="form-control" />
-                <span asp-validation-for="EmergencyContactPhone" class="text-danger"></span>
+                <label asp-for="Owner.EmergencyContactPhone" class="control-label"></label>
+                <input asp-for="Owner.EmergencyContactPhone" class="form-control" />
+                <span asp-validation-for="Owner.EmergencyContactPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Is the user an admin?</label>
+                <input asp-for="IsAdmin" class="form-control" />
             </div>
             @*<div class="form-group">
             <div class="checkbox">
