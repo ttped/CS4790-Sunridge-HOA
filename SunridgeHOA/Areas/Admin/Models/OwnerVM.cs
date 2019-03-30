@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SunridgeHOA.Areas.Admin.Models
 {
-    public class OwnerCreateVM
+    public class OwnerVM
     {
         public SunridgeHOA.Models.Owner Owner { get; set; }
         public Address Address { get; set; }

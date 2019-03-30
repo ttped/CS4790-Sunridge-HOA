@@ -26,7 +26,6 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         // GET: Admin/Owners
         public async Task<IActionResult> Index()
         {
-            //var applicationDbContext = _context.Owner.Include(o => o.Address).Include(o => o.CoOwner);
             var applicationDbContext = _context.Owner.Include(o => o.Address);
 
             return View(await applicationDbContext.ToListAsync());
@@ -42,7 +41,6 @@ namespace SunridgeHOA.Areas.Admin.Controllers
 
             var owner = await _context.Owner
                 .Include(o => o.Address)
-                //.Include(o => o.CoOwner)
                 .FirstOrDefaultAsync(m => m.OwnerId == id);
             if (owner == null)
             {
@@ -55,8 +53,6 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         // GET: Admin/Owners/Create
         public IActionResult Create()
         {
-            //ViewData["AddressId"] = new SelectList(_context.Address, "Id", "Id");
-            //ViewData["CoOwnerId"] = new SelectList(_context.Owner, "OwnerId", "OwnerId");
             return View();
         }
 
@@ -65,7 +61,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(OwnerCreateVM vm)
+        public async Task<IActionResult> Create(OwnerVM vm)
         {
             var existingUser = await _userManager.FindByEmailAsync(vm.Owner.Email);
             if (existingUser != null)
@@ -98,6 +94,8 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 }
 
                 // Create user with default credentials
+                //  - Username: FirstnameLastname (e.g. JessBrunker)
+                //  - Password: SunridgeUsername123$ (e.g. SunridgeJessBrunker123$)
                 var newOwner = new ApplicationUser
                 {
                     UserName = username,
@@ -105,13 +103,16 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                     OwnerId = vm.Owner.OwnerId
                 };
 
-                var houseNumber = vm.Address.StreetAddress.Split(' ')[0];
-                var defaultPassword = $"{vm.Owner.FirstName}{vm.Owner.LastName}#{houseNumber}";
+                var defaultPassword = $"Sunridge{username}123$";
                 var result = await _userManager.CreateAsync(newOwner, defaultPassword);
                 if (result.Succeeded)
                 {
-                    var role = vm.IsAdmin ? "Admin" : "Owner";
-                    await _userManager.AddToRoleAsync(newOwner, role);
+                    var roles = new List<string> { "Owner" };
+                    if (vm.IsAdmin)
+                    {
+                        roles.Add("Admin");
+                    };
+                    await _userManager.AddToRolesAsync(newOwner, roles);
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -134,9 +135,18 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            //ViewData["AddressId"] = new SelectList(_context.Address, "Id", "Id", owner.AddressId);
-            //ViewData["CoOwnerId"] = new SelectList(_context.Owner, "OwnerId", "OwnerId", owner.CoOwnerId);
-            return View(owner);
+
+            var appUser = await _userManager.FindByEmailAsync(owner.Email);
+            var roles = await _userManager.GetRolesAsync(appUser);
+
+            var vm = new OwnerVM
+            {
+                Owner = owner,
+                Address = owner.Address,
+                IsAdmin = roles.Contains("Admin")
+            };
+
+            return View(vm);
         }
 
         // POST: Admin/Owners/Edit/5
@@ -144,9 +154,9 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OwnerId,AddressId,FirstName,LastName,Occupation,Birthday,EmergencyContactName,EmergencyContactPhone")] SunridgeHOA.Models.Owner owner, Address address)
+        public async Task<IActionResult> Edit(int id, OwnerVM vm)
         {
-            if (id != owner.OwnerId)
+            if (id != vm.Owner.OwnerId)
             {
                 return NotFound();
             }
@@ -158,22 +168,35 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                     var identityUser = await _userManager.GetUserAsync(HttpContext.User);
                     var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
 
-                    var addr = await _context.Address.SingleOrDefaultAsync(u => u.Id == owner.AddressId);
-                    addr.StreetAddress = address.StreetAddress;
-                    addr.City = address.City;
-                    addr.State = address.State;
-                    addr.Zip = address.Zip;
+                    var addr = await _context.Address.SingleOrDefaultAsync(u => u.Id == vm.Owner.AddressId);
+                    addr.StreetAddress = vm.Address.StreetAddress;
+                    addr.City = vm.Address.City;
+                    addr.State = vm.Address.State;
+                    addr.Zip = vm.Address.Zip;
                     addr.LastModifiedBy = loggedInUser.FullName;
                     addr.LastModifiedDate = DateTime.Now;
                     _context.Update(addr);
-                    owner.LastModifiedBy = loggedInUser.FullName;
-                    owner.LastModifiedDate = DateTime.Now;
-                    _context.Update(owner);
+
+                    vm.Owner.LastModifiedBy = loggedInUser.FullName;
+                    vm.Owner.LastModifiedDate = DateTime.Now;
+                    _context.Update(vm.Owner);
+
                     await _context.SaveChangesAsync();
+
+                    var appUser = await _userManager.FindByEmailAsync(vm.Owner.Email);
+                    var roles = await _userManager.GetRolesAsync(appUser);
+                    if (vm.IsAdmin)
+                    {
+                        await _userManager.AddToRoleAsync(appUser, "Admin");
+                    }
+                    else
+                    {
+                        await _userManager.RemoveFromRoleAsync(appUser, "Admin");
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!OwnerExists(owner.OwnerId))
+                    if (!OwnerExists(vm.Owner.OwnerId))
                     {
                         return NotFound();
                     }
@@ -184,9 +207,8 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["AddressId"] = new SelectList(_context.Address, "Id", "Id", owner.AddressId);
-            //ViewData["CoOwnerId"] = new SelectList(_context.Owner, "OwnerId", "OwnerId", owner.CoOwnerId);
-            return View(owner);
+
+            return View(vm);
         }
 
         // GET: Admin/Owners/Delete/5
@@ -199,7 +221,6 @@ namespace SunridgeHOA.Areas.Admin.Controllers
 
             var owner = await _context.Owner
                 .Include(o => o.Address)
-                //.Include(o => o.CoOwner)
                 .FirstOrDefaultAsync(m => m.OwnerId == id);
             if (owner == null)
             {
@@ -221,7 +242,6 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             owner.IsArchive = true;
             owner.LastModifiedBy = loggedInUser.FullName;
             owner.LastModifiedDate = DateTime.Now;
-            //_context.Owner.Remove(owner);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

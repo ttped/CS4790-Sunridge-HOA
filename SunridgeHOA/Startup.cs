@@ -116,7 +116,7 @@ namespace SunridgeHOA
                 var result = await userManager.CreateAsync(superAdmin, pass);
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(superAdmin, "SuperAdmin");
+                    await userManager.AddToRolesAsync(superAdmin, new List<string> { "SuperAdmin", "Admin" });
                 }
             }
 
