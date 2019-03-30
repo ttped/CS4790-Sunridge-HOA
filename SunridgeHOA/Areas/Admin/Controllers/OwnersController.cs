@@ -67,7 +67,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(OwnerCreateVM vm)
         {
-            var existingUser = await _userManager.FindByEmailAsync(vm.Email);
+            var existingUser = await _userManager.FindByEmailAsync(vm.Owner.Email);
             if (existingUser != null)
             {
                 ModelState.AddModelError("Email", "There is an existing user with that email address");
@@ -101,7 +101,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 var newOwner = new ApplicationUser
                 {
                     UserName = username,
-                    Email = vm.Email,
+                    Email = vm.Owner.Email,
                     OwnerId = vm.Owner.OwnerId
                 };
 

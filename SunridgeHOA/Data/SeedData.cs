@@ -83,7 +83,6 @@ namespace SunridgeHOA.Data
                         AddressId = 1,
                         LotNumber = "A1",
                         TaxId = "ABC123",
-                        Status = "Something",
                         IsArchive = false,
                         LastModifiedBy = "Seed",
                         LastModifiedDate = DateTime.Now
@@ -93,7 +92,6 @@ namespace SunridgeHOA.Data
                         AddressId = 2,
                         LotNumber = "B2",
                         TaxId = "XYZ789",
-                        Status = "Something",
                         IsArchive = false,
                         LastModifiedBy = "Seed",
                         LastModifiedDate = DateTime.Now

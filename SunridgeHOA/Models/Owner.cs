@@ -11,8 +11,6 @@ namespace SunridgeHOA.Models
     {
         public int OwnerId { get; set; }
         public int AddressId { get; set; }
-        //public int? CoOwnerId { get; set; }
- 
 
         [Required]
         [Display(Name = "First Name")]
@@ -28,11 +26,19 @@ namespace SunridgeHOA.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime Birthday { get; set; }
 
-        [Required]
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "Phone Number")]
+        public string Phone { get; set; }
+
+        [DataType(DataType.EmailAddress)]
+        [Display(Name = "Email Address")]
+        public string Email { get; set; }
+
+        //[Required]
         [Display(Name = "Emergency Contact")]
         public string EmergencyContactName { get; set; }
 
-        [Required]
+        //[Required]
         [Display(Name = "Emergency Contact #")]
         public string EmergencyContactPhone { get; set; }
 
@@ -46,9 +52,6 @@ namespace SunridgeHOA.Models
         public virtual Address Address { get; set; }
         public virtual ICollection<OwnerLot> OwnerLots { get; set; }
 
-        //[Display(Name = "Co-owner")]
-        //[ForeignKey("CoOwnerId")]
-        //public virtual Owner CoOwner { get; set; }
         public virtual ICollection<Transaction> Transactions { get; set; }
         public virtual ICollection<OwnerHistory> OwnerHistories { get; set; }
         public virtual ICollection<ClassifiedListing> ClassifiedListings { get; set; }

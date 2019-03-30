@@ -12,10 +12,6 @@ namespace SunridgeHOA.Areas.Admin.Models
         public SunridgeHOA.Models.Owner Owner { get; set; }
         public Address Address { get; set; }
 
-        [Required]
-        [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
-
         public bool IsAdmin { get; set; }
     }
 }

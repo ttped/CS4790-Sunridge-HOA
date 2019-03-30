@@ -13,6 +13,7 @@ namespace SunridgeHOA.Models
         [Display(Name = "Street Address")]
         [Required]
         public string StreetAddress { get; set; }
+        public string Apartment { get; set; }
         public string City { get; set; }
         public string State { get; set; }
         public string Zip { get; set; }
