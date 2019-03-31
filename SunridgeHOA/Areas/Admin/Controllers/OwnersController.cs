@@ -26,9 +26,26 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         // GET: Admin/Owners
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Owner.Include(o => o.Address);
+            var owners = _context.Owner.Include(o => o.Address);
 
-            return View(await applicationDbContext.ToListAsync());
+            var vmList = new List<OwnerIndexVM>();
+            foreach (var owner in owners)
+            {
+                var lots = await _context.OwnerLot
+                    .Include(u => u.Lot)
+                    .Where(u => u.OwnerId == owner.OwnerId)
+                    .Where(u => u.EndDate == DateTime.MinValue)
+                    .Select(u => u.Lot.LotNumber)
+                    .ToListAsync();
+
+                vmList.Add(new OwnerIndexVM
+                {
+                    Owner = owner,
+                    Lots = lots
+                });
+            }
+
+            return View(vmList);
         }
 
         // GET: Admin/Owners/Details/5
