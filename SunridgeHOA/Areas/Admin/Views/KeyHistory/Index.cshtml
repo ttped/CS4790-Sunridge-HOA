@@ -1,4 +1,4 @@
-﻿@model List<SunridgeHOA.Models.ClassifiedListing>
+﻿@model List<SunridgeHOA.Models.KeyHistory>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,28 +13,22 @@
     <thead>
         <tr>
             <th>
-                ItemName
+                Status
             </th>
             <th>
-                Price
+                DateIssued
             </th>
             <th>
-                Description
+                DateReturned
             </th>
             <th>
-                ListingDate
+                PaidAmount
             </th>
             <th>
-                Phone
-            </th>
-            <th>
-                Email
+                Key
             </th>
             <th>
                 Owner
-            </th>
-            <th>
-                ClassifiedCategory
             </th>
             <th>
                 IsArchive
@@ -45,34 +39,29 @@
             <th>
                 LastModifiedDate
             </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ItemName)
+                @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Price)
+                @Html.DisplayFor(modelItem => item.DateIssued)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
+                @Html.DisplayFor(modelItem => item.DateReturned)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ListingDate)
+                @Html.DisplayFor(modelItem => item.PaidAmount)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Phone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
+                @Html.DisplayFor(modelItem => item.Key.SerialNumber)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Owner.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClassifiedCategory.ClassifiedCategoryId)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsArchive)
@@ -84,9 +73,9 @@
                 @Html.DisplayFor(modelItem => item.LastModifiedDate)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ClassifiedListingId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ClassifiedListingId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ClassifiedListingId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.KeyHistoryId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.KeyHistoryId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.KeyHistoryId">Delete</a>
             </td>
         </tr>
 }

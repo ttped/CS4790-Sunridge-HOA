@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SunridgeHOA.Models;
@@ -16,14 +17,16 @@ namespace SunridgeHOA.Areas.Owner.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly HostingEnvironment _hostingEnvironment;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         [BindProperty]
         public ClassifiedListingViewModel classifiedListingViewModel { get; set; }
 
-        public ClassifiedsController(ApplicationDbContext context, HostingEnvironment hostingEnvironment)
+        public ClassifiedsController(ApplicationDbContext context, HostingEnvironment hostingEnvironment, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _hostingEnvironment = hostingEnvironment;
+            _userManager = userManager;
             classifiedListingViewModel = new ClassifiedListingViewModel()
             {
                 ClassifiedListing = new SunridgeHOA.Models.ClassifiedListing(),
@@ -39,9 +42,21 @@ namespace SunridgeHOA.Areas.Owner.Controllers
         }
 
         // GET: Classifieds/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+
+            }
+
+            var item = await _context.ClassifiedListing.SingleOrDefaultAsync(m => m.ClassifiedListingId == id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return View(item);
         }
 
         // GET: Classifieds/Create
@@ -57,6 +72,12 @@ namespace SunridgeHOA.Areas.Owner.Controllers
         {
             if (ModelState.IsValid)
             {
+                var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+                var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+
+                classifiedListingViewModel.ClassifiedListing.LastModifiedBy = loggedInUser.FullName;
+                classifiedListingViewModel.ClassifiedListing.LastModifiedDate = DateTime.Now;
+
                 _context.ClassifiedListing.Add(classifiedListingViewModel.ClassifiedListing);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -73,11 +94,12 @@ namespace SunridgeHOA.Areas.Owner.Controllers
             }
 
             var item = await _context.ClassifiedListing.FindAsync(id);
+            classifiedListingViewModel.ClassifiedListing = item;
             if (item == null)
             {
                 return NotFound();
             }
-            return View();
+            return View(classifiedListingViewModel);
         }
 
         // POST: Classifieds/Edit/5
@@ -85,32 +107,20 @@ namespace SunridgeHOA.Areas.Owner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(int? id, ClassifiedListing listing)
         {
-            if (id != listing.ClassifiedListingId)
+            if (id != classifiedListingViewModel.ClassifiedListing.ClassifiedListingId)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(listing);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!_context.ClassifiedListing.Any(e => e.ClassifiedListingId == id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(listing);
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+
+            classifiedListingViewModel.ClassifiedListing.LastModifiedBy = loggedInUser.FullName;
+            classifiedListingViewModel.ClassifiedListing.LastModifiedDate = DateTime.Now;
+
+            _context.Update(classifiedListingViewModel.ClassifiedListing);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Classifieds/Delete/5
@@ -125,8 +135,9 @@ namespace SunridgeHOA.Areas.Owner.Controllers
         public async Task<ActionResult> Delete(int id, ClassifiedListing listing)
         {
             ClassifiedListing item = await _context.ClassifiedListing.FindAsync(id);
-
-            _context.ClassifiedListing.Remove(item);
+            item.IsArchive = true;
+            _context.ClassifiedListing.Update(item);
+            //_context.ClassifiedListing.Remove(item);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
