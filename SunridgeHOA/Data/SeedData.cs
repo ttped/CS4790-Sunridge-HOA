@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SunridgeHOA.Models;
@@ -11,91 +12,211 @@ namespace SunridgeHOA.Data
 {
     public static class SeedData
     {
-        public static void EnsurePopulated(IApplicationBuilder app)
+        public static void EnsurePopulated(IApplicationBuilder app, IServiceProvider serviceProvider)
         {
             var context = app.ApplicationServices.GetRequiredService<ApplicationDbContext>();
             context.Database.Migrate();
 
-            
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
             // Add default users and roles
             if (!context.Owner.Any())
             {
-                // Add temporary addresses
                 context.Address.AddRange(
                     new Address
                     {
-                        StreetAddress = "123 Fake Street",
-                        City = "Somewhere",
+                        //Id = 1,
+                        StreetAddress = "8146 Deer Run Way",
+                        City = "South Weber",
                         State = "UT",
-                        IsArchive = false,
-                        LastModifiedBy = "Seed",
-                        LastModifiedDate = DateTime.Now
+                        Zip = "84405"
                     },
                     new Address
                     {
-                        StreetAddress = "567 Circle Lane",
-                        City = "City",
-                        State = "NY",
-                        IsArchive = false,
-                        LastModifiedBy = "Seed",
-                        LastModifiedDate = DateTime.Now
+                        //Id = 2,
+                        StreetAddress = "11809 E Eagle Point Drive",
+                        City = "Huntsville",
+                        State = "UT",
+                        Zip = "84317"
+                    },
+                    new Address
+                    {
+                        //Id = 3,
+                        StreetAddress = "321 Willow Way",
+                        Apartment = "#69",
+                        City = "Pleasant View",
+                        State = "UT",
+                        Zip = "84414"
+                    },
+                    new Address
+                    {
+                        //Id = 4,
+                        StreetAddress = "11620 E Ptarmigan Point Drive",
+                        City = "Huntsville",
+                        State = "UT",
+                        Zip = "84317"
+                    },
+                    new Address
+                    {
+                       // Id = 5,
+                        StreetAddress = "11115 E Chukar Point Drive",
+                        City = "Huntsville",
+                        State = "UT",
+                        Zip = "84317"
+                    },
+                    new Address
+                    {
+                        //Id = 6,
+                        StreetAddress = "479 W Cheery Drive",
+                        City = "Riverdale",
+                        State = "UT",
+                        Zip = "84405"
                     });
 
-                // Add temporary owners
+                context.SaveChanges();
+
                 context.Owner.AddRange(
                     new Owner
                     {
+                        //OwnerId = 1,
                         AddressId = 1,
-                        //IsPrimary = true,
-                        FirstName = "Test",
-                        LastName = "Guy",
-                        Occupation = "Some sort of admin",
-                        Birthday = DateTime.Now,
-                        EmergencyContactName = "Someone Person",
-                        EmergencyContactPhone = "8015551234",
-                        IsArchive = false,
-                        LastModifiedBy = "Seed",
-                        LastModifiedDate = DateTime.Now
+                        FirstName = "Richard",
+                        LastName = "Fry",
+                        Occupation = "Professor",
+                        Email = "admin@email.com"
                     },
                     new Owner
                     {
-                        AddressId = 2,
-                       // IsPrimary = true,
-                        FirstName = "Richard",
-                        LastName = "Guy",
-                        Occupation = "Data tester",
-                        Birthday = DateTime.Now,
-                        EmergencyContactName = "Someone Person",
-                        EmergencyContactPhone = "8015551234",
-                        IsArchive = false,
-                        LastModifiedBy = "Seed",
-                        LastModifiedDate = DateTime.Now
+                       // OwnerId = 2,
+                        AddressId = 1,
+                        FirstName = "Stephen",
+                        LastName = "Merkley",
+                        Birthday = DateTime.ParseExact("10/10/1964", "MM/dd/yyyy", null),
+                        EmergencyContactName = "Richard Fry",
+                        EmergencyContactPhone = "8016266919",
+                        Email = "owner@email.com"
+                    },
+                    new Owner
+                    {
+                        //OwnerId = 3,
+                        AddressId = 3,
+                        FirstName = "Brent",
+                        LastName = "Frost",
+                        Occupation = "Retired",
+                        Email = "brentfrost@email.com"
+                    },
+                    new Owner
+                    {
+                        //OwnerId = 4,
+                        AddressId = 3,
+                        FirstName = "Vernie",
+                        LastName = "Frost",
+                        Occupation = "Retired",
+                        Email = "verniefrost@email.com"
+                    },
+                    new Owner
+                    {
+                        //OwnerId = 5,
+                        AddressId = 6,
+                        FirstName = "Andy",
+                        LastName = "Taylor",
+                        Occupation = "Contractor",
+                        EmergencyContactPhone = "8015102370",
+                        Email = "andytaylor@email.com"
+                    },
+                    new Owner
+                    {
+                        //OwnerId = 6,
+                        AddressId = 6,
+                        FirstName = "Stephanie",
+                        LastName = "Taylor",
+                        Occupation = "Credit Union Manager",
+                        EmergencyContactName = "Andy Taylor",
+                        Email = "stephanietaylor@email.com"
                     });
+
+                context.SaveChanges();
             }
 
             if (!context.Lot.Any())
             {
-                // Add temporary lots
                 context.Lot.AddRange(
                     new Lot
                     {
-                        AddressId = 1,
-                        LotNumber = "A1",
-                        TaxId = "ABC123",
-                        IsArchive = false,
-                        LastModifiedBy = "Seed",
-                        LastModifiedDate = DateTime.Now
+                        //LotId = 1,
+                        AddressId = 2,
+                        LotNumber = "H8",
+                        TaxId = "230660005"
                     },
                     new Lot
                     {
-                        AddressId = 2,
-                        LotNumber = "B2",
-                        TaxId = "XYZ789",
-                        IsArchive = false,
-                        LastModifiedBy = "Seed",
-                        LastModifiedDate = DateTime.Now
+                        //LotId = 2,
+                        AddressId = 4,
+                        LotNumber = "H230",
+                        TaxId = "231180001"
+                    },
+                    new Lot
+                    {
+                        //LotId = 3,
+                        AddressId = 5,
+                        LotNumber = "H157",
+                        TaxId = "231000006"
                     });
+
+                context.SaveChanges();
+
+                context.OwnerLot.AddRange(
+                    new OwnerLot
+                    {
+                        //OwnerLotId = 1,
+                        OwnerId = 1,
+                        LotId = 1,
+                        StartDate = DateTime.ParseExact("07/01/2018", "MM/dd/yyyy", null),
+                        IsPrimary = true
+                    },
+                    new OwnerLot
+                    {
+                       // OwnerLotId = 2,
+                        OwnerId = 2,
+                        LotId = 1,
+                        StartDate = DateTime.ParseExact("07/01/2018", "MM/dd/yyyy", null),
+                        IsPrimary = false
+                    },
+                    new OwnerLot
+                    {
+                        //OwnerLotId = 3,
+                        OwnerId = 3,
+                        LotId = 2,
+                        StartDate = DateTime.ParseExact("04/01/2002", "MM/dd/yyyy", null),
+                        IsPrimary = true
+                    },
+                    new OwnerLot
+                    {
+                        //OwnerLotId = 4,
+                        OwnerId = 4,
+                        LotId = 2,
+                        StartDate = DateTime.ParseExact("04/01/2002", "MM/dd/yyyy", null),
+                        IsPrimary = false
+                    },
+                    new OwnerLot
+                    {
+                        //OwnerLotId = 5,
+                        OwnerId = 5,
+                        LotId = 3,
+                        StartDate = DateTime.ParseExact("01/01/2019", "MM/dd/yyyy", null),
+                        IsPrimary = true
+                    },
+                    new OwnerLot
+                    {
+                        //OwnerLotId = 6,
+                        OwnerId = 6,
+                        LotId = 3,
+                        StartDate = DateTime.ParseExact("01/01/2019", "MM/dd/yyyy", null),
+                        IsPrimary = false
+                    });
+
+                context.SaveChanges();
             }
 
             if (!context.Inventory.Any())

@@ -81,7 +81,7 @@ namespace SunridgeHOA
                 //  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             });
 
-            SeedData.EnsurePopulated(app);
+            SeedData.EnsurePopulated(app, serviceProvider);
             CreateRoles(serviceProvider).Wait();
         }
 
@@ -124,7 +124,7 @@ namespace SunridgeHOA
             {
                 UserName = "owner",
                 Email = "owner@email.com",
-                OwnerId = 2
+                OwnerId = 4
             };
 
             user = await userManager.FindByEmailAsync("owner@email.com");
