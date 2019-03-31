@@ -183,10 +183,10 @@ namespace SunridgeHOA.Controllers
 
             if (ModelState.IsValid)
             {
-                var newsFromDb = _db.NewsItem.Where(m => m.NewsItemId == id).FirstOrDefault();
-
                 string webRootPath = _hostingEnvironment.WebRootPath;
                 var files = HttpContext.Request.Form.Files;
+
+                var newsFromDb = _db.NewsItem.Where(m => m.NewsItemId == id).FirstOrDefault();
 
                 if (files.Count > 0 && files[0] != null)
                 {
