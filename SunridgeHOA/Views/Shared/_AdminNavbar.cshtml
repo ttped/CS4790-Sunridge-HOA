@@ -21,7 +21,7 @@
                 <a class="nav-link active fas fa-tachometer-alt" href="~/General/Dashboard"> Dashboard </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link fas fa-home" href="~/General/MyLots"> My Lots</a>
+                <a class="nav-link fas fa-home" asp-area="Owner" asp-controller="Lots" asp-action="MyLots"> My Lots</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link fas fa-dollar-sign" href="#"> Billing History</a>
@@ -37,6 +37,13 @@
                         <li class="nav-item"><a id="accordian" class="nav-link far fa-circle"  asp-area="Owner" asp-controller="Classifieds" asp-action="Index">&nbsp;Post&nbsp;a&nbsp;New&nbsp;Ad</a></li>
                     </ul>
                 </div>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link fas fa-camera" href="~/AdminPhotos/Index"> Photos </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link far fa-newspaper" href="~/NewsItem/Index"> News Items </a>
             </li>
             @if (User.IsInRole(StaticData.SuperAdminEndUser) || User.IsInRole(StaticData.AdminEndUser))
             {
@@ -56,7 +63,7 @@
                     <a class="nav-link fas fa-key" asp-area="Admin" asp-controller="KeyHistory" asp-action="Index"> Key History</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fas fa-map" asp-area="Admin" asp-controller="Admin" asp-action="HoaLots"> HOA Lots</a>
+                    <a class="nav-link fas fa-map" asp-area="Owner" asp-controller="Lots" asp-action="Index"> HOA Lots</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link fas fa-money-check-alt" asp-area="Admin" asp-controller="Admin" asp-action="Transactions"> Transactions</a>

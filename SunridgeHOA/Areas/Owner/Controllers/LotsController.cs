@@ -83,7 +83,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             var myLots = await _context.OwnerLot
                 .Include(u => u.Lot)
                 .Where(u => u.OwnerId == loggedInUser.OwnerId)
-                .Where(u => u.EndDate != DateTime.MinValue)
+                .Where(u => u.EndDate == DateTime.MinValue)
                 .Select(u => u.Lot)
                 .ToListAsync();
 
@@ -93,7 +93,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 var owners = _context.OwnerLot
                     .Include(u => u.Owner)
                     .Where(u => u.LotId == lot.LotId)
-                    .Where(u => u.EndDate != DateTime.MinValue);
+                    .Where(u => u.EndDate == DateTime.MinValue);
 
                 var lotItems = await _context.LotInventory
                     .Include(u => u.Inventory)
@@ -136,7 +136,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             var isOwner = _context.OwnerLot
                 .Where(u => u.LotId == id)
                 .Where(u => u.OwnerId == loggedInUser.OwnerId)
-                .Where(u => u.EndDate != DateTime.MinValue)
+                .Where(u => u.EndDate == DateTime.MinValue)
                 .Any();
             if (!isOwner)
             {
@@ -182,7 +182,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             var isOwner = _context.OwnerLot
                 .Where(u => u.LotId == id)
                 .Where(u => u.OwnerId == loggedInUser.OwnerId)
-                .Where(u => u.EndDate != DateTime.MinValue)
+                .Where(u => u.EndDate == DateTime.MinValue)
                 .Any();
             if (!isOwner)
             {
