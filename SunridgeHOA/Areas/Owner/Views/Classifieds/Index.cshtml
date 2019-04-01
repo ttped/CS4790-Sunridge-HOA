@@ -1,0 +1,94 @@
+﻿@model List<SunridgeHOA.Models.ClassifiedListing>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                ItemName
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                ListingDate
+            </th>
+            <th>
+                Phone
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Owner
+            </th>
+            <th>
+                ClassifiedCategory
+            </th>
+            <th>
+                IsArchive
+            </th>
+            <th>
+                LastModifiedBy
+            </th>
+            <th>
+                LastModifiedDate
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ListingDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Owner.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClassifiedCategory.ClassifiedCategoryId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsArchive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastModifiedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastModifiedDate)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ClassifiedListingId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ClassifiedListingId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ClassifiedListingId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

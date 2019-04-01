@@ -31,14 +31,18 @@ namespace SunridgeHOA.Areas.Identity.Pages.Account
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
+            return LocalRedirect("~/");
+            /*
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);
             }
             else
             {
+                
                 return Page();
             }
+            */
         }
     }
 }

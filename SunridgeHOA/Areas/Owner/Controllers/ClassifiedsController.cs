@@ -2,46 +2,144 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting.Internal;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SunridgeHOA.Models;
+using SunridgeHOA.Models.ViewModels;
 
 namespace SunridgeHOA.Areas.Owner.Controllers
 {
-    //Add/Edit/Delete (Disable) Classified Ads (REPEAT OF ADMIN, BUT FILTERED BY OWNER)
     [Area("Owner")]
     public class ClassifiedsController : Controller
     {
-        public IActionResult Add()
+        private readonly ApplicationDbContext _context;
+        private readonly HostingEnvironment _hostingEnvironment;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        [BindProperty]
+        public ClassifiedListingViewModel classifiedListingViewModel { get; set; }
+
+        public ClassifiedsController(ApplicationDbContext context, HostingEnvironment hostingEnvironment, UserManager<ApplicationUser> userManager)
+        {
+            _context = context;
+            _hostingEnvironment = hostingEnvironment;
+            _userManager = userManager;
+            classifiedListingViewModel = new ClassifiedListingViewModel()
+            {
+                ClassifiedListing = new SunridgeHOA.Models.ClassifiedListing(),
+                ClassifiedCategory = _context.ClassifiedCategory.ToList(),
+                Owner = _context.Owner.ToList()
+            };
+        }
+
+        // GET: Classifieds
+        public async Task<ActionResult> Index()
+        {
+            return View(await _context.ClassifiedListing.ToListAsync());
+        }
+
+        // GET: Classifieds/Details/5
+        public async Task<ActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+
+            }
+
+            var item = await _context.ClassifiedListing.SingleOrDefaultAsync(m => m.ClassifiedListingId == id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return View(item);
+        }
+
+        // GET: Classifieds/Create
+        public ActionResult Create()
+        {
+            return View(classifiedListingViewModel);
+        }
+
+        // POST: Classifieds/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(ClassifiedListing listing)
+        {
+            if (ModelState.IsValid)
+            {
+                var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+                var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+
+                classifiedListingViewModel.ClassifiedListing.LastModifiedBy = loggedInUser.FullName;
+                classifiedListingViewModel.ClassifiedListing.LastModifiedDate = DateTime.Now;
+
+                _context.ClassifiedListing.Add(classifiedListingViewModel.ClassifiedListing);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(classifiedListingViewModel);
+        }
+
+        // GET: Classifieds/Edit/5
+        public async Task<ActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var item = await _context.ClassifiedListing.FindAsync(id);
+            classifiedListingViewModel.ClassifiedListing = item;
+            if (item == null)
+            {
+                return NotFound();
+            }
+            return View(classifiedListingViewModel);
+        }
+
+        // POST: Classifieds/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(int? id, ClassifiedListing listing)
+        {
+            if (id != classifiedListingViewModel.ClassifiedListing.ClassifiedListingId)
+            {
+                return NotFound();
+            }
+
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+
+            classifiedListingViewModel.ClassifiedListing.LastModifiedBy = loggedInUser.FullName;
+            classifiedListingViewModel.ClassifiedListing.LastModifiedDate = DateTime.Now;
+
+            _context.Update(classifiedListingViewModel.ClassifiedListing);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Classifieds/Delete/5
+        public ActionResult Delete(int id)
         {
             return View();
         }
 
-        //[HttpPost]
-        //public IActionResult Add()
-        //{
-        //    return View();
-        //}
-
-        public IActionResult Edit()
+        // POST: Classifieds/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Delete(int id, ClassifiedListing listing)
         {
-            return View();
+            ClassifiedListing item = await _context.ClassifiedListing.FindAsync(id);
+            item.IsArchive = true;
+            _context.ClassifiedListing.Update(item);
+            //_context.ClassifiedListing.Remove(item);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
-
-        //[HttpPost]
-        //public IActionResult Edit()
-        //{
-        //    return View();
-        //}
-
-        public IActionResult Delete()
-        {
-            return View();
-        }
-
-        //[HttpPost]
-        //public IActionResult Delete()
-        //{
-        //    return View();
-        //}
-
     }
 }

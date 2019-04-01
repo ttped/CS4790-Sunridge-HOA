@@ -1,38 +1,72 @@
-﻿@model SunridgeHOA.Models.Owner
+﻿@model SunridgeHOA.Areas.Admin.Models.OwnerVM
 
 @{
     ViewData["Title"] = "Edit";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <h2>Edit</h2>
 
 <h4>Owner</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="OwnerId" />
-            <input type="hidden" asp-for="AddressId" />
+<form asp-action="Edit">
+    <div class="row">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Owner.OwnerId" />
+        <input type="hidden" asp-for="Address.Id" />
+        <div class="col-md-4">
+            <h5>Personal Information</h5>
             <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+                <label asp-for="Owner.FirstName" class="control-label"></label>
+                <input asp-for="Owner.FirstName" class="form-control" />
+                <span asp-validation-for="Owner.FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
+                <label asp-for="Owner.LastName" class="control-label"></label>
+                <input asp-for="Owner.LastName" class="form-control" />
+                <span asp-validation-for="Owner.LastName" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
-            <label asp-for="AddressId" class="control-label"></label>
-            <select asp-for="AddressId" class="form-control" asp-items="ViewBag.AddressId"></select>
-        </div>*@
+
+            <div class="form-group">
+                <label asp-for="Owner.Occupation" class="control-label"></label>
+                <input asp-for="Owner.Occupation" class="form-control" />
+                <span asp-validation-for="Owner.Occupation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Owner.Birthday" class="control-label"></label>
+                <input asp-for="Owner.Birthday" class="form-control" />
+                <span asp-validation-for="Owner.Birthday" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">
+                    <input asp-for="IsAdmin" />
+                    Is the user an admin?
+                </label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h5>Contact Information</h5>
+            <div class="form-group">
+                <label asp-for="Owner.Email" class="control-label"></label>
+                <input asp-for="Owner.Email" class="form-control" disabled />
+                <span asp-validation-for="Owner.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Owner.Phone" class="control-label"></label>
+                <input asp-for="Owner.Phone" class="form-control" />
+                <span asp-validation-for="Owner.Phone" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Address.StreetAddress" class="control-label"></label>
                 <input asp-for="Address.StreetAddress" class="form-control" />
                 <span asp-validation-for="Address.StreetAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address.Apartment" class="control-label"></label>
+                <input asp-for="Address.Apartment" class="form-control" />
+                <span asp-validation-for="Address.Apartment" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Address.City" class="control-label"></label>
@@ -49,63 +83,22 @@
                 <input asp-for="Address.State" class="form-control" />
                 <span asp-validation-for="Address.State" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
-            <label asp-for="CoOwnerId" class="control-label"></label>
-            <select asp-for="CoOwnerId" class ="form-control" asp-items="ViewBag.CoOwnerId"></select>
-        </div>*@
-            @*<div class="form-group">
-            <div class="checkbox">
-                <label>
-                    <input asp-for="IsPrimary" /> @Html.DisplayNameFor(model => model.IsPrimary)
-                </label>
-            </div>
-        </div>*@
-
             <div class="form-group">
-                <label asp-for="Occupation" class="control-label"></label>
-                <input asp-for="Occupation" class="form-control" />
-                <span asp-validation-for="Occupation" class="text-danger"></span>
+                <label asp-for="Owner.EmergencyContactName" class="control-label"></label>
+                <input asp-for="Owner.EmergencyContactName" class="form-control" />
+                <span asp-validation-for="Owner.EmergencyContactName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Birthday" class="control-label"></label>
-                <input asp-for="Birthday" class="form-control" />
-                <span asp-validation-for="Birthday" class="text-danger"></span>
+                <label asp-for="Owner.EmergencyContactPhone" class="control-label"></label>
+                <input asp-for="Owner.EmergencyContactPhone" class="form-control" />
+                <span asp-validation-for="Owner.EmergencyContactPhone" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="EmergencyContactName" class="control-label"></label>
-                <input asp-for="EmergencyContactName" class="form-control" />
-                <span asp-validation-for="EmergencyContactName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EmergencyContactPhone" class="control-label"></label>
-                <input asp-for="EmergencyContactPhone" class="form-control" />
-                <span asp-validation-for="EmergencyContactPhone" class="text-danger"></span>
-            </div>
-            @*<div class="form-group">
-            <div class="checkbox">
-                <label>
-                    <input asp-for="IsArchive" /> @Html.DisplayNameFor(model => model.IsArchive)
-                </label>
-            </div>
-        </div>*@
-            @*<div class="form-group">
-            <label asp-for="LastModifiedBy" class="control-label"></label>
-            <input asp-for="LastModifiedBy" class="form-control" />
-            <span asp-validation-for="LastModifiedBy" class="text-danger"></span>
         </div>
-        <div class="form-group">
-            <label asp-for="LastModifiedDate" class="control-label"></label>
-            <input asp-for="LastModifiedDate" class="form-control" />
-            <span asp-validation-for="LastModifiedDate" class="text-danger"></span>
-        </div>*@
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-default" />
+    </div>
+    <div class="row">
+        <a asp-action="Index">Back to List</a>
+    </div>
+</form>

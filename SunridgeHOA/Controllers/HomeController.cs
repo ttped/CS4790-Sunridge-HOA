@@ -21,7 +21,7 @@ namespace SunridgeHOA.Controllers
         public IActionResult Index()
         {
             // maybe need to send a model with the carousel news data to the view?
-            return View();
+            return View(await _context.Banner.ToListAsync());
         }
 
         public IActionResult BoardMembers()

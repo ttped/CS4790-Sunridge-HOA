@@ -1,0 +1,74 @@
+﻿@model LotIndexVM
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Lot @Model.Lot.LotNumber Details</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Lot.LotNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Lot.LotNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PrimaryOwner)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PrimaryOwner.FullName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Owners)
+        </dt>
+        <dd>
+            @foreach (var owner in Model.Owners)
+            {
+                <p>@owner.FullName</p>
+            }
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Lot.TaxId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Lot.TaxId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address.StreetAddress)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.InventoryItems)
+        </dt>
+        <dd>
+            @foreach (var item in Model.InventoryItems)
+            {
+                <p>@item.Description</p>
+            }
+        </dd>
+        @*<dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>*@
+    </dl>
+</div>
+@* May need to use an api key like this: https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=Eiffel+Tower,Paris+France *@
+<div>
+        @{
+            var addr = Model.Address.ToString();
+            var src = $"https://www.maps.google.it/maps?q={addr}&output=embed";
+        }
+        <iframe src="@src"></iframe>
+    </div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Lot.LotId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
