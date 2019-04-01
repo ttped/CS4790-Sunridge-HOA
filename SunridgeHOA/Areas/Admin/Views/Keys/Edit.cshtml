@@ -3,48 +3,54 @@
 @{
     ViewData["Title"] = "Edit";
 }
-
-<h2>Edit</h2>
-
-<h4>Key</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="KeyId" />
-            <div class="form-group">
-                <label asp-for="SerialNumber" class="control-label"></label>
-                <input asp-for="SerialNumber" class="form-control" />
-                <span asp-validation-for="SerialNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="IsArchive" /> @Html.DisplayNameFor(model => model.IsArchive)
-                    </label>
-                </div>
-            </div>
-            
-            @*<div class="form-group">
-                <label asp-for="LastModifiedBy" class="control-label"></label>
-                <input asp-for="LastModifiedBy" class="form-control" />
-                <span asp-validation-for="LastModifiedBy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastModifiedDate" class="control-label"></label>
-                <input asp-for="LastModifiedDate" class="form-control" />
-                <span asp-validation-for="LastModifiedDate" class="text-danger"></span>
-            </div>*@
-
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </form>
+<div class="row col-12">
+    <div class="col-2">
+        <partial name="~/Views/Shared/_AdminNavbar.cshtml" />
     </div>
-</div>
+    <div id="windowFrame" class="col-10">
+        <h2>Edit</h2>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+        <h4>Key</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="KeyId" />
+                    <div class="form-group">
+                        <label asp-for="SerialNumber" class="control-label"></label>
+                        <input asp-for="SerialNumber" class="form-control" />
+                        <span asp-validation-for="SerialNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="IsArchive" /> @Html.DisplayNameFor(model => model.IsArchive)
+                            </label>
+                        </div>
+                    </div>
+
+                    @*<div class="form-group">
+                            <label asp-for="LastModifiedBy" class="control-label"></label>
+                            <input asp-for="LastModifiedBy" class="form-control" />
+                            <span asp-validation-for="LastModifiedBy" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="LastModifiedDate" class="control-label"></label>
+                            <input asp-for="LastModifiedDate" class="form-control" />
+                            <span asp-validation-for="LastModifiedDate" class="text-danger"></span>
+                        </div>*@
+
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-default" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
 </div>
 
