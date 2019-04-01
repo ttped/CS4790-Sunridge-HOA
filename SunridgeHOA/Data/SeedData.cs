@@ -15,7 +15,7 @@ namespace SunridgeHOA.Data
         public static void EnsurePopulated(IApplicationBuilder app, IServiceProvider serviceProvider)
         {
             var context = app.ApplicationServices.GetRequiredService<ApplicationDbContext>();
-            context.Database.Migrate();
+            //context.Database.Migrate();
 
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
