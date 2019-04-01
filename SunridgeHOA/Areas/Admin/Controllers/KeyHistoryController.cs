@@ -74,7 +74,6 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             {
                 var identityUser = await _userManager.GetUserAsync(HttpContext.User);
                 var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
-                //var loggedInUser = _context.Owner.Find(2);
 
                 keyHistory.IsArchive = false;
                 keyHistory.LastModifiedBy = loggedInUser.FullName;
@@ -117,7 +116,6 @@ namespace SunridgeHOA.Areas.Admin.Controllers
 
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
             var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
-            //var loggedInUser = _context.Owner.Find(2);
             
             keyHistory.LastModifiedBy = loggedInUser.FullName;
             keyHistory.LastModifiedDate = DateTime.Now;

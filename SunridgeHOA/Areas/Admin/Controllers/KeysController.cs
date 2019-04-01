@@ -64,8 +64,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var identityUser = await _userManager.GetUserAsync(HttpContext.User);
-                //var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
-                var loggedInUser = _context.Owner.Find(2);
+                var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
 
                 key.IsArchive = false;
                 key.LastModifiedBy = loggedInUser.FullName;
@@ -105,8 +104,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             }
 
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
-            //var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
-            var loggedInUser = _context.Owner.Find(2);
+            var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
 
             key.LastModifiedBy = loggedInUser.FullName;
             key.LastModifiedDate = DateTime.Now;
