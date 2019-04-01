@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SunridgeHOA.Models.Owner>
+﻿@model IEnumerable<SunridgeHOA.Areas.Admin.Models.OwnerIndexVM>
 
 @{
     ViewData["Title"] = "Index";
@@ -14,38 +14,14 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FullName)
+                @Html.DisplayNameFor(model => model.Owner.FullName)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.IsPrimary)
-            </th>*@
-            @*<th>
-            @Html.DisplayNameFor(model => model.Occupation)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Birthday)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmergencyContactName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmergencyContactPhone)
-        </th>*@
-            @*<th>
-            @Html.DisplayNameFor(model => model.IsArchive)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastModifiedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastModifiedDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Address)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CoOwner)
-        </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Owner.EmergencyContactName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Owner.EmergencyContactPhone)
+            </th>
             <th>
                 Lot(s)
             </th>
@@ -56,42 +32,24 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.FullName)
+                @Html.DisplayFor(modelItem => item.Owner.FullName)
             </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.IsPrimary)
-            </td>*@
-            @*<td>
-            @Html.DisplayFor(modelItem => item.Occupation)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Birthday)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmergencyContactName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmergencyContactPhone)
-        </td>*@
-            @*<td>
-            @Html.DisplayFor(modelItem => item.IsArchive)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastModifiedBy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastModifiedDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Address.Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CoOwner.OwnerId)
-        </td>*@
             <td>
-                <a asp-action="Edit" asp-route-id="@item.OwnerId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.OwnerId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.OwnerId">Delete</a>
+                @Html.DisplayFor(modelItem => item.Owner.EmergencyContactName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Owner.EmergencyContactPhone)
+            </td>
+            <td>
+                @foreach (var lot in item.Lots)
+                {
+                    <p>@lot</p>
+                }
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Owner.OwnerId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Owner.OwnerId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Owner.OwnerId">Delete</a>
             </td>
         </tr>
 }

@@ -18,7 +18,7 @@ namespace SunridgeHOA.Models
 
         [Display(Name = "Tax ID")]
         public string TaxId { get; set; }
-        public string Status { get; set; }
+
         public bool IsArchive { get; set; }
         public string LastModifiedBy { get; set; }
         public DateTime LastModifiedDate { get; set; }
