@@ -18,10 +18,10 @@ namespace SunridgeHOA.Controllers
             _db = db;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             // maybe need to send a model with the carousel news data to the view?
-            return View(await _context.Banner.ToListAsync());
+            return View(await _db.Banner.ToListAsync());
         }
 
         public IActionResult BoardMembers()

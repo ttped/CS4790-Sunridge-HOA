@@ -45,6 +45,6 @@ namespace SunridgeHOA.Models
 
         //gk
         public DbSet<Photo> Photo { get; set; }
-        public DbSet<NewsItem> NewsItem { get; set; }
+        //public DbSet<NewsItem> NewsItem { get; set; }
     }
 }
