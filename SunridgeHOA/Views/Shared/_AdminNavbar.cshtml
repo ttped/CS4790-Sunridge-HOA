@@ -38,6 +38,13 @@
                     </ul>
                 </div>
             </li>
+            <li class="nav-item">
+            <a class="nav-link fas fa-camera" href="~/AdminPhotos/Index"> Photos </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link far fa-newspaper" href="~/NewsItem/Index"> News Items </a>
+            </li>
             @if (User.IsInRole(StaticData.SuperAdminEndUser) || User.IsInRole(StaticData.AdminEndUser))
             {
                 <li class="nav-item" style="margin-top:10px;">
