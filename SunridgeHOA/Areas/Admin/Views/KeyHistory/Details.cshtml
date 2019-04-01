@@ -3,70 +3,76 @@
 @{
     ViewData["Title"] = "Details";
 }
+<div class="row col-12">
+    <div class="col-2">
+        <partial name="~/Views/Shared/_AdminNavbar.cshtml" />
+    </div>
+    <div id="windowFrame" class="col-10">
+        <h2>Details</h2>
 
-<h2>Details</h2>
-
-<div>
-    <h4>KeyHistory</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DateIssued)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DateIssued)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DateReturned)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DateReturned)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.PaidAmount)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.PaidAmount)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Key)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Key.SerialNumber)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Owner)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Owner.FullName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.IsArchive)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IsArchive)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.LastModifiedBy)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LastModifiedBy)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.LastModifiedDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LastModifiedDate)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.KeyHistoryId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+        <div>
+            <h4>KeyHistory</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Status)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Status)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.DateIssued)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.DateIssued)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.DateReturned)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.DateReturned)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.PaidAmount)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.PaidAmount)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Key)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Key.SerialNumber)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Owner)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Owner.FullName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.IsArchive)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.IsArchive)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.LastModifiedBy)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.LastModifiedBy)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.LastModifiedDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.LastModifiedDate)
+                </dd>
+            </dl>
+        </div>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.KeyHistoryId">Edit</a> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
 </div>
