@@ -1,20 +1,18 @@
-﻿@*@model IEnumerable<SunridgeHOA.Models.Photos>*@
-@{
-    ViewData["Title"] = "Photos";
-}
+﻿@model IEnumerable<SunridgeHOA.Models.Photo>
 
+@{
+    ViewData["Title"] = "Index";
+}
 <link rel="Stylesheet" href="~/css/Admin/transactions.css" type="text/css" />
 <link rel="Stylesheet" href="~/css/Admin/adminnavbar.css?version=51" type="text/css" />
 <link rel="Stylesheet" href="~/css/Admin/window.css" type="text/css" />
 <link rel="Stylesheet" href="~/css/Admin/table.css" type="text/css" />
 <link rel="Stylesheet" href="~/css/Admin/search-bar.css" type="text/css" />
 
-
 <div class="row col-12">
     <div class="col-2">
         <partial name="~/Views/Shared/_AdminNavbar.cshtml" />
     </div>
-
     <div id="windowFrame" class="col-10">
         <div class="col-12">
             <div class="row">
@@ -29,39 +27,42 @@
                     <a asp-action="Create" class="btn btn-primary float-right"><i class="fas fa-plus"></i> Add Photo</a>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-12">
                     <table id="table" class="table table-striped table-bordered table-sm">
                         <tr>
-                            @*<th>@Html.DisplayNameFor(m => m.Category)</th>
+                            <th>@Html.DisplayNameFor(m => m.Category)</th>
                             <th>@Html.DisplayNameFor(m => m.Title)</th>
-                            <th>@Html.DisplayNameFor(m => m.Writer)</th>
-                            <th>@Html.DisplayNameFor(m => m.Year)</th>*@
+                            <th>@Html.DisplayNameFor(m => m.Owner.FullName)</th>
+                            @*<th>@Html.DisplayNameFor(m => m.OwnerId)</th>*@
+                            <th>@Html.DisplayNameFor(m => m.Year)</th>
+                            <th id="actionsHeader">Actions</th>
 
-                            <th>Category</th>
+                            @*<th>Category</th>
                             <th>Title</th>
                             <th>Writer</th>
                             <th>Year</th>
-                            <th id="actionsHeader">Actions</th>
+                            <th id="actionsHeader">Actions</th>*@
                         </tr>
 
-                        @*@foreach (var item in Model)
+                        @foreach (var item in Model)
                         {
-                            <tr>
-                                <td>@Html.DisplayFor(m => item.Category)</td>
-                                <td>@Html.DisplayFor(m => item.Title)</td>
-                                <td>@Html.DisplayFor(m => item.Writer)</td>
-                                <td>@Html.DisplayFor(m => item.Year)</td>
-                                <td id="actionsRow">
-                                    <a class="fas fa-edit" id="edit" href="#"></a>
-                                    <a class="fas fa-trash-alt" id="delete" href="#"></a>
-                                </td>
-                            </tr>
-                        }*@
+                        <tr>
+                            <td>@Html.DisplayFor(m => item.Category)</td>
+                            <td>@Html.DisplayFor(m => item.Title)</td>
+                            <td>@Html.DisplayFor(m => item.Owner.FullName)</td>
+                            @*<td>@Html.DisplayFor(m => item.OwnerId)</td>*@
+                            <td>@Html.DisplayFor(m => item.Year)</td>
+                            <td id="actionsRow">
+                                <a asp-action="Details" class="fas fa-file-alt" asp-route-id="@item.PhotoId"></a>
+                                <a asp-action="Edit" class="fas fa-edit" asp-route-id="@item.PhotoId"></a>
+                                <a asp-action="Delete" class="fas fa-trash-alt" asp-route-id="@item.PhotoId"></a>
+                            </td>
+                        </tr>
+                        }
 
-                        @for (int i = 0; i < 5; i++)
-                        {
+                        @*@for (int i = 0; i < 5; i++)
+                          {
                             <tr>
                                 <td>Summer</td>
                                 <td>Goldfinch at Three Froks</td>
@@ -73,7 +74,19 @@
                                     <a asp-action="Delete" class="fas fa-trash-alt" id="delete"></a>
                                 </td>
                             </tr>
-                        }
+
+                            <tr>
+                                <td>Winter</td>
+                                <td>One of the roads in the highlands</td>
+                                <td>Brent Frost</td>
+                                <td>Unknown</td>
+                                <td id="actionsRow">
+                                    <a asp-action="Details" class="fas fa-file-alt" id="details"></a>
+                                    <a asp-action="Edit" class="fas fa-edit" id="edit"></a>
+                                    <a asp-action="Delete" class="fas fa-trash-alt" id="delete"></a>
+                                </td>
+                            </tr>
+                        }*@
                     </table>
                 </div>
             </div>

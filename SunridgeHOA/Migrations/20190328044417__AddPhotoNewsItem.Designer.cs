@@ -10,14 +10,14 @@ using SunridgeHOA.Models;
 namespace SunridgeHOA.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190315011533_AddApplicationUser")]
-    partial class AddApplicationUser
+    [Migration("20190328044417__AddPhotoNewsItem")]
+    partial class _AddPhotoNewsItem
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -523,6 +523,25 @@ namespace SunridgeHOA.Migrations
                     b.ToTable("Maintenance");
                 });
 
+            modelBuilder.Entity("SunridgeHOA.Models.NewsItem", b =>
+                {
+                    b.Property<int>("NewsItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content");
+
+                    b.Property<string>("Header");
+
+                    b.Property<string>("Image");
+
+                    b.Property<int>("Year");
+
+                    b.HasKey("NewsItemId");
+
+                    b.ToTable("NewsItem");
+                });
+
             modelBuilder.Entity("SunridgeHOA.Models.Owner", b =>
                 {
                     b.Property<int>("OwnerId")
@@ -535,11 +554,14 @@ namespace SunridgeHOA.Migrations
 
                     b.Property<int?>("CoOwnerId");
 
-                    b.Property<string>("EmergencyContactName");
+                    b.Property<string>("EmergencyContactName")
+                        .IsRequired();
 
-                    b.Property<string>("EmergencyContactPhone");
+                    b.Property<string>("EmergencyContactPhone")
+                        .IsRequired();
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .IsRequired();
 
                     b.Property<bool>("IsArchive");
 
@@ -549,7 +571,8 @@ namespace SunridgeHOA.Migrations
 
                     b.Property<DateTime>("LastModifiedDate");
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .IsRequired();
 
                     b.Property<string>("Occupation");
 
@@ -624,6 +647,29 @@ namespace SunridgeHOA.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("OwnerHistory");
+                });
+
+            modelBuilder.Entity("SunridgeHOA.Models.Photo", b =>
+                {
+                    b.Property<int>("PhotoId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Category");
+
+                    b.Property<string>("Image");
+
+                    b.Property<int>("OwnerId");
+
+                    b.Property<string>("Title");
+
+                    b.Property<int>("Year");
+
+                    b.HasKey("PhotoId");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("Photo");
                 });
 
             modelBuilder.Entity("SunridgeHOA.Models.Transaction", b =>
@@ -848,6 +894,14 @@ namespace SunridgeHOA.Migrations
 
                     b.HasOne("SunridgeHOA.Models.Owner", "Owner")
                         .WithMany("OwnerHistories")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SunridgeHOA.Models.Photo", b =>
+                {
+                    b.HasOne("SunridgeHOA.Models.Owner", "Owner")
+                        .WithMany()
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
