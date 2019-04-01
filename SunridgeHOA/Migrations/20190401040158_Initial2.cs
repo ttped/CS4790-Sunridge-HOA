@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SunridgeHOA.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Initial2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,8 @@ namespace SunridgeHOA.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    StreetAddress = table.Column<string>(nullable: true),
+                    StreetAddress = table.Column<string>(nullable: false),
+                    Apartment = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true),
                     State = table.Column<string>(nullable: true),
                     Zip = table.Column<string>(nullable: true),
@@ -42,28 +43,18 @@ namespace SunridgeHOA.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
+                name: "Banner",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Header = table.Column<string>(nullable: true),
+                    Body = table.Column<string>(nullable: true),
+                    Image = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.PrimaryKey("PK_Banner", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -74,7 +65,8 @@ namespace SunridgeHOA.Migrations
                     LastModifiedBy = table.Column<string>(nullable: true),
                     LastModifiedDate = table.Column<DateTime>(nullable: false),
                     ClassifiedCategoryId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -166,6 +158,22 @@ namespace SunridgeHOA.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "NewsItem",
+                columns: table => new
+                {
+                    NewsItemId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Header = table.Column<string>(nullable: true),
+                    Content = table.Column<string>(nullable: true),
+                    Year = table.Column<int>(nullable: false),
+                    Image = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NewsItem", x => x.NewsItemId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TransactionType",
                 columns: table => new
                 {
@@ -182,18 +190,42 @@ namespace SunridgeHOA.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Lot",
+                columns: table => new
+                {
+                    LotId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    AddressId = table.Column<int>(nullable: false),
+                    LotNumber = table.Column<string>(nullable: false),
+                    TaxId = table.Column<string>(nullable: true),
+                    IsArchive = table.Column<bool>(nullable: false),
+                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedDate = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Lot", x => x.LotId);
+                    table.ForeignKey(
+                        name: "FK_Lot_Address_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Address",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Owner",
                 columns: table => new
                 {
                     OwnerId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     AddressId = table.Column<int>(nullable: false),
-                    CoOwnerId = table.Column<int>(nullable: true),
-                    IsPrimary = table.Column<bool>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
+                    FirstName = table.Column<string>(nullable: false),
+                    LastName = table.Column<string>(nullable: false),
                     Occupation = table.Column<string>(nullable: true),
-                    Birthday = table.Column<DateTime>(nullable: false),
+                    Birthday = table.Column<DateTime>(nullable: true),
+                    Phone = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: false),
                     EmergencyContactName = table.Column<string>(nullable: true),
                     EmergencyContactPhone = table.Column<string>(nullable: true),
                     IsArchive = table.Column<bool>(nullable: false),
@@ -209,12 +241,6 @@ namespace SunridgeHOA.Migrations
                         principalTable: "Address",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Owner_Owner_CoOwnerId",
-                        column: x => x.CoOwnerId,
-                        principalTable: "Owner",
-                        principalColumn: "OwnerId",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -236,6 +262,352 @@ namespace SunridgeHOA.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Maintenance",
+                columns: table => new
+                {
+                    IsArchive = table.Column<bool>(nullable: false),
+                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedDate = table.Column<DateTime>(nullable: false),
+                    MaintenanceId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CommonAreaAssetId = table.Column<int>(nullable: false),
+                    Cost = table.Column<float>(nullable: false),
+                    DateCompleted = table.Column<DateTime>(nullable: false),
+                    Description = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Maintenance", x => x.MaintenanceId);
+                    table.ForeignKey(
+                        name: "FK_Maintenance_CommonAreaAsset_CommonAreaAssetId",
+                        column: x => x.CommonAreaAssetId,
+                        principalTable: "CommonAreaAsset",
+                        principalColumn: "CommonAreaAssetId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LotHistory",
+                columns: table => new
+                {
+                    LotHistoryId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    LotId = table.Column<int>(nullable: false),
+                    HistoryTypeId = table.Column<int>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    PrivacyLevel = table.Column<string>(nullable: true),
+                    IsArchive = table.Column<bool>(nullable: false),
+                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedDate = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LotHistory", x => x.LotHistoryId);
+                    table.ForeignKey(
+                        name: "FK_LotHistory_HistoryType_HistoryTypeId",
+                        column: x => x.HistoryTypeId,
+                        principalTable: "HistoryType",
+                        principalColumn: "HistoryTypeId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LotHistory_Lot_LotId",
+                        column: x => x.LotId,
+                        principalTable: "Lot",
+                        principalColumn: "LotId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LotInventory",
+                columns: table => new
+                {
+                    LotInventoryId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    LotId = table.Column<int>(nullable: false),
+                    InventoryId = table.Column<int>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    IsArchive = table.Column<bool>(nullable: false),
+                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedDate = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LotInventory", x => x.LotInventoryId);
+                    table.ForeignKey(
+                        name: "FK_LotInventory_Inventory_InventoryId",
+                        column: x => x.InventoryId,
+                        principalTable: "Inventory",
+                        principalColumn: "InventoryId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LotInventory_Lot_LotId",
+                        column: x => x.LotId,
+                        principalTable: "Lot",
+                        principalColumn: "LotId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    PasswordHash = table.Column<string>(nullable: true),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    OwnerId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Owner_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "Owner",
+                        principalColumn: "OwnerId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ClassifiedListing",
+                columns: table => new
+                {
+                    IsArchive = table.Column<bool>(nullable: false),
+                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedDate = table.Column<DateTime>(nullable: false),
+                    ClassifiedListingId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    OwnerId = table.Column<int>(nullable: false),
+                    ClassifiedCategoryId = table.Column<int>(nullable: false),
+                    ItemName = table.Column<string>(nullable: true),
+                    Price = table.Column<float>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    ListingDate = table.Column<DateTime>(nullable: false),
+                    Phone = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClassifiedListing", x => x.ClassifiedListingId);
+                    table.ForeignKey(
+                        name: "FK_ClassifiedListing_ClassifiedCategory_ClassifiedCategoryId",
+                        column: x => x.ClassifiedCategoryId,
+                        principalTable: "ClassifiedCategory",
+                        principalColumn: "ClassifiedCategoryId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ClassifiedListing_Owner_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "Owner",
+                        principalColumn: "OwnerId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "KeyHistory",
+                columns: table => new
+                {
+                    IsArchive = table.Column<bool>(nullable: false),
+                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedDate = table.Column<DateTime>(nullable: false),
+                    KeyHistoryId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    KeyId = table.Column<int>(nullable: false),
+                    OwnerId = table.Column<int>(nullable: false),
+                    Status = table.Column<string>(nullable: true),
+                    DateIssued = table.Column<DateTime>(nullable: false),
+                    DateReturned = table.Column<DateTime>(nullable: false),
+                    PaidAmount = table.Column<float>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_KeyHistory", x => x.KeyHistoryId);
+                    table.ForeignKey(
+                        name: "FK_KeyHistory_Key_KeyId",
+                        column: x => x.KeyId,
+                        principalTable: "Key",
+                        principalColumn: "KeyId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_KeyHistory_Owner_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "Owner",
+                        principalColumn: "OwnerId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OwnerContactType",
+                columns: table => new
+                {
+                    IsArchive = table.Column<bool>(nullable: false),
+                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedDate = table.Column<DateTime>(nullable: false),
+                    OwnerContactTypeId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    OwnerId = table.Column<int>(nullable: false),
+                    ContactTypeId = table.Column<int>(nullable: false),
+                    ContactValue = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OwnerContactType", x => x.OwnerContactTypeId);
+                    table.ForeignKey(
+                        name: "FK_OwnerContactType_ContactType_ContactTypeId",
+                        column: x => x.ContactTypeId,
+                        principalTable: "ContactType",
+                        principalColumn: "ContactTypeId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OwnerContactType_Owner_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "Owner",
+                        principalColumn: "OwnerId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OwnerHistory",
+                columns: table => new
+                {
+                    IsArchive = table.Column<bool>(nullable: false),
+                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedDate = table.Column<DateTime>(nullable: false),
+                    OwnerHistoryId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    OwnerId = table.Column<int>(nullable: false),
+                    HistoryTypeId = table.Column<int>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    Hours = table.Column<int>(nullable: true),
+                    Status = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OwnerHistory", x => x.OwnerHistoryId);
+                    table.ForeignKey(
+                        name: "FK_OwnerHistory_HistoryType_HistoryTypeId",
+                        column: x => x.HistoryTypeId,
+                        principalTable: "HistoryType",
+                        principalColumn: "HistoryTypeId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OwnerHistory_Owner_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "Owner",
+                        principalColumn: "OwnerId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OwnerLot",
+                columns: table => new
+                {
+                    IsArchive = table.Column<bool>(nullable: false),
+                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedDate = table.Column<DateTime>(nullable: false),
+                    OwnerLotId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    OwnerId = table.Column<int>(nullable: false),
+                    LotId = table.Column<int>(nullable: false),
+                    IsPrimary = table.Column<bool>(nullable: false),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    EndDate = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OwnerLot", x => x.OwnerLotId);
+                    table.ForeignKey(
+                        name: "FK_OwnerLot_Lot_LotId",
+                        column: x => x.LotId,
+                        principalTable: "Lot",
+                        principalColumn: "LotId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OwnerLot_Owner_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "Owner",
+                        principalColumn: "OwnerId",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Photo",
+                columns: table => new
+                {
+                    PhotoId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    OwnerId = table.Column<int>(nullable: false),
+                    Category = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: true),
+                    Year = table.Column<int>(nullable: false),
+                    Image = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Photo", x => x.PhotoId);
+                    table.ForeignKey(
+                        name: "FK_Photo_Owner_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "Owner",
+                        principalColumn: "OwnerId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Transaction",
+                columns: table => new
+                {
+                    IsArchive = table.Column<bool>(nullable: false),
+                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedDate = table.Column<DateTime>(nullable: false),
+                    TransactionId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    LotId = table.Column<int>(nullable: false),
+                    OwnerId = table.Column<int>(nullable: false),
+                    TransactionTypeId = table.Column<int>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    Amount = table.Column<float>(nullable: false),
+                    DateAdded = table.Column<DateTime>(nullable: false),
+                    DatePaid = table.Column<DateTime>(nullable: false),
+                    Status = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transaction", x => x.TransactionId);
+                    table.ForeignKey(
+                        name: "FK_Transaction_Lot_LotId",
+                        column: x => x.LotId,
+                        principalTable: "Lot",
+                        principalColumn: "LotId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Transaction_Owner_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "Owner",
+                        principalColumn: "OwnerId",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_Transaction_TransactionType_TransactionTypeId",
+                        column: x => x.TransactionTypeId,
+                        principalTable: "TransactionType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -324,271 +696,6 @@ namespace SunridgeHOA.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Maintenance",
-                columns: table => new
-                {
-                    IsArchive = table.Column<bool>(nullable: false),
-                    LastModifiedBy = table.Column<string>(nullable: true),
-                    LastModifiedDate = table.Column<DateTime>(nullable: false),
-                    MaintenanceId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CommonAreaAssetId = table.Column<int>(nullable: false),
-                    Cost = table.Column<float>(nullable: false),
-                    DateCompleted = table.Column<DateTime>(nullable: false),
-                    Description = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Maintenance", x => x.MaintenanceId);
-                    table.ForeignKey(
-                        name: "FK_Maintenance_CommonAreaAsset_CommonAreaAssetId",
-                        column: x => x.CommonAreaAssetId,
-                        principalTable: "CommonAreaAsset",
-                        principalColumn: "CommonAreaAssetId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ClassifiedListing",
-                columns: table => new
-                {
-                    IsArchive = table.Column<bool>(nullable: false),
-                    LastModifiedBy = table.Column<string>(nullable: true),
-                    LastModifiedDate = table.Column<DateTime>(nullable: false),
-                    ClassifiedListingId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    OwnerId = table.Column<int>(nullable: false),
-                    ClassifiedCategoryId = table.Column<int>(nullable: false),
-                    ItemName = table.Column<string>(nullable: true),
-                    Price = table.Column<float>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    ListingDate = table.Column<DateTime>(nullable: false),
-                    Phone = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ClassifiedListing", x => x.ClassifiedListingId);
-                    table.ForeignKey(
-                        name: "FK_ClassifiedListing_ClassifiedCategory_ClassifiedCategoryId",
-                        column: x => x.ClassifiedCategoryId,
-                        principalTable: "ClassifiedCategory",
-                        principalColumn: "ClassifiedCategoryId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ClassifiedListing_Owner_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "Owner",
-                        principalColumn: "OwnerId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "KeyHistory",
-                columns: table => new
-                {
-                    IsArchive = table.Column<bool>(nullable: false),
-                    LastModifiedBy = table.Column<string>(nullable: true),
-                    LastModifiedDate = table.Column<DateTime>(nullable: false),
-                    KeyHistoryId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    KeyId = table.Column<int>(nullable: false),
-                    OwnerId = table.Column<int>(nullable: false),
-                    Status = table.Column<string>(nullable: true),
-                    DateIssued = table.Column<DateTime>(nullable: false),
-                    DateReturned = table.Column<DateTime>(nullable: false),
-                    PaidAmount = table.Column<float>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_KeyHistory", x => x.KeyHistoryId);
-                    table.ForeignKey(
-                        name: "FK_KeyHistory_Key_KeyId",
-                        column: x => x.KeyId,
-                        principalTable: "Key",
-                        principalColumn: "KeyId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_KeyHistory_Owner_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "Owner",
-                        principalColumn: "OwnerId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Lot",
-                columns: table => new
-                {
-                    LotId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    AddressId = table.Column<int>(nullable: false),
-                    OwnerId = table.Column<int>(nullable: false),
-                    LotNumber = table.Column<string>(nullable: true),
-                    Status = table.Column<string>(nullable: true),
-                    IsArchive = table.Column<bool>(nullable: false),
-                    LastModifiedBy = table.Column<string>(nullable: true),
-                    LastModifiedDate = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Lot", x => x.LotId);
-                    table.ForeignKey(
-                        name: "FK_Lot_Address_AddressId",
-                        column: x => x.AddressId,
-                        principalTable: "Address",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Lot_Owner_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "Owner",
-                        principalColumn: "OwnerId",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OwnerContactType",
-                columns: table => new
-                {
-                    IsArchive = table.Column<bool>(nullable: false),
-                    LastModifiedBy = table.Column<string>(nullable: true),
-                    LastModifiedDate = table.Column<DateTime>(nullable: false),
-                    OwnerContactTypeId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    OwnerId = table.Column<int>(nullable: false),
-                    ContactTypeId = table.Column<int>(nullable: false),
-                    ContactValue = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OwnerContactType", x => x.OwnerContactTypeId);
-                    table.ForeignKey(
-                        name: "FK_OwnerContactType_ContactType_ContactTypeId",
-                        column: x => x.ContactTypeId,
-                        principalTable: "ContactType",
-                        principalColumn: "ContactTypeId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OwnerContactType_Owner_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "Owner",
-                        principalColumn: "OwnerId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "LotInventory",
-                columns: table => new
-                {
-                    LotInventoryId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    LotId = table.Column<int>(nullable: false),
-                    InventoryId = table.Column<int>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    IsArchive = table.Column<bool>(nullable: false),
-                    LastModifiedBy = table.Column<string>(nullable: true),
-                    LastModifiedDate = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LotInventory", x => x.LotInventoryId);
-                    table.ForeignKey(
-                        name: "FK_LotInventory_Inventory_InventoryId",
-                        column: x => x.InventoryId,
-                        principalTable: "Inventory",
-                        principalColumn: "InventoryId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_LotInventory_Lot_LotId",
-                        column: x => x.LotId,
-                        principalTable: "Lot",
-                        principalColumn: "LotId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OwnerHistory",
-                columns: table => new
-                {
-                    OwnerHistoryId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    LogId = table.Column<int>(nullable: false),
-                    OwnerId = table.Column<int>(nullable: false),
-                    HistoryTypeId = table.Column<int>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    PrivacyLevel = table.Column<string>(nullable: true),
-                    IsArchive = table.Column<bool>(nullable: false),
-                    LastModifiedBy = table.Column<string>(nullable: true),
-                    LastModifiedDate = table.Column<DateTime>(nullable: false),
-                    LotId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OwnerHistory", x => x.OwnerHistoryId);
-                    table.ForeignKey(
-                        name: "FK_OwnerHistory_HistoryType_HistoryTypeId",
-                        column: x => x.HistoryTypeId,
-                        principalTable: "HistoryType",
-                        principalColumn: "HistoryTypeId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OwnerHistory_Lot_LotId",
-                        column: x => x.LotId,
-                        principalTable: "Lot",
-                        principalColumn: "LotId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_OwnerHistory_Owner_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "Owner",
-                        principalColumn: "OwnerId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Transaction",
-                columns: table => new
-                {
-                    IsArchive = table.Column<bool>(nullable: false),
-                    LastModifiedBy = table.Column<string>(nullable: true),
-                    LastModifiedDate = table.Column<DateTime>(nullable: false),
-                    TransactionId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    LotId = table.Column<int>(nullable: false),
-                    OwnerId = table.Column<int>(nullable: false),
-                    TransactionTypeId = table.Column<int>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    Amount = table.Column<float>(nullable: false),
-                    DateAdded = table.Column<DateTime>(nullable: false),
-                    DatePaid = table.Column<DateTime>(nullable: false),
-                    Status = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Transaction", x => x.TransactionId);
-                    table.ForeignKey(
-                        name: "FK_Transaction_Lot_LotId",
-                        column: x => x.LotId,
-                        principalTable: "Lot",
-                        principalColumn: "LotId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Transaction_Owner_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "Owner",
-                        principalColumn: "OwnerId",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_Transaction_TransactionType_TransactionTypeId",
-                        column: x => x.TransactionTypeId,
-                        principalTable: "TransactionType",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "File",
                 columns: table => new
                 {
@@ -597,7 +704,7 @@ namespace SunridgeHOA.Migrations
                     LastModifiedDate = table.Column<DateTime>(nullable: false),
                     FileId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    OwnerHistoryId = table.Column<int>(nullable: false),
+                    LotHistoryId = table.Column<int>(nullable: false),
                     ClassifiedListingId = table.Column<int>(nullable: false),
                     IsMainImage = table.Column<int>(nullable: false),
                     FileURL = table.Column<string>(nullable: true),
@@ -617,11 +724,47 @@ namespace SunridgeHOA.Migrations
                         principalColumn: "ClassifiedListingId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_File_OwnerHistory_OwnerHistoryId",
+                        name: "FK_File_LotHistory_LotHistoryId",
+                        column: x => x.LotHistoryId,
+                        principalTable: "LotHistory",
+                        principalColumn: "LotHistoryId",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comment",
+                columns: table => new
+                {
+                    CommentId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    LotHistoryId = table.Column<int>(nullable: true),
+                    OwnerHistoryId = table.Column<int>(nullable: true),
+                    OwnerId = table.Column<int>(nullable: false),
+                    Content = table.Column<string>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false),
+                    Private = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comment", x => x.CommentId);
+                    table.ForeignKey(
+                        name: "FK_Comment_LotHistory_LotHistoryId",
+                        column: x => x.LotHistoryId,
+                        principalTable: "LotHistory",
+                        principalColumn: "LotHistoryId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Comment_OwnerHistory_OwnerHistoryId",
                         column: x => x.OwnerHistoryId,
                         principalTable: "OwnerHistory",
                         principalColumn: "OwnerHistoryId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Comment_Owner_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "Owner",
+                        principalColumn: "OwnerId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -664,6 +807,11 @@ namespace SunridgeHOA.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_OwnerId",
+                table: "AspNetUsers",
+                column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ClassifiedListing_ClassifiedCategoryId",
                 table: "ClassifiedListing",
                 column: "ClassifiedCategoryId");
@@ -674,14 +822,29 @@ namespace SunridgeHOA.Migrations
                 column: "OwnerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comment_LotHistoryId",
+                table: "Comment",
+                column: "LotHistoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comment_OwnerHistoryId",
+                table: "Comment",
+                column: "OwnerHistoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comment_OwnerId",
+                table: "Comment",
+                column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_File_ClassifiedListingId",
                 table: "File",
                 column: "ClassifiedListingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_File_OwnerHistoryId",
+                name: "IX_File_LotHistoryId",
                 table: "File",
-                column: "OwnerHistoryId");
+                column: "LotHistoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_KeyHistory_KeyId",
@@ -699,9 +862,14 @@ namespace SunridgeHOA.Migrations
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Lot_OwnerId",
-                table: "Lot",
-                column: "OwnerId");
+                name: "IX_LotHistory_HistoryTypeId",
+                table: "LotHistory",
+                column: "HistoryTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LotHistory_LotId",
+                table: "LotHistory",
+                column: "LotId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LotInventory_InventoryId",
@@ -724,11 +892,6 @@ namespace SunridgeHOA.Migrations
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Owner_CoOwnerId",
-                table: "Owner",
-                column: "CoOwnerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_OwnerContactType_ContactTypeId",
                 table: "OwnerContactType",
                 column: "ContactTypeId");
@@ -744,13 +907,23 @@ namespace SunridgeHOA.Migrations
                 column: "HistoryTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OwnerHistory_LotId",
+                name: "IX_OwnerHistory_OwnerId",
                 table: "OwnerHistory",
+                column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OwnerLot_LotId",
+                table: "OwnerLot",
                 column: "LotId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OwnerHistory_OwnerId",
-                table: "OwnerHistory",
+                name: "IX_OwnerLot_OwnerId",
+                table: "OwnerLot",
+                column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photo_OwnerId",
+                table: "Photo",
                 column: "OwnerId");
 
             migrationBuilder.CreateIndex(
@@ -787,6 +960,12 @@ namespace SunridgeHOA.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Banner");
+
+            migrationBuilder.DropTable(
+                name: "Comment");
+
+            migrationBuilder.DropTable(
                 name: "File");
 
             migrationBuilder.DropTable(
@@ -799,7 +978,16 @@ namespace SunridgeHOA.Migrations
                 name: "Maintenance");
 
             migrationBuilder.DropTable(
+                name: "NewsItem");
+
+            migrationBuilder.DropTable(
                 name: "OwnerContactType");
+
+            migrationBuilder.DropTable(
+                name: "OwnerLot");
+
+            migrationBuilder.DropTable(
+                name: "Photo");
 
             migrationBuilder.DropTable(
                 name: "Transaction");
@@ -811,10 +999,13 @@ namespace SunridgeHOA.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
+                name: "OwnerHistory");
+
+            migrationBuilder.DropTable(
                 name: "ClassifiedListing");
 
             migrationBuilder.DropTable(
-                name: "OwnerHistory");
+                name: "LotHistory");
 
             migrationBuilder.DropTable(
                 name: "Key");
@@ -835,13 +1026,13 @@ namespace SunridgeHOA.Migrations
                 name: "ClassifiedCategory");
 
             migrationBuilder.DropTable(
+                name: "Owner");
+
+            migrationBuilder.DropTable(
                 name: "HistoryType");
 
             migrationBuilder.DropTable(
                 name: "Lot");
-
-            migrationBuilder.DropTable(
-                name: "Owner");
 
             migrationBuilder.DropTable(
                 name: "Address");
