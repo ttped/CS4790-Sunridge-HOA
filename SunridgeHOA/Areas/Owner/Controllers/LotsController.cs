@@ -26,6 +26,15 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         // GET: Admin/Lots
         public async Task<IActionResult> Index(string query)
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            // Redirect to /MyLots if the user is not an admin
+            if (!roles.Contains("Admin") || !roles.Contains("SuperAdmin"))
+            {
+                return RedirectToAction(nameof(MyLots));
+            }
+
             List<Lot> lots = null;
             // Need to filter the search
             if (!String.IsNullOrEmpty(query))
