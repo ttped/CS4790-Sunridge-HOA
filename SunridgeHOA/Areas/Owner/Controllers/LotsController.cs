@@ -24,12 +24,27 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         }
 
         // GET: Admin/Lots
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string query)
         {
-            var lots = await _context.Lot
-                .Include(l => l.Address)
-                .OrderBy(u => u.LotNumber)
-                .ToListAsync();
+            List<Lot> lots = null;
+            // Need to filter the search
+            if (!String.IsNullOrEmpty(query))
+            {
+                lots = await _context.Lot
+                    .Include(l => l.Address)
+                    .Where(u => u.LotNumber.Contains(query)) // use contains so searching "H2" picks up all H2** lots
+                    .OrderBy(u => u.LotNumber)
+                    .ToListAsync();
+            }
+            // No search string - include all lots
+            else
+            {
+                lots = await _context.Lot
+                       .Include(l => l.Address)
+                       
+                       .OrderBy(u => u.LotNumber)
+                       .ToListAsync();
+            }
 
             var vm = new List<LotIndexVM>();
 
