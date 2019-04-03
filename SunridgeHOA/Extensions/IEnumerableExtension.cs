@@ -29,6 +29,14 @@ namespace SunridgeHOA.Extensions
                                Value = item.GetPropertyValue("OwnerId"),
                                Selected = item.GetPropertyValue("OwnerId").Equals(selectedValue.ToString())
                            };
+                case "Key":
+                    return from item in items
+                           select new SelectListItem
+                           {
+                               Text = item.GetPropertyValue("KeyId"),
+                               Value = item.GetPropertyValue("KeyId"),
+                               Selected = item.GetPropertyValue("KeyId").Equals(selectedValue.ToString())
+                           };
                 default:
                     return from item in items
                            select new SelectListItem
@@ -38,10 +46,30 @@ namespace SunridgeHOA.Extensions
                                Selected = item.Equals(null)
                            };
 
-            }
-
-            
-            
+            } 
         }
+
+        public static IEnumerable<SelectListItem> ownerNameToSelectListItem<T>(this IEnumerable<T> items, int selectedValue)
+        {
+            return from item in items
+                   select new SelectListItem
+                   {
+                       Text = item.GetPropertyValue("FirstName") + " " + item.GetPropertyValue("LastName"),
+                       Value = item.GetPropertyValue("OwnerId"),
+                       Selected = item.GetPropertyValue("OwnerId").Equals(selectedValue.ToString())
+                   };
+        }
+
+        public static IEnumerable<SelectListItem> keyIdToSelectListItem<T>(this IEnumerable<T> items, int selectedValue)
+        {
+            return from item in items
+                   select new SelectListItem
+                   {
+                       Text = item.GetPropertyValue("SerialNumber"),
+                       Value = item.GetPropertyValue("KeyId"),
+                       Selected = item.GetPropertyValue("KeyId").Equals(selectedValue.ToString())
+                   };
+        }
+
     }
 }

@@ -1,0 +1,92 @@
+﻿@model List<SunridgeHOA.Models.KeyHistory>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="row col-12">
+    <div class="col-2">
+        <partial name="~/Views/Shared/_AdminNavbar.cshtml" />
+    </div>
+    <div id="windowFrame" class="col-10">
+        <h2>Index</h2>
+
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        DateIssued
+                    </th>
+                    <th>
+                        DateReturned
+                    </th>
+                    <th>
+                        PaidAmount
+                    </th>
+                    <th>
+                        Key
+                    </th>
+                    <th>
+                        Owner
+                    </th>
+                    <th>
+                        IsArchive
+                    </th>
+                    <th>
+                        LastModifiedBy
+                    </th>
+                    <th>
+                        LastModifiedDate
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateIssued)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateReturned)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PaidAmount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Key.SerialNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Owner.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsArchive)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastModifiedBy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastModifiedDate)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.KeyHistoryId">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.KeyHistoryId">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.KeyHistoryId">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

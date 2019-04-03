@@ -12,5 +12,6 @@ namespace SunridgeHOA.Areas.Owner.Models
         public Address Address { get; set; }
         public int OwnerId { get; set; }
         public List<int> OwnerIds { get; set; }
+        public List<int> SelectedItems { get; set; }
     }
 }

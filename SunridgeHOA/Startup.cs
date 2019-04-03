@@ -81,7 +81,7 @@ namespace SunridgeHOA
                 //  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             });
 
-            SeedData.EnsurePopulated(app);
+            SeedData.EnsurePopulated(app, serviceProvider);
             CreateRoles(serviceProvider).Wait();
         }
 
@@ -116,7 +116,7 @@ namespace SunridgeHOA
                 var result = await userManager.CreateAsync(superAdmin, pass);
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(superAdmin, "SuperAdmin");
+                    await userManager.AddToRolesAsync(superAdmin, new List<string> { "SuperAdmin", "Admin" });
                 }
             }
 
@@ -124,7 +124,7 @@ namespace SunridgeHOA
             {
                 UserName = "owner",
                 Email = "owner@email.com",
-                OwnerId = 2
+                OwnerId = 4
             };
 
             user = await userManager.FindByEmailAsync("owner@email.com");

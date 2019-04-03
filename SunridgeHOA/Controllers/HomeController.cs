@@ -11,17 +11,17 @@ namespace SunridgeHOA.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _db;
 
-        public HomeController(ApplicationDbContext context)
+        public HomeController(ApplicationDbContext db)
         {
-            _context = context;
+            _db = db;
         }
 
         public async Task<IActionResult> Index()
         {
             // maybe need to send a model with the carousel news data to the view?
-            return View(await _context.Banner.ToListAsync());
+            return View(await _db.Banner.ToListAsync());
         }
 
         public IActionResult BoardMembers()
@@ -54,13 +54,33 @@ namespace SunridgeHOA.Controllers
             return View();
         }
 
-        public IActionResult News(int year)
+        //public IActionResult News(int year)
+        //{
+        //    // Change this to pull in news from the db for the given year
+        //    // Change to populate a single view rather than one for each year
+        //    var viewName = $"News{year}";
+        //    return View(viewName);
+        //}
+
+        public async Task<IActionResult> News(int year)
         {
-            // Change this to pull in news from the db for the given year
-            // Change to populate a single view rather than one for each year
-            var viewName = $"News{year}";
-            return View(viewName);
+            var news = _db.NewsItem;
+            var newsitem = from item in news
+                           where item.Year == year
+                           select item;
+
+            return View(await news.ToListAsync());
         }
+
+        //public async Task<IActionResult> News2019()
+        //{
+        //    var news = _db.NewsItem;
+        //    var newsitem = from item in news
+        //                   where item.Year == 2019
+        //                   select item;
+
+        //    return View(await news.ToListAsync());
+        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

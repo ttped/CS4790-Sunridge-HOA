@@ -3,15 +3,19 @@
     margin-top: 10px;
     width: 100%;
     font-size: 100%;
-
 }
 
 #table #actionsRow {
-    
+
 }
 
 #table #actionsRow a {
-    
+
+}
+
+#table #actionsRow a#details {
+    color: #3b4753;
+    margin-right: 30px;
 }
 
 #table #actionsRow a#edit {

@@ -60,15 +60,12 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                //banner.Image = "hi";
+                string webRootPath = _hostingEnvironment.WebRootPath;
+                var files = HttpContext.Request.Form.Files;
                 _context.Banner.Add(banner);
                 await _context.SaveChangesAsync();
 
-                string webRootPath = _hostingEnvironment.WebRootPath;
-                var files = HttpContext.Request.Form.Files;
-
                 var productsFromDb = _context.Banner.Find(banner.Id);
-                productsFromDb.Image = @"\" + @"img\BannerImages" + @"\" + banner.Id + ".jpg";
                 if (files.Count != 0)
                 {
                     var uploads = Path.Combine(webRootPath, @"img\BannerImages");
@@ -79,9 +76,9 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                         files[0].CopyTo(filestream); // moves to server and renames
                     }
 
-                    banner.Image = @"\" + @"img\BannerImages" + @"\" + banner.Id + extension;
+                    productsFromDb.Image = @"\" + @"img\BannerImages" + @"\" + banner.Id + extension;
                 }
-                
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -101,7 +98,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            return View();
+            return View(item);
         }
 
         // POST: Banner/Edit/5
@@ -116,9 +113,41 @@ namespace SunridgeHOA.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
+                
                 try
                 {
-                    _context.Update(banner);
+                    
+                    var files = HttpContext.Request.Form.Files;
+                    Banner item = await _context.Banner.FindAsync(id);
+                    var extension = Path.GetExtension(item.Image);
+                    if (files.Count != 0)
+                    {
+                        string webRootPath = _hostingEnvironment.WebRootPath;
+                        
+
+                        var uploads = Path.Combine(webRootPath, @"img\BannerImages");
+                        
+                        
+                        if (System.IO.File.Exists(Path.Combine(uploads, item.Id + extension)))
+                        {
+                            System.IO.File.Delete(Path.Combine(uploads, item.Id + extension));
+                        }
+                        var newExtension = Path.GetExtension(files[0].FileName);
+
+                        using (var filestream = new FileStream(Path.Combine(uploads, item.Id + newExtension), FileMode.Create))
+                        {
+                            files[0].CopyTo(filestream); // moves to server and renames
+                        }
+
+                        item.Image = @"\" + @"img\BannerImages" + @"\" + banner.Id + newExtension;
+                    }
+                    else
+                    {
+                        item.Image = @"\" + @"img\BannerImages" + @"\" + banner.Id + extension;
+                    }
+                    item.Header = banner.Header;
+                    item.Body = banner.Body;
+                    _context.Update(item);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -138,15 +167,25 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         }
 
         // GET: Banner/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var item = await _context.Banner.FindAsync(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            return View(item);
         }
 
         // POST: Banner/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id, Banner banner)
+        public async Task<IActionResult> Delete(int id)
         {
             string webRootPath = _hostingEnvironment.WebRootPath;
             Banner item = await _context.Banner.FindAsync(id);

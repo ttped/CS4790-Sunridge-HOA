@@ -6,6 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190315011533_AddApplicationUser.cs" />
+    <Compile Remove="Migrations\20190315011533_AddApplicationUser.Designer.cs" />
+    <Compile Remove="Migrations\20190324070222__AddPhotoNewsItem.cs" />
+    <Compile Remove="Migrations\20190324070222__AddPhotoNewsItem.Designer.cs" />
+    <Compile Remove="Migrations\20190324072549__AddPhoto.cs" />
+    <Compile Remove="Migrations\20190324072549__AddPhoto.Designer.cs" />
+    <Compile Remove="Migrations\20190328043336_newInitial.cs" />
+    <Compile Remove="Migrations\20190328043336_newInitial.Designer.cs" />
     <Compile Remove="Migrations\20190322222152_test.cs" />
     <Compile Remove="Migrations\20190322222152_test.Designer.cs" />
   </ItemGroup>
@@ -13,6 +21,10 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
   </ItemGroup>
 
@@ -25,6 +37,7 @@
 
 
     <Folder Include="Areas\Owner\Models\" />
+    <Folder Include="wwwroot\images\PhotoGallery\" />
     <Folder Include="wwwroot\img\BannerImages\" />
   </ItemGroup>
 
@@ -35,7 +48,6 @@
     <Content Update="Areas\Owner\_ViewStart.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-
   </ItemGroup>
 
 </Project>

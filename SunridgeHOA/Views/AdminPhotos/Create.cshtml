@@ -1,8 +1,5 @@
-﻿@* Binding to ProductTypes Model *@
-@*@model GraniteWarehouse.Models.ViewModels.ProductViewModels
-  @using GraniteWarehouse.Extensions*@
-
-@model SunridgeHOA.Models.Photo
+﻿@*@model SunridgeHOA.Models.Photo*@
+@model SunridgeHOA.Models.ViewModels.AdminPhotoViewModels
 @{
     ViewData["Title"] = "Create";
 }
@@ -13,12 +10,10 @@
 <link rel="Stylesheet" href="~/css/Admin/table.css" type="text/css" />
 <link rel="Stylesheet" href="~/css/Admin/search-bar.css" type="text/css" />
 
-
 <div class="row col-12">
     <div class="col-2">
         <partial name="~/Views/Shared/_AdminNavbar.cshtml" />
     </div>
-
     <div id="windowFrame" class="col-10">
         <div class="col-12">
             <div class="row">
@@ -30,55 +25,59 @@
 
             <form method="post" asp-action="Create" enctype="multipart/form-data">
                 <div class="p-4 border rounded">
-                    @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="form-group row">
                         <div class="col-2">
-                            <label asp-for="Image"></label>
+                            <label asp-for="Photo.Image"></label>
                         </div>
                         <div class="col-5">
                             <input type="file" name="files" class="form-control" />
                         </div>
-                        <span asp-validation-for="Image" class="text-danger"></span>
+                        <span asp-validation-for="Photo.Image" class="text-danger"></span>
                     </div>
 
                     <div class="form-group row">
                         <div class="col-2">
-                            <label asp-for="Title"></label>
+                            <label asp-for="Photo.Title"></label>
                         </div>
                         <div class="col-5">
-                            <input asp-for="Title" class="form-control" />
+                            <input asp-for="Photo.Title" class="form-control" />
                         </div>
-                        <span asp-validation-for="Title" class="text-danger"></span>
+                        <span asp-validation-for="Photo.Title" class="text-danger"></span>
                     </div>
+
+                    @*<div class="form-group row">
+                        <div class="col-2">
+                            <label asp-for="Photo.Owner.FullName"></label>
+                        </div>
+                        <div class="col-5">
+                            <input asp-for="Photo.Owner.FullName" class="form-control" />
+                        </div>
+                        <span asp-validation-for="Photo.Owner.FullName" class="text-danger"></span>
+                    </div>*@
+
                     <div class="form-group row">
                         <div class="col-2">
-                            <label asp-for="Writer"></label>
+                            <label asp-for="Photo.Year"></label>
                         </div>
                         <div class="col-5">
-                            <input asp-for="Writer" class="form-control" />
+                            <input asp-for="Photo.Year" class="form-control" />
                         </div>
-                        <span asp-validation-for="Writer" class="text-danger"></span>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-2">
-                            <label asp-for="Year"></label>
-                        </div>
-                        <div class="col-5">
-                            <input asp-for="Year" class="form-control" />
-                        </div>
-                        <span asp-validation-for="Year" class="text-danger"></span>
+                        <span asp-validation-for="Photo.Year" class="text-danger"></span>
                     </div>
 
                     <div class="form-group row">
                         <div class="col-2">
-                            <label asp-for="Category"></label>
+                            <label asp-for="Photo.Category"></label>
                         </div>
                         <div class="col-5">
-                            <select asp-for="Category" class="form-control" />
+                            <select asp-for="Photo.Category" class="form-control" asp-items="ViewBag.Category"></select>
                             @*<select asp-for="@Model.Products.SpecialTagsId" asp-items="Model.SpecialTags.ToSelectListItem(Model.Products.SpecialTagsId)" class="form-control"></select>*@
                         </div>
+                        <span asp-validation-for="Photo.Category" class="text-danger"></span>
                     </div>
+
                     <br />
                     <div class="form-group">
                         <input type="submit" class="btn btn-primary" value="Create" />

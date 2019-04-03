@@ -1,0 +1,81 @@
+﻿@model SunridgeHOA.Models.ViewModels.KeyHistoryViewModel
+@using SunridgeHOA.Extensions
+@{
+    ViewData["Title"] = "Edit";
+}
+<div class="row col-12">
+    <div class="col-2">
+        <partial name="~/Views/Shared/_AdminNavbar.cshtml" />
+    </div>
+    <div id="windowFrame" class="col-10">
+        <h2>Edit</h2>
+
+        <h4>KeyHistory</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="KeyHistory.KeyHistoryId" />
+                    <div class="form-group">
+                        <label asp-for="KeyHistory.KeyId" class="control-label"></label>
+                        <select asp-for="KeyHistory.KeyId" class="form-control" asp-items="Model.Key.keyIdToSelectListItem(Model.KeyHistory.KeyHistoryId)"></select>
+                        <span asp-validation-for="KeyHistory.KeyId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="KeyHistory.OwnerId" class="control-label"></label>
+                        <select asp-for="KeyHistory.OwnerId" class="form-control" asp-items="Model.Owner.ownerNameToSelectListItem(Model.KeyHistory.KeyHistoryId)"></select>
+                        <span asp-validation-for="KeyHistory.OwnerId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="KeyHistory.Status" class="control-label"></label>
+                        <input asp-for="KeyHistory.Status" class="form-control" />
+                        <span asp-validation-for="KeyHistory.Status" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="KeyHistory.DateIssued" class="control-label"></label>
+                        <input asp-for="KeyHistory.DateIssued" class="form-control" />
+                        <span asp-validation-for="KeyHistory.DateIssued" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="KeyHistory.DateReturned" class="control-label"></label>
+                        <input asp-for="KeyHistory.DateReturned" class="form-control" />
+                        <span asp-validation-for="KeyHistory.DateReturned" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="KeyHistory.PaidAmount" class="control-label"></label>
+                        <input asp-for="KeyHistory.PaidAmount" class="form-control" />
+                        <span asp-validation-for="KeyHistory.PaidAmount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input asp-for="KeyHistory.IsArchive" /> @Html.DisplayNameFor(model => model.KeyHistory.IsArchive)
+                            </label>
+                        </div>
+                    </div>
+
+                    @*<div class="form-group">
+                            <label asp-for="KeyHistory.LastModifiedBy" class="control-label"></label>
+                            <input asp-for="KeyHistory.LastModifiedBy" class="form-control" />
+                            <span asp-validation-for="KeyHistory.LastModifiedBy" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="KeyHistory.LastModifiedDate" class="control-label"></label>
+                            <input asp-for="KeyHistory.LastModifiedDate" class="form-control" />
+                            <span asp-validation-for="KeyHistory.LastModifiedDate" class="text-danger"></span>
+                        </div>*@
+
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-default" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+</div>
+
