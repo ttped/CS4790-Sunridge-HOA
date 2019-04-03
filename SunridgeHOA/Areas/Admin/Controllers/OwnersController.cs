@@ -24,9 +24,25 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         }
 
         // GET: Admin/Owners
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string query)
         {
-            var owners = _context.Owner.Include(o => o.Address);
+            List<SunridgeHOA.Models.Owner> owners = null;
+
+            // Need to filter the search
+            if (!String.IsNullOrEmpty(query))
+            {
+                owners = await _context.Owner
+                    .Include(u => u.Address)
+                    .Where(u => u.FullName.Contains(query))
+                    .ToListAsync();
+            }
+            // No search - include all owners
+            else
+            {
+                owners = await _context.Owner
+                    .Include(u => u.Address)
+                    .ToListAsync();
+            }
 
             var vmList = new List<OwnerIndexVM>();
             foreach (var owner in owners)

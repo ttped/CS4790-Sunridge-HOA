@@ -7,9 +7,21 @@
 
 <h2>Index</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="row">
+    <div class="col-md-2">
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+    </div>
+    <div class="col-md-6"></div>
+    <div class="col-md-4">
+        <form asp-action="Index" class="form-inline">
+            <label class="control-label mr-2">Search:</label>
+            <input type="text" class="form-control" name="Query" />
+            <input type="submit" value="Search" class="btn btn-default" />
+        </form>
+    </div>
+</div>
 <table class="table">
     <thead>
         <tr>
