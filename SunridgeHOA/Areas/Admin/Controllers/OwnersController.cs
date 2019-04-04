@@ -86,6 +86,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         // GET: Admin/Owners/Create
         public IActionResult Create()
         {
+            ViewData["LotsSelect"] = new SelectList(_context.Lot.OrderBy(u => u.LotNumber).ToList(), "LotId", "LotNumber");
             return View();
         }
 
@@ -96,12 +97,15 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(OwnerVM vm)
         {
-            var existingUser = await _userManager.FindByEmailAsync(vm.Owner.Email);
-            if (existingUser != null)
+            if (vm.Owner.Email != null)
             {
-                ModelState.AddModelError("Email", "There is an existing user with that email address");
+                var existingUser = await _userManager.FindByEmailAsync(vm.Owner.Email);
+                if (existingUser != null)
+                {
+                    ModelState.AddModelError("Email", "There is an existing user with that email address");
+                }
             }
-
+            
             if (ModelState.IsValid)
             {
                 var identityUser = await _userManager.GetUserAsync(HttpContext.User);
@@ -114,13 +118,15 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 vm.Owner.Address = vm.Address;
                 vm.Owner.LastModifiedBy = loggedInUser.FullName;
                 vm.Owner.LastModifiedDate = DateTime.Now;
-                _context.Add(vm.Owner);
-                await _context.SaveChangesAsync();
+
+                // Don't save yet - need to link the Owner to the ApplicationUser
+                //_context.Add(vm.Owner);
+                //await _context.SaveChangesAsync();
 
                 // Find a default username - adds a number to the end if there is a duplicate
                 var username = $"{vm.Owner.FirstName}{vm.Owner.LastName}";
                 int count = 0;
-                while (await _userManager.FindByEmailAsync(username) != null)
+                while (await _userManager.FindByNameAsync(username) != null)
                 {
                     count++;
                     username = $"{username}{count}";
@@ -146,13 +152,31 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                         roles.Add("Admin");
                     };
                     await _userManager.AddToRolesAsync(newOwner, roles);
+
+                    // Link Owner to the Application User
+                    vm.Owner.ApplicationUserId = newOwner.Id;
+                    _context.Add(vm.Owner);
+                    await _context.SaveChangesAsync();
+
+                    // Add the Owner to a Lot
+                    if (vm.LotId != 0)
+                    {
+                        _context.OwnerLot.Add(new OwnerLot
+                        {
+                            LotId = vm.LotId,
+                            OwnerId = vm.Owner.OwnerId,
+                            StartDate = DateTime.Now
+                        });
+
+                        await _context.SaveChangesAsync();
+                    }
                 }
 
                 return RedirectToAction(nameof(Index));
             }
 
+            ViewData["LotsSelect"] = new SelectList(_context.Lot.OrderBy(u => u.LotNumber).ToList(), "LotId", "LotNumber", vm.LotId);
             return View(vm);
-
         }
 
         // GET: Admin/Owners/Edit/5
@@ -169,7 +193,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var appUser = await _userManager.FindByEmailAsync(owner.Email);
+            var appUser = await _userManager.FindByIdAsync(owner.ApplicationUserId);
             var roles = await _userManager.GetRolesAsync(appUser);
 
             var vm = new OwnerVM
@@ -201,7 +225,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                     var identityUser = await _userManager.GetUserAsync(HttpContext.User);
                     var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
 
-                    var addr = await _context.Address.SingleOrDefaultAsync(u => u.Id == vm.Owner.AddressId);
+                    var addr = await _context.Address.SingleOrDefaultAsync(u => u.Id == vm.Address.Id);
                     addr.StreetAddress = vm.Address.StreetAddress;
                     addr.City = vm.Address.City;
                     addr.State = vm.Address.State;
@@ -210,13 +234,23 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                     addr.LastModifiedDate = DateTime.Now;
                     _context.Update(addr);
 
-                    vm.Owner.LastModifiedBy = loggedInUser.FullName;
-                    vm.Owner.LastModifiedDate = DateTime.Now;
-                    _context.Update(vm.Owner);
+                    var owner = await _context.Owner.SingleOrDefaultAsync(u => u.OwnerId == vm.Owner.OwnerId);
+                    owner.FirstName = vm.Owner.FirstName;
+                    owner.LastName = vm.Owner.LastName;
+                    owner.Occupation = vm.Owner.Occupation;
+                    owner.Birthday = vm.Owner.Birthday;
+                    owner.Email = vm.Owner.Email;
+                    owner.Phone = vm.Owner.Phone;
+                    owner.EmergencyContactName = vm.Owner.EmergencyContactName;
+                    owner.EmergencyContactPhone = vm.Owner.EmergencyContactPhone;
+                    //vm.Owner.AddressId = addr.Id; // need to reset this or the database gets mad
+                    //vm.Owner.LastModifiedBy = loggedInUser.FullName;
+                    //vm.Owner.LastModifiedDate = DateTime.Now;
+                    _context.Update(owner);
 
                     await _context.SaveChangesAsync();
 
-                    var appUser = await _userManager.FindByEmailAsync(vm.Owner.Email);
+                    var appUser = await _userManager.FindByIdAsync(owner.ApplicationUserId);
                     var roles = await _userManager.GetRolesAsync(appUser);
                     if (vm.IsAdmin)
                     {

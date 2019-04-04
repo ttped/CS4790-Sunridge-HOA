@@ -11,7 +11,7 @@ namespace SunridgeHOA.Areas.Admin.Models
     {
         public SunridgeHOA.Models.Owner Owner { get; set; }
         public Address Address { get; set; }
-
+        public int LotId { get; set; }
         public bool IsAdmin { get; set; }
     }
 }
