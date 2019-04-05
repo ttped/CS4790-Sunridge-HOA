@@ -83,6 +83,68 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             return View(owner);
         }
 
+        public async Task<IActionResult> LoginInfo(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var owner = await _context.Owner.FirstOrDefaultAsync(u => u.OwnerId == id);
+            if (owner == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _userManager.FindByIdAsync(owner.ApplicationUserId);
+
+            ViewData["FullName"] = owner.FullName;
+
+            return View(new UserInfoVM
+            {
+                Username = user.UserName,
+                UserId = user.Id
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LoginInfo(int? id, UserInfoVM vm)
+        {
+            var owner = await _context.Owner.FindAsync(id);
+            var user = await _userManager.FindByIdAsync(owner.ApplicationUserId);
+            if (owner == null || user == null)
+            {
+                return NotFound();
+            }
+
+            // Need to see if we are changing the username, and if the username exists already
+            var existingUser = await _userManager.FindByNameAsync(vm.Username);
+            if (vm.Username.ToLower() != user.UserName.ToLower() && existingUser != null)
+            {
+                ModelState.AddModelError("Username", "There is already a user with that username");
+                return View(new UserInfoVM
+                {
+                    Username = vm.Username,
+                    UserId = user.Id
+                });
+            }
+
+            // Set the username and password
+            user.UserName = vm.Username;
+            user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, vm.Password);
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                return View(new UserInfoVM
+                {
+                    Username = vm.Username,
+                    UserId = user.Id
+                });
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
         // GET: Admin/Owners/Create
         public IActionResult Create()
         {
