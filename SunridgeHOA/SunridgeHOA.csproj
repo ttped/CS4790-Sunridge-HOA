@@ -33,9 +33,6 @@
     <Folder Include="Areas\Identity\Services\" />
 
     <Folder Include="Areas\Owner\Data\" />
-
-
-    <Folder Include="Areas\Owner\Models\" />
     <Folder Include="wwwroot\images\PhotoGallery\" />
     <Folder Include="wwwroot\img\BannerImages\" />
   </ItemGroup>
