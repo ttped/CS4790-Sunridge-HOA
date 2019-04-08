@@ -36,23 +36,25 @@
                             <th>@Html.DisplayNameFor(m => m.Owner.FullName)</th>
                             @*<th>@Html.DisplayNameFor(m => m.OwnerId)</th>*@
                             <th>@Html.DisplayNameFor(m => m.Year)</th>
+                            <th>@Html.DisplayNameFor(m => m.Image)</th>
                             <th id="actionsHeader">Actions</th>
                         </tr>
 
                         @foreach (var item in Model)
                         {
-                            <tr>
-                                <td>@Html.DisplayFor(m => item.Category)</td>
-                                <td>@Html.DisplayFor(m => item.Title)</td>
-                                <td>@Html.DisplayFor(m => item.Owner.FullName)</td>
-                                @*<td>@Html.DisplayFor(m => item.OwnerId)</td>*@
-                                <td>@Html.DisplayFor(m => item.Year)</td>
-                                <td id="actionsRow">
-                                    <a asp-action="Details" class="fas fa-file-alt" asp-route-id="@item.PhotoId"></a>
-                                    <a asp-action="Edit" class="fas fa-edit" asp-route-id="@item.PhotoId"></a>
-                                    <a asp-action="Delete" class="fas fa-trash-alt" asp-route-id="@item.PhotoId"></a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>@Html.DisplayFor(m => item.Category)</td>
+                            <td>@Html.DisplayFor(m => item.Title)</td>
+                            <td>@Html.DisplayFor(m => item.Owner.FullName)</td>
+                            @*<td>@Html.DisplayFor(m => item.OwnerId)</td>*@
+                            <td>@Html.DisplayFor(m => item.Year)</td>
+                            <td><img src="@Html.DisplayFor(m => item.Image)" style="border-radius:5px;width:150px;" /></td>
+                            <td id="actionsRow">
+                                <a asp-action="Details" class="fas fa-file-alt" asp-route-id="@item.PhotoId"></a>
+                                <a asp-action="Edit" class="fas fa-edit" asp-route-id="@item.PhotoId"></a>
+                                <a asp-action="Delete" class="fas fa-trash-alt" asp-route-id="@item.PhotoId"></a>
+                            </td>
+                        </tr>
                         }
 
                     </table>
