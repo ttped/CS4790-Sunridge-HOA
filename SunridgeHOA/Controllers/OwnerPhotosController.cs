@@ -16,7 +16,7 @@ using SunridgeHOA.Utility;
 namespace SunridgeHOA.Controllers
 {
     //[Authorize(Roles = SD.AdminEndUser)]
-    public class AdminPhotosController : Controller
+    public class OwnerPhotosController : Controller
     {
         private readonly ApplicationDbContext _db;
         private readonly HostingEnvironment _hostingEnvironment;
@@ -25,7 +25,7 @@ namespace SunridgeHOA.Controllers
         [BindProperty]
         public AdminPhotoViewModels AdminPhotoVM { get; set; }
 
-        public AdminPhotosController(ApplicationDbContext db, HostingEnvironment hostingEnvironment, UserManager<ApplicationUser> userManager)
+        public OwnerPhotosController(ApplicationDbContext db, HostingEnvironment hostingEnvironment, UserManager<ApplicationUser> userManager)
         {
             _db = db;
             _hostingEnvironment = hostingEnvironment;
@@ -40,20 +40,20 @@ namespace SunridgeHOA.Controllers
             */
         }
 
-        //GET: AdminPhoto Index
-        public async Task<IActionResult> Index()
-        {
-            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
-            //var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
-            if (identityUser == null)
-            {
-                return RedirectToAction("Index", "Home");               
-            }
+        ////GET: AdminPhoto Index
+        //public async Task<IActionResult> Index()
+        //{
+        //    var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+        //    //var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+        //    if (identityUser == null)
+        //    {
+        //        return RedirectToAction("Index", "Home");
+        //    }
 
-            var photos = _db.Photo.Include(m => m.Owner);
-            //var photos = _db.Photo.Include(u => u.Owner).Find(OwnerId);
-            return View(await photos.ToListAsync());
-        }
+        //    var photos = _db.Photo.Include(m => m.Owner);
+        //    //var photos = _db.Photo.Include(u => u.Owner).Find(OwnerId);
+        //    return View(await photos.ToListAsync());
+        //}
 
         public async Task<IActionResult> MyPhotos()
         {
@@ -72,7 +72,7 @@ namespace SunridgeHOA.Controllers
         //GET: AdminPhoto Create
         public IActionResult Create()
         {
-            ViewData["Category"] = new SelectList(new string[] {"Select Category", "Summer", "Winter", "People" });
+            ViewData["Category"] = new SelectList(new string[] { "Select Category", "Summer", "Winter", "People" });
             return View(AdminPhotoVM);
             //return View();
         }
@@ -91,7 +91,7 @@ namespace SunridgeHOA.Controllers
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
             if (identityUser == null)
             {
-                return RedirectToPage(nameof(Index));
+                return RedirectToPage(nameof(MyPhotos));
             }
 
             var loggedInUser = _db.Owner.Find(identityUser.OwnerId);
@@ -101,7 +101,7 @@ namespace SunridgeHOA.Controllers
             //_db.Photo.Add(AdminPhotoVM.Photo);
             _db.Photo.Add(photo);
             await _db.SaveChangesAsync();
-           
+
 
             //Save Physical Image
             string webRootPath = _hostingEnvironment.WebRootPath;
@@ -132,7 +132,7 @@ namespace SunridgeHOA.Controllers
                 photosFromDb.Image = @"\" + SD.ImageFolder + @"\" + photo.PhotoId + ".jpg";
             }
             await _db.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(MyPhotos));
         }
 
         //GET: AdminPhoto Details
@@ -147,7 +147,7 @@ namespace SunridgeHOA.Controllers
             var loggedInUser = _db.Owner.Find(identityUser.OwnerId);
             if (identityUser == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("MyPhotos");
             }
 
             var photo = await _db.Photo
@@ -155,7 +155,7 @@ namespace SunridgeHOA.Controllers
                     .FirstOrDefaultAsync(m => m.PhotoId == id);
 
             photo.OwnerId = loggedInUser.OwnerId;
-          
+
             if (photo == null)
             {
                 return NotFound();
@@ -247,11 +247,11 @@ namespace SunridgeHOA.Controllers
                 photoFromDb.Year = photo.Year;
                 photoFromDb.Category = photo.Category;
                 //photoFromDb.OwnerId = photo.OwnerId;
-                
+
 
                 await _db.SaveChangesAsync();
                 //return RedirectToAction(nameof(Index));
-                return RedirectToAction("Index");
+                return RedirectToAction("MyPhotos");
             }
 
             ViewData["Category"] = new SelectList(new string[] { "Summer", "Winter", "People" });
@@ -301,7 +301,7 @@ namespace SunridgeHOA.Controllers
                 _db.Photo.Remove(photo);
                 await _db.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(MyPhotos));
             }
         }
 

@@ -581,7 +581,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 .Include(u => u.Owner)
                 .Where(u => u.LotId == id)
                 .Where(u => u.EndDate == DateTime.MinValue)
-                .Where(u => u.IsPrimary)
+                .Where(u => u.IsPrimary) 
                 .Select(u => u.Owner)
                 .FirstOrDefaultAsync();
         }

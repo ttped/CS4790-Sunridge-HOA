@@ -34,17 +34,19 @@
                 <div id="accordian" class="collapse">
                     <ul>
                         @*<li class="nav-item"><a id="accordian" class="nav-link far fa-circle" href="#">&nbsp;View&nbsp;Ads</a></li>*@
-                        <li class="nav-item"><a id="accordian" class="nav-link far fa-circle"  asp-area="Owner" asp-controller="Classifieds" asp-action="Index">&nbsp;Post&nbsp;a&nbsp;New&nbsp;Ad</a></li>
+                        <li class="nav-item"><a id="accordian" class="nav-link far fa-circle" asp-area="Owner" asp-controller="Classifieds" asp-action="Index">&nbsp;Post&nbsp;a&nbsp;New&nbsp;Ad</a></li>
                     </ul>
                 </div>
             </li>
-            <li class="nav-item">
-            <a class="nav-link fas fa-camera" href="~/AdminPhotos/Index"> Photos </a>
-            </li>
 
             <li class="nav-item">
-                <a class="nav-link far fa-newspaper" href="~/NewsItem/Index"> News Items </a>
+                <a class="nav-link fas fa-camera" href="~/OwnerPhotos/MyPhotos"> My Photos </a>
             </li>
+
+            @*<li class="nav-item">
+                <a class="nav-link far fa-newspaper" href="~/NewsItem/Index"> News Items </a>
+            </li>*@
+
             @if (User.IsInRole(StaticData.SuperAdminEndUser) || User.IsInRole(StaticData.AdminEndUser))
             {
                 <li class="nav-item" style="margin-top:10px;">
@@ -58,11 +60,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link fas fa-key" asp-area="Admin" asp-controller="Keys" asp-action="Index"> Keys</a>
-
                 </li>
                 <li class="nav-item">
                     <a class="nav-link fas fa-key" asp-area="Admin" asp-controller="KeyHistory" asp-action="Index"> Key History</a>
-
                 </li>
                 <li class="nav-item">
                     <a class="nav-link fas fa-map" asp-area="Owner" asp-controller="Lots" asp-action="Index"> HOA Lots</a>
@@ -78,6 +78,12 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link fas fa-flag" asp-area="Admin" asp-controller="Banner" asp-action="Index"> Banner Items</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fas fa-camera" href="~/AdminPhotos/Index"> Photos </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link far fa-newspaper" href="~/NewsItem/Index"> News Items </a>
                 </li>
             }
         </ul>
