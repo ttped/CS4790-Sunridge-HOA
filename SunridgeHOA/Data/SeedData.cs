@@ -21,123 +21,123 @@ namespace SunridgeHOA.Data
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
             // Add default users and roles
-            if (!context.Owner.Any())
-            {
-                context.Address.AddRange(
-                    new Address
-                    {
-                        //Id = 1,
-                        StreetAddress = "8146 Deer Run Way",
-                        City = "South Weber",
-                        State = "UT",
-                        Zip = "84405"
-                    },
-                    new Address
-                    {
-                        //Id = 2,
-                        StreetAddress = "11809 E Eagle Point Drive",
-                        City = "Huntsville",
-                        State = "UT",
-                        Zip = "84317"
-                    },
-                    new Address
-                    {
-                        //Id = 3,
-                        StreetAddress = "321 Willow Way",
-                        Apartment = "#69",
-                        City = "Pleasant View",
-                        State = "UT",
-                        Zip = "84414"
-                    },
-                    new Address
-                    {
-                        //Id = 4,
-                        StreetAddress = "11620 E Ptarmigan Point Drive",
-                        City = "Huntsville",
-                        State = "UT",
-                        Zip = "84317"
-                    },
-                    new Address
-                    {
-                       // Id = 5,
-                        StreetAddress = "11115 E Chukar Point Drive",
-                        City = "Huntsville",
-                        State = "UT",
-                        Zip = "84317"
-                    },
-                    new Address
-                    {
-                        //Id = 6,
-                        StreetAddress = "479 W Cheery Drive",
-                        City = "Riverdale",
-                        State = "UT",
-                        Zip = "84405"
-                    });
+            //if (!context.Owner.Any())
+            //{
+            //    context.Address.AddRange(
+            //        new Address
+            //        {
+            //            //Id = 1,
+            //            StreetAddress = "8146 Deer Run Way",
+            //            City = "South Weber",
+            //            State = "UT",
+            //            Zip = "84405"
+            //        },
+            //        new Address
+            //        {
+            //            //Id = 2,
+            //            StreetAddress = "11809 E Eagle Point Drive",
+            //            City = "Huntsville",
+            //            State = "UT",
+            //            Zip = "84317"
+            //        },
+            //        new Address
+            //        {
+            //            //Id = 3,
+            //            StreetAddress = "321 Willow Way",
+            //            Apartment = "#69",
+            //            City = "Pleasant View",
+            //            State = "UT",
+            //            Zip = "84414"
+            //        },
+            //        new Address
+            //        {
+            //            //Id = 4,
+            //            StreetAddress = "11620 E Ptarmigan Point Drive",
+            //            City = "Huntsville",
+            //            State = "UT",
+            //            Zip = "84317"
+            //        },
+            //        new Address
+            //        {
+            //           // Id = 5,
+            //            StreetAddress = "11115 E Chukar Point Drive",
+            //            City = "Huntsville",
+            //            State = "UT",
+            //            Zip = "84317"
+            //        },
+            //        new Address
+            //        {
+            //            //Id = 6,
+            //            StreetAddress = "479 W Cheery Drive",
+            //            City = "Riverdale",
+            //            State = "UT",
+            //            Zip = "84405"
+            //        });
 
-                context.SaveChanges();
+            //    context.SaveChanges();
 
-                context.Owner.AddRange(
-                    new Owner
-                    {
-                        //OwnerId = 1,
-                        AddressId = 1,
-                        FirstName = "Richard",
-                        LastName = "Fry",
-                        Occupation = "Professor",
-                        Email = "admin@email.com"
-                    },
-                    new Owner
-                    {
-                       // OwnerId = 2,
-                        AddressId = 1,
-                        FirstName = "Stephen",
-                        LastName = "Merkley",
-                        Birthday = DateTime.ParseExact("10/10/1964", "MM/dd/yyyy", null),
-                        EmergencyContactName = "Richard Fry",
-                        EmergencyContactPhone = "8016266919",
-                        Email = "owner@email.com"
-                    },
-                    new Owner
-                    {
-                        //OwnerId = 3,
-                        AddressId = 3,
-                        FirstName = "Brent",
-                        LastName = "Frost",
-                        Occupation = "Retired",
-                        Email = "brentfrost@email.com"
-                    },
-                    new Owner
-                    {
-                        //OwnerId = 4,
-                        AddressId = 3,
-                        FirstName = "Vernie",
-                        LastName = "Frost",
-                        Occupation = "Retired",
-                        Email = "verniefrost@email.com"
-                    },
-                    new Owner
-                    {
-                        //OwnerId = 5,
-                        AddressId = 6,
-                        FirstName = "Andy",
-                        LastName = "Taylor",
-                        Occupation = "Contractor",
-                        EmergencyContactPhone = "8015102370",
-                        Email = "andytaylor@email.com"
-                    },
-                    new Owner
-                    {
-                        //OwnerId = 6,
-                        AddressId = 6,
-                        FirstName = "Stephanie",
-                        LastName = "Taylor",
-                        Occupation = "Credit Union Manager",
-                        EmergencyContactName = "Andy Taylor",
-                        Email = "stephanietaylor@email.com"
-                    });
+            //    context.Owner.AddRange(
+            //        new Owner
+            //        {
+            //            //OwnerId = 1,
+            //            AddressId = 1,
+            //            FirstName = "Richard",
+            //            LastName = "Fry",
+            //            Occupation = "Professor",
+            //            Email = "admin@email.com"
+            //        },
+            //        new Owner
+            //        {
+            //           // OwnerId = 2,
+            //            AddressId = 1,
+            //            FirstName = "Stephen",
+            //            LastName = "Merkley",
+            //            Birthday = DateTime.ParseExact("10/10/1964", "MM/dd/yyyy", null),
+            //            EmergencyContactName = "Richard Fry",
+            //            EmergencyContactPhone = "8016266919",
+            //            Email = "owner@email.com"
+            //        },
+            //        new Owner
+            //        {
+            //            //OwnerId = 3,
+            //            AddressId = 3,
+            //            FirstName = "Brent",
+            //            LastName = "Frost",
+            //            Occupation = "Retired",
+            //            Email = "brentfrost@email.com"
+            //        },
+            //        new Owner
+            //        {
+            //            //OwnerId = 4,
+            //            AddressId = 3,
+            //            FirstName = "Vernie",
+            //            LastName = "Frost",
+            //            Occupation = "Retired",
+            //            Email = "verniefrost@email.com"
+            //        },
+            //        new Owner
+            //        {
+            //            //OwnerId = 5,
+            //            AddressId = 6,
+            //            FirstName = "Andy",
+            //            LastName = "Taylor",
+            //            Occupation = "Contractor",
+            //            EmergencyContactPhone = "8015102370",
+            //            Email = "andytaylor@email.com"
+            //        },
+            //        new Owner
+            //        {
+            //            //OwnerId = 6,
+            //            AddressId = 6,
+            //            FirstName = "Stephanie",
+            //            LastName = "Taylor",
+            //            Occupation = "Credit Union Manager",
+            //            EmergencyContactName = "Andy Taylor",
+            //            Email = "stephanietaylor@email.com"
+            //        });
 
-                context.SaveChanges();
-            }
+            //    context.SaveChanges();
+            //}
 
             if (!context.Lot.Any())
             {

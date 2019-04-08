@@ -25,18 +25,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Identity\Services\" />
 
     <Folder Include="Areas\Owner\Data\" />
-
-
-    <Folder Include="Areas\Owner\Models\" />
     <Folder Include="wwwroot\images\PhotoGallery\" />
     <Folder Include="wwwroot\img\BannerImages\" />
   </ItemGroup>

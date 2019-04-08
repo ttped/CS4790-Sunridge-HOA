@@ -12,6 +12,8 @@ namespace SunridgeHOA.Models
         public int OwnerId { get; set; }
         public int AddressId { get; set; }
 
+        public string ApplicationUserId { get; set; }
+
         [Required]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
@@ -30,7 +32,7 @@ namespace SunridgeHOA.Models
         [Display(Name = "Phone Number")]
         public string Phone { get; set; }
 
-        [Required]
+        //[Required]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email Address")]
         public string Email { get; set; }

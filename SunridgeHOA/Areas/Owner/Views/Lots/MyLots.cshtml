@@ -51,7 +51,8 @@
                     }
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Lot.TaxId)
+                    @{ var taxLink = $"http://www3.co.weber.ut.us/psearch/tax_summary.php?id={item.Lot.TaxId}"; }
+                    <a href="@taxLink">@Html.DisplayFor(modelItem => item.Lot.TaxId)</a>
                 </td>
                 <td>
                     @foreach (var inv in item.InventoryItems)
