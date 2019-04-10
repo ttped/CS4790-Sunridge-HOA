@@ -248,7 +248,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditMaintenance(int id, [Bind("DateCompleted,Description,Cost")] Maintenance maintenance)
+        public async Task<IActionResult> EditMaintenance(int id, [Bind("MaintenanceId,CommonAreaAssetId,DateCompleted,Description,Cost")] Maintenance maintenance)
         {
             if (id != maintenance.MaintenanceId)
             {

@@ -14,6 +14,7 @@
         <form asp-action="EditMaintenance">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="MaintenanceId" />
+            <input type="hidden" asp-for="CommonAreaAssetId" />
             <div class="form-group">
                 <label asp-for="DateCompleted" class="control-label"></label>
                 <input asp-for="DateCompleted" class="form-control" />
