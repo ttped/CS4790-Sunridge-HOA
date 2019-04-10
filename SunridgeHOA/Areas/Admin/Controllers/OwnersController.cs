@@ -50,7 +50,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 var lots = await _context.OwnerLot
                     .Include(u => u.Lot)
                     .Where(u => u.OwnerId == owner.OwnerId)
-                    .Where(u => u.EndDate == DateTime.MinValue)
+                    .Where(u => !u.IsArchive)
                     .Select(u => u.Lot.LotNumber)
                     .ToListAsync();
 

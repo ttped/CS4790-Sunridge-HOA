@@ -62,7 +62,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 var owners = _context.OwnerLot
                     .Include(u => u.Owner)
                     .Where(u => u.LotId == lot.LotId)
-                    .Where(u => u.EndDate == DateTime.MinValue);
+                    .Where(u => !u.IsArchive);
 
                 var lotItems = await _context.LotInventory
                     .Include(u => u.Inventory)
@@ -107,7 +107,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             var myLots = await _context.OwnerLot
                 .Include(u => u.Lot)
                 .Where(u => u.OwnerId == loggedInUser.OwnerId)
-                .Where(u => u.EndDate == DateTime.MinValue)
+                .Where(u => !u.IsArchive)
                 .Select(u => u.Lot)
                 .ToListAsync();
 
@@ -117,7 +117,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 var owners = _context.OwnerLot
                     .Include(u => u.Owner)
                     .Where(u => u.LotId == lot.LotId)
-                    .Where(u => u.EndDate == DateTime.MinValue);
+                    .Where(u => !u.IsArchive);
 
                 var lotItems = await _context.LotInventory
                     .Include(u => u.Inventory)
@@ -160,7 +160,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             var isOwner = _context.OwnerLot
                 .Where(u => u.LotId == id)
                 .Where(u => u.OwnerId == loggedInUser.OwnerId)
-                .Where(u => u.EndDate == DateTime.MinValue)
+                .Where(u => !u.IsArchive)
                 .Any();
             if (!isOwner)
             {
@@ -206,7 +206,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             var isOwner = _context.OwnerLot
                 .Where(u => u.LotId == id)
                 .Where(u => u.OwnerId == loggedInUser.OwnerId)
-                .Where(u => u.EndDate == DateTime.MinValue)
+                .Where(u => u.IsArchive)
                 .Any();
             if (!isOwner)
             {
@@ -365,7 +365,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             var currOwnerIds = await _context.OwnerLot
                 .Include(u => u.Owner)
                 .Where(u => u.LotId == id)
-                .Where(u => u.EndDate == DateTime.MinValue)
+                .Where(u => !u.IsArchive)
                 .Select(u => u.Owner.OwnerId)
                 .ToListAsync();
 
@@ -432,7 +432,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                     // Check OwnerLot entry for this owner/lot combination, create if necessary
                     var currOwnerLot = await _context.OwnerLot
                         .Where(u => u.LotId == id)
-                        .Where(u => u.EndDate == DateTime.MinValue)
+                        .Where(u => !u.IsArchive)
                         .Where(u => u.IsPrimary)
                         .FirstOrDefaultAsync();
 
@@ -458,7 +458,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                     {
                         var prevOwnerLots = await _context.OwnerLot
                             .Where(u => u.LotId == id)
-                            .Where(u => u.EndDate == DateTime.MinValue)
+                            .Where(u => !u.IsArchive)
                             .ToListAsync();
 
                         // Check previous OwnerLot entities to see if any were removed
@@ -468,6 +468,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                             if (!vm.OwnerIds.Contains(ol.OwnerId))
                             {
                                 ol.EndDate = DateTime.Now;
+                                ol.IsArchive = true;
                             }
                             // The user already has a relationship - don't do anything in the next step
                             else
@@ -595,7 +596,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             return await _context.OwnerLot
                 .Include(u => u.Owner)
                 .Where(u => u.LotId == id)
-                .Where(u => u.EndDate == DateTime.MinValue)
+                .Where(u => !u.IsArchive)
                 .ToListAsync();
         }
 
@@ -604,7 +605,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             return await _context.OwnerLot
                 .Include(u => u.Owner)
                 .Where(u => u.LotId == id)
-                .Where(u => u.EndDate == DateTime.MinValue)
+                .Where(u => !u.IsArchive)
                 .Where(u => u.IsPrimary)
                 .Select(u => u.Owner)
                 .FirstOrDefaultAsync();
@@ -615,7 +616,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             return await _context.OwnerLot
                 .Include(u => u.Owner)
                 .Where(u => u.LotId == id)
-                .Where(u => u.EndDate == DateTime.MinValue)
+                .Where(u => !u.IsArchive)
                 .Where(u => !u.IsPrimary)
                 .Select(u => u.Owner)
                 .ToListAsync();
