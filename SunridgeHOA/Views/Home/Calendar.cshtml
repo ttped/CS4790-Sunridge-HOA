@@ -1,8 +1,10 @@
-﻿@{
-    ViewData["Title"] = "Calendar and Events";
+﻿@using SunridgeHOA.Utility
+
+@{
+    ViewData["Title"] = "Event Calender";
 }
 
-<!-- inro section Grid -->
+<!-- Intro Section Grid -->
 <section class="text-center p-5">
     <div class="container">
         <div class="container container-fluid no2">
@@ -14,13 +16,140 @@
     </div>
 </section>
 
-
-
-<!-- Testimonials -->
-<section class="testimonials text-center">
+<!-- Calendar -->
+<section class="calendar text-center">
     <div class="container">
-        <div data-tockify-component="calendar" data-tockify-calendar="sunridge"></div>
-        <script data-cfasync="false" data-tockify-script="embed" src="https://public.tockify.com/browser/embed.js"></script>
-        <div class="container"><a class="btn btn-primary mt-4 text-white" href="mailto:Webmaster@sunridge.info">Contact the Webmaster to publish a new event</a></div>
+        <div id="calendar"></div>
+        <link href="~/lib/fullcalendar/fullcalendar.min.css" rel="stylesheet" />
+        <link href="~/lib/fullcalendar/fullcalendar.print.css" rel="stylesheet" media="print" />
+        <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+        @if (User.IsInRole(StaticData.AdminEndUser))
+        {
+            <a class="nav-link" asp-area="SuperAdmin" asp-controller="ScheduledEvents" asp-action="Index">Edit Events</a>
+        }
+
+        <div class="container"><button class="btn-primary mt-4"><a class="text-white" href="mailto:Webmaster@sunridge.info">Contact the Webmaster to publish a new event</a></button></div>
     </div>
 </section>
+
+<div id="calendarEventModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Event Title</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="eventDetails"></p>
+            </div>
+            <div class="modal-footer">
+                @if (User.IsInRole(StaticData.AdminEndUser))
+                {
+                    <button type="button" class="btn btn-primary">Edit Event</button>
+                }
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    @*
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    *@
+    <script src="~/lib/moment.js/moment.min.js"></script>
+    <script src="~/lib/fullcalendar/fullcalendar.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            var events = [];
+            $.ajax({
+                type: "GET",
+                //url: "/api/ScheduledEvents",
+                url: "ScheduledEvents",
+                success: function (data) {
+                    $.each(data, function (i, v) {
+                        events.push({
+                            title: v.subject,
+                            description: v.description,
+                            start: moment(v.start),
+                            end: v.End != null ? moment(v.end) : null,
+                            allDay: v.isFullDay
+                        });
+                    });
+                    generateCalendar(events);
+                },
+                error: function (error) {
+                    alert('failed');
+                }
+            });
+
+            function generateCalendar(events) {
+                // When generating cal, destroy whatever already exists
+                //$('#calendar').fullCalendar('destroy');
+                // Calendar settings
+                $('#calendar').fullCalendar({
+                    contentHeight: 400,
+                    defaultDate: new Date(),
+                    timeFormat: 'h(:mm)a',
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'month,basicWeek,listMonth'
+                    },
+                    eventLimit: true,
+                    eventColor: '#378006',
+                    events: events,
+                    eventClick: function (calEvent, jsEvent, view) {
+                        $('#calendarEventModal #eventTitle').text(calEvent.title);
+                        var $description = $('<div/>');
+                        $description.append($('<p/>')
+                            .html('<b>Start:</b>' + calEvent.start.format("DD-MMM-YYYY HH:mm a")));
+                        $description.append($('<p/>').html('<b>Description:</b>' + calEvent.description));
+
+                        $('#calendarEventModal #eventDetails').empty().html($description);
+
+                        $('#calendarEventModal').modal();
+                    }
+                });
+            }
+        })
+    </script>
+}
+
+
+
+
+
+@*
+    @{
+        ViewData["Title"] = "Calendar and Events";
+    }
+
+    <!-- inro section Grid -->
+    <section class="text-center p-5">
+        <div class="container">
+            <div class="container container-fluid no2">
+                <h1 class="main-heading mb-4">Important Events</h1>
+                <div>
+                    <p>All events and dates for the Sunridge community and be found below.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Testimonials -->
+    <section class="testimonials text-center">
+        <div class="container">
+            <div data-tockify-component="calendar" data-tockify-calendar="sunridge"></div>
+            <script data-cfasync="false" data-tockify-script="embed" src="https://public.tockify.com/browser/embed.js"></script>
+            <div class="container"><a class="btn btn-primary mt-4 text-white" href="mailto:Webmaster@sunridge.info">Contact the Webmaster to publish a new event</a></div>
+        </div>
+    </section>
+*@
