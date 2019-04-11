@@ -55,7 +55,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Index", "CommonAreaAsset", new { area = "Admin" });
+            return RedirectToAction("Index", "CommonAreaAssets", new { area = "Admin" });
         }
     }
 }

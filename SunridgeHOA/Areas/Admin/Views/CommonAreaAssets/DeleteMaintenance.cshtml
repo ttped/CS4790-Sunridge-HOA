@@ -35,7 +35,7 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="MaintenanceId" />
         <input type="submit" value="DeleteMaintenance" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-controller="CommonAreaAssets" asp-action="MaintenanceRecords" asp-route-id="@Model.CommonAreaAssetId">Back to List</a>
     </form>
 </div>
 
