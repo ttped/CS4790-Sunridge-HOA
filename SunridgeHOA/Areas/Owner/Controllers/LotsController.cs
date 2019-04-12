@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SunridgeHOA.Areas.Owner.Models;
+using SunridgeHOA.Areas.Owner.Models.ViewModels;
 using SunridgeHOA.Models;
+using SunridgeHOA.Utility;
 
 namespace SunridgeHOA.Areas.Admin.Controllers
 {
@@ -16,11 +20,13 @@ namespace SunridgeHOA.Areas.Admin.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly HostingEnvironment _hostingEnv;
 
-        public LotsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public LotsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, HostingEnvironment env)
         {
             _context = context;
             _userManager = userManager;
+            _hostingEnv = env;
         }
 
         // GET: Admin/Lots
@@ -254,6 +260,118 @@ namespace SunridgeHOA.Areas.Admin.Controllers
 
             ViewData["Inventory"] = _context.Inventory.ToList();
             return View(null);
+        }
+
+        public IActionResult AddDocument(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var lot = _context.Lot.Find(id);
+            if (lot == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["HistoryTypes"] = new SelectList(_context.HistoryType, "HistoryTypeId", "Description");
+
+            return View(new DocumentVM
+            {
+                Id = lot.LotId
+            });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddDocument(int id, DocumentVM vm)
+        {
+            if (id != vm.Id)
+            {
+                return NotFound();
+            }
+
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+
+            var lot = _context.Lot.Find(vm.Id);
+
+            var files = HttpContext.Request.Form.Files;
+            if (files.Count == 0)
+            {
+                ModelState.AddModelError("Files", "Please upload at least one file");
+            }
+
+            if (ModelState.IsValid)
+            {
+                var uploadFiles = new List<SunridgeHOA.Models.File>();
+                foreach (var file in files)
+                {
+                    var webRootPath = _hostingEnv.WebRootPath;
+                    var uploads = Path.Combine(webRootPath, SD.LotDocsFolder);
+                    var name = Path.GetFileNameWithoutExtension(file.FileName);
+                    var extension = Path.GetExtension(file.FileName);
+                    var dateExt = DateTime.Now.ToString("MMddyyyy");
+                    var newFileName = $"{lot.LotNumber} - {name} {dateExt}{extension}";
+
+                    using (var filestream = new FileStream(Path.Combine(uploads, newFileName), FileMode.Create))
+                    {
+                        file.CopyTo(filestream);
+                    }
+
+                    var uploadFile = new SunridgeHOA.Models.File
+                    {
+                        FileURL = $@"\{SD.LotDocsFolder}\{newFileName}",
+                        Date = DateTime.Now,
+                        Description = Path.GetFileName(file.FileName)
+                    };
+                    _context.File.Add(uploadFile);
+                    uploadFiles.Add(uploadFile);
+                    //await _context.SaveChangesAsync();
+                }
+
+                var lotHistory = new LotHistory
+                {
+                    LotId = lot.LotId,
+                    HistoryTypeId = vm.HistoryType,
+                    Date = DateTime.Now,
+                    Description = vm.Description,
+                    PrivacyLevel = vm.AdminOnly ? "Admin" : "Owner",
+                    LastModifiedBy = loggedInUser.FullName,
+                    LastModifiedDate = DateTime.Now,
+                    Files = uploadFiles
+                };
+                _context.LotHistory.Add(lotHistory);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(ViewFiles), new { id = id });
+            }
+
+            ViewData["HistoryTypes"] = new SelectList(_context.HistoryType, "HistoryTypeId", "Description", vm.HistoryType);
+            return View(vm);
+        }
+
+        public async Task<IActionResult> ViewFiles(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var lot = await _context.Lot.SingleOrDefaultAsync(u => u.LotId == id);
+            if (lot == null)
+            {
+                return NotFound();
+            }
+
+            var files = await _context.LotHistory
+                .Include(u => u.Files)
+                .Include(u => u.HistoryType)
+                .Where(u => u.LotId == id)
+                .ToListAsync();
+
+            ViewData["LotNumber"] = lot.LotNumber;
+            return View(files);
         }
 
         // GET: Admin/Lots/Details/5

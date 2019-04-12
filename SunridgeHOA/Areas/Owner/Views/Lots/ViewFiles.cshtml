@@ -1,0 +1,21 @@
+﻿@model List<SunridgeHOA.Models.LotHistory>
+@{
+    ViewData["Title"] = "ViewFiles";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Files for Lot @ViewBag.LotNumber</h2>
+
+@foreach (var hist in Model)
+{
+    <h4>@hist.Description</h4>
+    <label class="control-label">Uploaded on @hist.Date.ToString("MM/dd/yyyy") by @hist.LastModifiedBy</label>
+    <div>
+        @foreach (var file in hist.Files)
+        {
+            <div>
+                <a href="@file.FileURL">@file.Description</a>
+            </div>
+        }
+    </div>
+}

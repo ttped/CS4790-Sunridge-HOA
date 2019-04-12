@@ -9,13 +9,13 @@ namespace SunridgeHOA.Models
     {
         public int FileId { get; set; }
         public int LotHistoryId { get; set; }
-        public int ClassifiedListingId { get; set; }
+        //public int ClassifiedListingId { get; set; }
 
         //int or bool?
-        public int IsMainImage{ get; set; }
+        //public int IsMainImage{ get; set; }
         public string FileURL { get; set; }
-        public string ImageContentType { get; set; }
-        public string FileStream { get; set; }
+        //public string ImageContentType { get; set; }
+        //public string FileStream { get; set; }
         public string Type { get; set; }
         public string Description { get; set; }
         public DateTime Date { get; set; }
