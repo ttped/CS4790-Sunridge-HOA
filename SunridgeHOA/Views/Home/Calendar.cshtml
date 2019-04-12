@@ -26,7 +26,7 @@
 
         @if (User.IsInRole(StaticData.AdminEndUser))
         {
-            <a class="nav-link" asp-area="SuperAdmin" asp-controller="ScheduledEvents" asp-action="Index">Edit Events</a>
+            <a class="nav-link" asp-area="Admin" asp-controller="ScheduledEvents" asp-action="Index">Edit Events</a>
         }
 
         <div class="container"><button class="btn-primary mt-4"><a class="text-white" href="mailto:Webmaster@sunridge.info">Contact the Webmaster to publish a new event</a></button></div>
@@ -69,8 +69,8 @@
             var events = [];
             $.ajax({
                 type: "GET",
-                //url: "/api/ScheduledEvents",
-                url: "ScheduledEvents",
+                url: "/api/ScheduledEvents",
+                //url: "ScheduledEvents",
                 success: function (data) {
                     $.each(data, function (i, v) {
                         events.push({
@@ -90,7 +90,8 @@
 
             function generateCalendar(events) {
                 // When generating cal, destroy whatever already exists
-                //$('#calendar').fullCalendar('destroy');
+                // Was commented out 
+                $('#calendar').fullCalendar('destroy');
                 // Calendar settings
                 $('#calendar').fullCalendar({
                     contentHeight: 400,
