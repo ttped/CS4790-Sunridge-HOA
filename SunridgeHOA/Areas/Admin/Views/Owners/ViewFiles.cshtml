@@ -6,6 +6,14 @@
 
 <h2>Files for @ViewBag.FullName</h2>
 
+<div class="row">
+    <div class="col-md-2">
+        <p>
+            <a asp-action="AddDocument" asp-route-id="@ViewBag.OwnerId" class="btn btn-primary">Upload new Document</a>
+        </p>
+    </div>
+</div>
+
 @foreach (var hist in Model)
 {
     <h4>@hist.Description</h4>
@@ -18,4 +26,9 @@
             </div>
         }
     </div>
+}
+
+@if (!Model.Any())
+{
+    <p>There are currently no documents uploaded for this user.</p>
 }

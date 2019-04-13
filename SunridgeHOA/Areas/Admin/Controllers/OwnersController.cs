@@ -110,6 +110,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            ViewData["OwnerId"] = owner.OwnerId;
             ViewData["HistoryTypes"] = new SelectList(_context.HistoryType, "HistoryTypeId", "Description");
 
             return View(new DocumentVM
@@ -181,6 +182,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 return RedirectToAction(nameof(ViewFiles), new { id = id });
             }
 
+            ViewData["OwnerId"] = owner.OwnerId;
             ViewData["HistoryTypes"] = new SelectList(_context.HistoryType, "HistoryTypeId", "Description", vm.HistoryType);
             return View(vm);
         }
@@ -213,6 +215,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 .Where(u => u.OwnerId == id)
                 .ToListAsync();
 
+            ViewData["OwnerId"] = owner.OwnerId;
             ViewData["FullName"] = owner.FullName;
             return View(files);
         }
