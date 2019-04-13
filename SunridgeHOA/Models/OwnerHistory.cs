@@ -13,7 +13,7 @@ namespace SunridgeHOA.Models
 
         public DateTime Date { get; set; }
         public string Description { get; set; }
-        public int? Hours { get; set; }
+        //public int? Hours { get; set; }
         public string Status { get; set; }
 
 
@@ -21,7 +21,7 @@ namespace SunridgeHOA.Models
         public Owner Owner { get; set; }
         public HistoryType HistoryType { get; set; }
         public ICollection<Comment> Comments { get; set; }
-
+        public virtual ICollection<File> Files { get; set; }
 
     }
 }

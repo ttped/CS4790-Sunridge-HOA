@@ -8,7 +8,7 @@ namespace SunridgeHOA.Models
     public class File : DbItem
     {
         public int FileId { get; set; }
-        public int LotHistoryId { get; set; }
+        //public int LotHistoryId { get; set; }
         //public int ClassifiedListingId { get; set; }
 
         //int or bool?

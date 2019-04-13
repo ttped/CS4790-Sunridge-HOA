@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SunridgeHOA.Models;
 
 namespace SunridgeHOA.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190413013957_AddFilesToOwnerHistory")]
+    partial class AddFilesToOwnerHistory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -382,7 +384,7 @@ namespace SunridgeHOA.Migrations
 
                     b.Property<DateTime>("LastModifiedDate");
 
-                    b.Property<int?>("LotHistoryId");
+                    b.Property<int>("LotHistoryId");
 
                     b.Property<int?>("OwnerHistoryId");
 
@@ -699,6 +701,8 @@ namespace SunridgeHOA.Migrations
 
                     b.Property<int>("HistoryTypeId");
 
+                    b.Property<int?>("Hours");
+
                     b.Property<bool>("IsArchive");
 
                     b.Property<string>("LastModifiedBy");
@@ -919,7 +923,8 @@ namespace SunridgeHOA.Migrations
 
                     b.HasOne("SunridgeHOA.Models.LotHistory", "LotHistory")
                         .WithMany("Files")
-                        .HasForeignKey("LotHistoryId");
+                        .HasForeignKey("LotHistoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SunridgeHOA.Models.OwnerHistory")
                         .WithMany("Files")
@@ -950,7 +955,7 @@ namespace SunridgeHOA.Migrations
             modelBuilder.Entity("SunridgeHOA.Models.LotHistory", b =>
                 {
                     b.HasOne("SunridgeHOA.Models.HistoryType", "HistoryType")
-                        .WithMany()
+                        .WithMany("LotHistories")
                         .HasForeignKey("HistoryTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
