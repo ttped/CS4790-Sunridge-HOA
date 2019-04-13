@@ -262,7 +262,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             return View(null);
         }
 
-        public IActionResult AddDocument(int? id)
+        public async Task<IActionResult> AddDocument(int? id)
         {
             if (id == null)
             {
@@ -271,6 +271,18 @@ namespace SunridgeHOA.Areas.Admin.Controllers
 
             var lot = _context.Lot.Find(id);
             if (lot == null)
+            {
+                return NotFound();
+            }
+
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var roles = await _userManager.GetRolesAsync(identityUser);
+            var isAdmin = roles.Contains("Admin") || roles.Contains("SuperAdmin");
+            //var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+            var ownerLots = _context.OwnerLot
+                .Where(u => u.LotId == id)
+                .Where(u => u.OwnerId == identityUser.OwnerId);
+            if (!isAdmin && !ownerLots.Any())
             {
                 return NotFound();
             }
@@ -364,11 +376,28 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var files = await _context.LotHistory
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var roles = await _userManager.GetRolesAsync(identityUser);
+            var isAdmin = roles.Contains("Admin") || roles.Contains("SuperAdmin");
+            //var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+            var ownerLots = _context.OwnerLot
+                .Where(u => u.LotId == id)
+                .Where(u => u.OwnerId == identityUser.OwnerId);
+            if (!ownerLots.Any())
+            {
+                return NotFound();
+            }
+
+            var filesQuery = _context.LotHistory
                 .Include(u => u.Files)
                 .Include(u => u.HistoryType)
-                .Where(u => u.LotId == id)
-                .ToListAsync();
+                .Where(u => u.LotId == id);
+            if (!isAdmin)
+            {
+                filesQuery = filesQuery.Where(u => u.PrivacyLevel != "Admin");
+            }
+
+            var files = await filesQuery.ToListAsync();
 
             ViewData["LotNumber"] = lot.LotNumber;
             return View(files);
