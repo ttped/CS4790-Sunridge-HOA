@@ -41,7 +41,7 @@ namespace SunridgeHOA.Models
         public DbSet<Comment> Comment { get; set; }
         //public DbSet<SunridgeHOA.Models.BannerItem> BannerItem { get; set; }
         public DbSet<SunridgeHOA.Models.Banner> Banner { get; set; }
-
+        public DbSet<ScheduledEvent> ScheduledEvents { get; set; }
 
         //gk
         public DbSet<Photo> Photo { get; set; }

@@ -14,7 +14,9 @@ namespace SunridgeHOA.Models
         public DateTime Date { get; set; }
         public string Description { get; set; }
         //public int? Hours { get; set; }
-        public string Status { get; set; }
+
+        public String PrivacyLevel { get; set; }
+
 
 
         // Nav properties

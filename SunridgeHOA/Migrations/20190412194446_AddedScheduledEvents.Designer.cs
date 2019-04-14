@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SunridgeHOA.Models;
 
 namespace SunridgeHOA.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190412194446_AddedScheduledEvents")]
+    partial class AddedScheduledEvents
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -184,8 +186,6 @@ namespace SunridgeHOA.Migrations
 
                     b.Property<int>("OwnerId");
 
-                    b.Property<int?>("OwnerId1");
-
                     b.Property<string>("PasswordHash");
 
                     b.Property<string>("PhoneNumber");
@@ -209,7 +209,7 @@ namespace SunridgeHOA.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("OwnerId1");
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -368,23 +368,27 @@ namespace SunridgeHOA.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ClassifiedListingId");
+                    b.Property<int>("ClassifiedListingId");
 
                     b.Property<DateTime>("Date");
 
                     b.Property<string>("Description");
 
+                    b.Property<string>("FileStream");
+
                     b.Property<string>("FileURL");
 
+                    b.Property<string>("ImageContentType");
+
                     b.Property<bool>("IsArchive");
+
+                    b.Property<int>("IsMainImage");
 
                     b.Property<string>("LastModifiedBy");
 
                     b.Property<DateTime>("LastModifiedDate");
 
-                    b.Property<int?>("LotHistoryId");
-
-                    b.Property<int?>("OwnerHistoryId");
+                    b.Property<int>("LotHistoryId");
 
                     b.Property<string>("Type");
 
@@ -393,8 +397,6 @@ namespace SunridgeHOA.Migrations
                     b.HasIndex("ClassifiedListingId");
 
                     b.HasIndex("LotHistoryId");
-
-                    b.HasIndex("OwnerHistoryId");
 
                     b.ToTable("File");
                 });
@@ -627,11 +629,10 @@ namespace SunridgeHOA.Migrations
 
                     b.Property<int>("AddressId");
 
-                    b.Property<string>("ApplicationUserId");
-
                     b.Property<DateTime?>("Birthday");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .IsRequired();
 
                     b.Property<string>("EmergencyContactName");
 
@@ -903,7 +904,8 @@ namespace SunridgeHOA.Migrations
                 {
                     b.HasOne("SunridgeHOA.Models.Owner", "Owner")
                         .WithMany()
-                        .HasForeignKey("OwnerId1");
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SunridgeHOA.Models.ClassifiedListing", b =>
@@ -939,15 +941,13 @@ namespace SunridgeHOA.Migrations
                 {
                     b.HasOne("SunridgeHOA.Models.ClassifiedListing", "ClassifiedListing")
                         .WithMany()
-                        .HasForeignKey("ClassifiedListingId");
+                        .HasForeignKey("ClassifiedListingId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SunridgeHOA.Models.LotHistory", "LotHistory")
                         .WithMany("Files")
-                        .HasForeignKey("LotHistoryId");
-
-                    b.HasOne("SunridgeHOA.Models.OwnerHistory")
-                        .WithMany("Files")
-                        .HasForeignKey("OwnerHistoryId");
+                        .HasForeignKey("LotHistoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SunridgeHOA.Models.KeyHistory", b =>
@@ -974,7 +974,7 @@ namespace SunridgeHOA.Migrations
             modelBuilder.Entity("SunridgeHOA.Models.LotHistory", b =>
                 {
                     b.HasOne("SunridgeHOA.Models.HistoryType", "HistoryType")
-                        .WithMany()
+                        .WithMany("LotHistories")
                         .HasForeignKey("HistoryTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
