@@ -11,6 +11,8 @@ namespace SunridgeHOA.Areas.Owner.Models
     {
         public Lot Lot { get; set; }
         public Address Address { get; set; }
+
+        [Display(Name = "Primary Owner")]
         public SunridgeHOA.Models.Owner PrimaryOwner { get; set; }
         public List<SunridgeHOA.Models.Owner> Owners { get; set; }
 
