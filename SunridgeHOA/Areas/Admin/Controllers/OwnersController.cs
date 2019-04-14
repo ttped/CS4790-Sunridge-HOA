@@ -86,6 +86,9 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            var identityUser = await _userManager.FindByIdAsync(owner.ApplicationUserId);
+            var roles = await _userManager.GetRolesAsync(identityUser);
+            ViewData["IsAdmin"] = roles.Contains("Admin") || roles.Contains("SuperAdmin");
             return View(owner);
         }
 
