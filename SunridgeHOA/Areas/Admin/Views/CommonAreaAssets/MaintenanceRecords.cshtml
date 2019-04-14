@@ -1,0 +1,47 @@
+﻿@model SunridgeHOA.Areas.Admin.Models.CommonAreaAssetVM
+@{
+    ViewData["Title"] = "MaintenanceRecords";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Maintenance Records for @Model.CommonAreaAsset.AssetName</h2>
+<p>
+    <a asp-action="CreateMaintenance" asp-route-id="@Model.CommonAreaAsset.CommonAreaAssetId">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Maintenances.FirstOrDefault().DateCompleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Maintenances.FirstOrDefault().Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Maintenances.FirstOrDefault().Cost)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Maintenances)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateCompleted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cost)
+                </td>
+                <td>
+                    <a asp-action="EditMaintenance" asp-route-id="@item.MaintenanceId">Edit</a> |
+                    <a asp-controller="Maintenance" asp-action="Delete" asp-route-id="@item.MaintenanceId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

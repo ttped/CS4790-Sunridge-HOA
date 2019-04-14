@@ -1,0 +1,25 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "fullcalendar@3.10.0",
+      "destination": "wwwroot/lib/fullcalendar/",
+      "files": [
+        "fullcalendar.min.js",
+        "fullcalendar.css",
+        "fullcalendar.js",
+        "fullcalendar.min.css",
+        "fullcalendar.print.css"
+      ]
+    },
+    {
+      "library": "moment.js@2.24.0",
+      "destination": "wwwroot/lib/moment.js/",
+      "files": [
+        "moment.min.js",
+        "moment.js"
+      ]
+    }
+  ]
+}
