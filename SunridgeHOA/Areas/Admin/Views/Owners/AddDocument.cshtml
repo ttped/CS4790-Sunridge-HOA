@@ -1,0 +1,43 @@
+﻿@model SunridgeHOA.Areas.Owner.Models.ViewModels.DocumentVM
+@{
+    ViewData["Title"] = "AddDocument";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Add Document</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="AddDocument" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="HistoryType" class="control-label"></label>
+                <select asp-for="HistoryType" asp-items="ViewBag.HistoryTypes" class="form-control"></select>
+                <span asp-validation-for="HistoryType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Upload file(s)</label>
+                <input type="file" name="Files" class="form-control" multiple />
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="AdminOnly" class="control-label"></label>
+                <input asp-for="AdminOnly" class="form-control" />
+                <span asp-validation-for="AdminOnly" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Save" />
+                <a asp-action="ViewFiles" asp-route-id="@ViewBag.OwnerId">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

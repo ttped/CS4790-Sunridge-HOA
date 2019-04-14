@@ -35,7 +35,8 @@
             @Html.DisplayNameFor(model => model.Lot.TaxId)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Lot.TaxId)
+            @{ var taxLink = $"http://www3.co.weber.ut.us/psearch/tax_summary.php?id={Model.Lot.TaxId}"; }
+            <a href="@taxLink" target="_blank">@Html.DisplayFor(modelItem => Model.Lot.TaxId)</a>
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Address)
@@ -60,14 +61,7 @@
         </dd>*@
     </dl>
 </div>
-@* May need to use an api key like this: https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=Eiffel+Tower,Paris+France *@
-<div>
-        @{
-            var addr = Model.Address.ToString();
-            var src = $"https://www.maps.google.it/maps?q={addr}&output=embed";
-        }
-        <iframe src="@src"></iframe>
-    </div>
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Lot.LotId">Edit</a> |
     <a asp-action="Index">Back to List</a>

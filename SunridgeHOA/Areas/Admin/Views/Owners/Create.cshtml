@@ -36,7 +36,12 @@
                 <input asp-for="Owner.Birthday" class="form-control" />
                 <span asp-validation-for="Owner.Birthday" class="text-danger"></span>
             </div>
-
+            <div class="form-group">
+                <label class="control-label">Add user immediately to a lot?</label>
+                <select asp-for="LotId" asp-items="ViewBag.LotsSelect" class="form-control">
+                    <option value="-1" selected disabled hidden>--None--</option>
+                </select>
+            </div>
             <div class="form-group">
                 <label class="control-label">
                     <input asp-for="IsAdmin"/>

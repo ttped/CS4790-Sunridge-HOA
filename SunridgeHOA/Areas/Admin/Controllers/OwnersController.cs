@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SunridgeHOA.Areas.Admin.Models;
+using SunridgeHOA.Areas.Owner.Models.ViewModels;
 using SunridgeHOA.Models;
+using SunridgeHOA.Utility;
 
 namespace SunridgeHOA.Areas.Admin.Controllers
 {
@@ -16,17 +20,35 @@ namespace SunridgeHOA.Areas.Admin.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly HostingEnvironment _hostingEnv;
 
-        public OwnersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public OwnersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, HostingEnvironment env)
         {
             _context = context;
             _userManager = userManager;
+            _hostingEnv = env;
         }
 
         // GET: Admin/Owners
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string query)
         {
-            var owners = _context.Owner.Include(o => o.Address);
+            List<SunridgeHOA.Models.Owner> owners = null;
+
+            // Need to filter the search
+            if (!String.IsNullOrEmpty(query))
+            {
+                owners = await _context.Owner
+                    .Include(u => u.Address)
+                    .Where(u => u.FullName.Contains(query))
+                    .ToListAsync();
+            }
+            // No search - include all owners
+            else
+            {
+                owners = await _context.Owner
+                    .Include(u => u.Address)
+                    .ToListAsync();
+            }
 
             var vmList = new List<OwnerIndexVM>();
             foreach (var owner in owners)
@@ -34,7 +56,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 var lots = await _context.OwnerLot
                     .Include(u => u.Lot)
                     .Where(u => u.OwnerId == owner.OwnerId)
-                    .Where(u => u.EndDate == DateTime.MinValue)
+                    .Where(u => !u.IsArchive)
                     .Select(u => u.Lot.LotNumber)
                     .ToListAsync();
 
@@ -64,12 +86,209 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            var identityUser = await _userManager.FindByIdAsync(owner.ApplicationUserId);
+            var roles = await _userManager.GetRolesAsync(identityUser);
+            ViewData["IsAdmin"] = roles.Contains("Admin") || roles.Contains("SuperAdmin");
             return View(owner);
+        }
+
+        public async Task<IActionResult> AddDocument(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var owner = _context.Owner.Find(id);
+            if (owner == null)
+            {
+                return NotFound();
+            }
+
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var roles = await _userManager.GetRolesAsync(identityUser);
+            var isAdmin = roles.Contains("Admin") || roles.Contains("SuperAdmin");
+            if (!isAdmin && id != identityUser.OwnerId)
+            {
+                return NotFound();
+            }
+
+            ViewData["OwnerId"] = owner.OwnerId;
+            ViewData["HistoryTypes"] = new SelectList(_context.HistoryType, "HistoryTypeId", "Description");
+
+            return View(new DocumentVM
+            {
+                Id = owner.OwnerId
+            });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddDocument(int id, DocumentVM vm)
+        {
+            if (id != vm.Id)
+            {
+                return NotFound();
+            }
+
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+
+            var owner = _context.Owner.Find(vm.Id);
+
+            var files = HttpContext.Request.Form.Files;
+            if (files.Count == 0)
+            {
+                ModelState.AddModelError("Files", "Please upload at least one file");
+            }
+
+            if (ModelState.IsValid)
+            {
+                var uploadFiles = new List<SunridgeHOA.Models.File>();
+                foreach (var file in files)
+                {
+                    var webRootPath = _hostingEnv.WebRootPath;
+                    var uploads = Path.Combine(webRootPath, SD.OwnerDocsFolder);
+                    var name = Path.GetFileNameWithoutExtension(file.FileName);
+                    var extension = Path.GetExtension(file.FileName);
+                    var dateExt = DateTime.Now.ToString("MMddyyyy");
+                    var newFileName = $"{owner.OwnerId} - {name} {dateExt}{extension}";
+
+                    using (var filestream = new FileStream(Path.Combine(uploads, newFileName), FileMode.Create))
+                    {
+                        file.CopyTo(filestream);
+                    }
+
+                    var uploadFile = new SunridgeHOA.Models.File
+                    {
+                        FileURL = $@"\{SD.OwnerDocsFolder}\{newFileName}",
+                        Date = DateTime.Now,
+                        Description = Path.GetFileName(file.FileName)
+                    };
+                    _context.File.Add(uploadFile);
+                    uploadFiles.Add(uploadFile);
+                    //await _context.SaveChangesAsync();
+                }
+
+                var ownerHistory = new OwnerHistory
+                {
+                    OwnerId = owner.OwnerId,
+                    HistoryTypeId = vm.HistoryType,
+                    Date = DateTime.Now,
+                    Description = vm.Description,
+                    LastModifiedBy = loggedInUser.FullName,
+                    LastModifiedDate = DateTime.Now,
+                    Files = uploadFiles
+                };
+                _context.OwnerHistory.Add(ownerHistory);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(ViewFiles), new { id = id });
+            }
+
+            ViewData["OwnerId"] = owner.OwnerId;
+            ViewData["HistoryTypes"] = new SelectList(_context.HistoryType, "HistoryTypeId", "Description", vm.HistoryType);
+            return View(vm);
+        }
+
+        public async Task<IActionResult> ViewFiles(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var owner = await _context.Owner.SingleOrDefaultAsync(u => u.OwnerId == id);
+            if (owner == null)
+            {
+                return NotFound();
+            }
+
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var roles = await _userManager.GetRolesAsync(identityUser);
+            var isAdmin = roles.Contains("Admin") || roles.Contains("SuperAdmin");
+            //var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+            if (!isAdmin && identityUser.OwnerId != id)
+            {
+                return NotFound();
+            }
+
+            var files = await _context.OwnerHistory
+                .Include(u => u.Files)
+                .Include(u => u.HistoryType)
+                .Where(u => u.OwnerId == id)
+                .ToListAsync();
+
+            ViewData["OwnerId"] = owner.OwnerId;
+            ViewData["FullName"] = owner.FullName;
+            return View(files);
+        }
+
+        public async Task<IActionResult> LoginInfo(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var owner = await _context.Owner.FirstOrDefaultAsync(u => u.OwnerId == id);
+            if (owner == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _userManager.FindByIdAsync(owner.ApplicationUserId);
+
+            ViewData["FullName"] = owner.FullName;
+
+            return View(new UserInfoVM
+            {
+                Username = user.UserName,
+                UserId = user.Id
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LoginInfo(int? id, UserInfoVM vm)
+        {
+            var owner = await _context.Owner.FindAsync(id);
+            var user = await _userManager.FindByIdAsync(owner.ApplicationUserId);
+            if (owner == null || user == null)
+            {
+                return NotFound();
+            }
+
+            // Need to see if we are changing the username, and if the username exists already
+            var existingUser = await _userManager.FindByNameAsync(vm.Username);
+            if (vm.Username.ToLower() != user.UserName.ToLower() && existingUser != null)
+            {
+                ModelState.AddModelError("Username", "There is already a user with that username");
+                return View(new UserInfoVM
+                {
+                    Username = vm.Username,
+                    UserId = user.Id
+                });
+            }
+
+            // Set the username and password
+            user.UserName = vm.Username;
+            user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, vm.Password);
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                return View(new UserInfoVM
+                {
+                    Username = vm.Username,
+                    UserId = user.Id
+                });
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Admin/Owners/Create
         public IActionResult Create()
         {
+            ViewData["LotsSelect"] = new SelectList(_context.Lot.OrderBy(u => u.LotNumber).ToList(), "LotId", "LotNumber");
             return View();
         }
 
@@ -80,12 +299,15 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(OwnerVM vm)
         {
-            var existingUser = await _userManager.FindByEmailAsync(vm.Owner.Email);
-            if (existingUser != null)
+            if (vm.Owner.Email != null)
             {
-                ModelState.AddModelError("Email", "There is an existing user with that email address");
+                var existingUser = await _userManager.FindByEmailAsync(vm.Owner.Email);
+                if (existingUser != null)
+                {
+                    ModelState.AddModelError("Email", "There is an existing user with that email address");
+                }
             }
-
+            
             if (ModelState.IsValid)
             {
                 var identityUser = await _userManager.GetUserAsync(HttpContext.User);
@@ -98,13 +320,15 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 vm.Owner.Address = vm.Address;
                 vm.Owner.LastModifiedBy = loggedInUser.FullName;
                 vm.Owner.LastModifiedDate = DateTime.Now;
-                _context.Add(vm.Owner);
-                await _context.SaveChangesAsync();
+
+                // Don't save yet - need to link the Owner to the ApplicationUser
+                //_context.Add(vm.Owner);
+                //await _context.SaveChangesAsync();
 
                 // Find a default username - adds a number to the end if there is a duplicate
                 var username = $"{vm.Owner.FirstName}{vm.Owner.LastName}";
                 int count = 0;
-                while (await _userManager.FindByEmailAsync(username) != null)
+                while (await _userManager.FindByNameAsync(username) != null)
                 {
                     count++;
                     username = $"{username}{count}";
@@ -130,13 +354,31 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                         roles.Add("Admin");
                     };
                     await _userManager.AddToRolesAsync(newOwner, roles);
+
+                    // Link Owner to the Application User
+                    vm.Owner.ApplicationUserId = newOwner.Id;
+                    _context.Add(vm.Owner);
+                    await _context.SaveChangesAsync();
+
+                    // Add the Owner to a Lot
+                    if (vm.LotId != 0)
+                    {
+                        _context.OwnerLot.Add(new OwnerLot
+                        {
+                            LotId = vm.LotId,
+                            OwnerId = vm.Owner.OwnerId,
+                            StartDate = DateTime.Now
+                        });
+
+                        await _context.SaveChangesAsync();
+                    }
                 }
 
                 return RedirectToAction(nameof(Index));
             }
 
+            ViewData["LotsSelect"] = new SelectList(_context.Lot.OrderBy(u => u.LotNumber).ToList(), "LotId", "LotNumber", vm.LotId);
             return View(vm);
-
         }
 
         // GET: Admin/Owners/Edit/5
@@ -153,7 +395,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var appUser = await _userManager.FindByEmailAsync(owner.Email);
+            var appUser = await _userManager.FindByIdAsync(owner.ApplicationUserId);
             var roles = await _userManager.GetRolesAsync(appUser);
 
             var vm = new OwnerVM
@@ -185,7 +427,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                     var identityUser = await _userManager.GetUserAsync(HttpContext.User);
                     var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
 
-                    var addr = await _context.Address.SingleOrDefaultAsync(u => u.Id == vm.Owner.AddressId);
+                    var addr = await _context.Address.SingleOrDefaultAsync(u => u.Id == vm.Address.Id);
                     addr.StreetAddress = vm.Address.StreetAddress;
                     addr.City = vm.Address.City;
                     addr.State = vm.Address.State;
@@ -194,13 +436,23 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                     addr.LastModifiedDate = DateTime.Now;
                     _context.Update(addr);
 
-                    vm.Owner.LastModifiedBy = loggedInUser.FullName;
-                    vm.Owner.LastModifiedDate = DateTime.Now;
-                    _context.Update(vm.Owner);
+                    var owner = await _context.Owner.SingleOrDefaultAsync(u => u.OwnerId == vm.Owner.OwnerId);
+                    owner.FirstName = vm.Owner.FirstName;
+                    owner.LastName = vm.Owner.LastName;
+                    owner.Occupation = vm.Owner.Occupation;
+                    owner.Birthday = vm.Owner.Birthday;
+                    owner.Email = vm.Owner.Email;
+                    owner.Phone = vm.Owner.Phone;
+                    owner.EmergencyContactName = vm.Owner.EmergencyContactName;
+                    owner.EmergencyContactPhone = vm.Owner.EmergencyContactPhone;
+                    //vm.Owner.AddressId = addr.Id; // need to reset this or the database gets mad
+                    //vm.Owner.LastModifiedBy = loggedInUser.FullName;
+                    //vm.Owner.LastModifiedDate = DateTime.Now;
+                    _context.Update(owner);
 
                     await _context.SaveChangesAsync();
 
-                    var appUser = await _userManager.FindByEmailAsync(vm.Owner.Email);
+                    var appUser = await _userManager.FindByIdAsync(owner.ApplicationUserId);
                     var roles = await _userManager.GetRolesAsync(appUser);
                     if (vm.IsAdmin)
                     {

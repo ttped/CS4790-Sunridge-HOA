@@ -7,9 +7,21 @@
 
 <h2>Index</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="row">
+    <div class="col-md-2">
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+    </div>
+    <div class="col-md-6"></div>
+    <div class="col-md-4">
+        <form asp-action="Index" class="form-inline">
+            <label class="control-label mr-2">Search:</label>
+            <input type="text" class="form-control" name="Query" />
+            <input type="submit" value="Search" class="btn btn-default" />
+        </form>
+    </div>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -48,7 +60,9 @@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Owner.OwnerId">Edit</a> |
+                <a asp-action="LoginInfo" asp-route-id="@item.Owner.OwnerId">Login Info</a> |
                 <a asp-action="Details" asp-route-id="@item.Owner.OwnerId">Details</a> |
+                <a asp-action="ViewFiles" asp-route-id="@item.Owner.OwnerId">Files</a> |
                 <a asp-action="Delete" asp-route-id="@item.Owner.OwnerId">Delete</a>
             </td>
         </tr>
