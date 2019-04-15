@@ -49,10 +49,17 @@ namespace SunridgeHOA.Controllers
             return View(classifieds);
         }
 
-        public IActionResult Other()
+        public async Task<IActionResult> Other()
         {
-            //TODO pull all other services from the classifieds table from the db and send them to the view
-            return View();
+            var classifieds = new List<ClassifiedListing>();
+            var items = await _context.ClassifiedListing.ToListAsync();
+            foreach (var item in items)
+            {
+                item.Images = await _context.ClassifiedImage.Where(x => x.ClassifiedListingId == item.ClassifiedListingId).ToListAsync();
+                item.ClassifiedCategory = await _context.ClassifiedCategory.Where(x => x.ClassifiedCategoryId == item.ClassifiedCategoryId).FirstAsync();
+                classifieds.Add(item);
+            }
+            return View(classifieds);
         }
     }
 }

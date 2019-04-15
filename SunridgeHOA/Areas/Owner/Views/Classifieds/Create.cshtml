@@ -5,6 +5,20 @@
     ViewData["Title"] = "Create";
     const String ownerString = "Owner";
 }
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".select").change(function () {
+            if ($(this).val() == "5") {
+                $("#hide").hide();
+            }
+            else {
+                $("#hide").show();
+            }
+
+        });
+    });
+</script>
+
 <div class="row col-12">
     @*<div class="col-2">
         <partial name="~/Views/Shared/_AdminNavbar.cshtml" />
@@ -20,53 +34,37 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="ClassifiedListing.OwnerId" class="control-label"></label>
-                        <select asp-for="ClassifiedListing.OwnerId" class="form-control" asp-items="Model.Owner.ToSelectListItem(Model.ClassifiedListing.OwnerId, ownerString)"></select>
+                        <select asp-for="ClassifiedListing.OwnerId" class="form-control" asp-items="Model.Owner.ownerNameToSelectListItem(Model.ClassifiedListing.OwnerId)"></select>
                     </div>
+                    
                     <div class="form-group">
                         <label asp-for="ClassifiedCategory" class="control-label"></label>
                         @*<select asp-for="ClassifiedListing.ClassifiedCategoryId" class="form-control" asp-items="ViewBag.ClassifiedCategoryId"></select>*@
-                        <select asp-for="ClassifiedListing.ClassifiedCategoryId" class="form-control" asp-items="Model.ClassifiedCategory.categoryDescriptionToSelectListItem(Model.ClassifiedListing.ClassifiedCategoryId)"></select>
+                        <select class="select" runat="Server" ClientIdMode="static" asp-for="ClassifiedListing.ClassifiedCategoryId" class="form-control" asp-items="Model.ClassifiedCategory.categoryDescriptionToSelectListItem(Model.ClassifiedListing.ClassifiedCategoryId)"></select>
                     </div>
                     <div class="form-group">
-                        <label asp-for="ClassifiedListing.ItemName" class="control-label"></label>
+                        <label asp-for="ClassifiedListing.ItemName" class="control-label">Title</label>
                         <input asp-for="ClassifiedListing.ItemName" class="form-control" />
-                        <span asp-validation-for="ClassifiedListing.ItemName" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
+                    <div id="hide" class="form-group">
                         <label asp-for="ClassifiedListing.Price" class="control-label"></label>
                         <input asp-for="ClassifiedListing.Price" class="form-control" />
-                        <span asp-validation-for="ClassifiedListing.Price" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="ClassifiedListing.Description" class="control-label"></label>
-                        <input asp-for="ClassifiedListing.Description" class="form-control" />
-                        <span asp-validation-for="ClassifiedListing.Description" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="ClassifiedListing.ListingDate" class="control-label"></label>
-                        <input asp-for="ClassifiedListing.ListingDate" class="form-control" />
-                        <span asp-validation-for="ClassifiedListing.ListingDate" class="text-danger"></span>
+                        <textarea asp-for="ClassifiedListing.Description" style="overflow:auto; height:200px;" class="form-control"></textarea>
                     </div>
                     <div class="form-group">
                         <label asp-for="ClassifiedListing.Phone" class="control-label"></label>
                         <input asp-for="ClassifiedListing.Phone" class="form-control" />
-                        <span asp-validation-for="ClassifiedListing.Phone" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="ClassifiedListing.Email" class="control-label"></label>
                         <input asp-for="ClassifiedListing.Email" class="form-control" />
-                        <span asp-validation-for="ClassifiedListing.Email" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label>Upload images</label>
                         <input type="file" name="files" class="form-control" multiple />
-                    </div>
-                    <div class="form-group">
-                        <div class="checkbox">
-                            <label>
-                                <input asp-for="ClassifiedListing.IsArchive" /> @Html.DisplayNameFor(model => model.ClassifiedListing.IsArchive)
-                            </label>
-                        </div>
                     </div>
                     @*<div class="form-group">
             <label asp-for="ClassifiedListing.LastModifiedBy" class="control-label"></label>

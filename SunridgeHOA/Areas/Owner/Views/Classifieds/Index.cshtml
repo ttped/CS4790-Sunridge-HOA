@@ -41,18 +41,15 @@
                     <th>
                         Classified<br />Category
                     </th>
-                    <th>
+                    <th class="col-5">
                         Image
-                    </th>
-                    <th>
-                        IsArchive
                     </th>
                     <th></th>
                 </tr>
             </thead>
 
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.Where(x=>x.ClassifiedListing.IsArchive == false))
                 {
                 <tr>
                     <td>
@@ -79,15 +76,12 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.ClassifiedListing.ClassifiedCategory.Description)
                     </td>
-                    <td id="postNewAdImage">
+                    <td id="postNewAdImage" class="col-5">
                         @foreach (var image in item.ClassifiedImages.Where(x => x.ClassifiedListingId == item.ClassifiedListing.ClassifiedListingId))
                         {
                             @*<p>@image.ImageURL</p>*@
-                            <img src="../../..@image.ImageURL" style="border-radius:5px;" />
+                            <img src="../../..@image.ImageURL" class="img-fluid" style="border-radius:5px; object-fit: cover;" />
                         }
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ClassifiedListing.IsArchive)
                     </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.ClassifiedListing.ClassifiedListingId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
