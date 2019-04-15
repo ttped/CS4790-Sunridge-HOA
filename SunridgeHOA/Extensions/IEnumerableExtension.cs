@@ -71,5 +71,15 @@ namespace SunridgeHOA.Extensions
                    };
         }
 
+        public static IEnumerable<SelectListItem> categoryDescriptionToSelectListItem<T>(this IEnumerable<T> items, int selectedValue)
+        {
+            return from item in items
+                   select new SelectListItem
+                   {
+                       Text = item.GetPropertyValue("Description"),
+                       Value = item.GetPropertyValue("ClassifiedCategoryId"),
+                       Selected = item.GetPropertyValue("ClassifiedCategoryId").Equals(selectedValue.ToString())
+                   };
+        }
     }
 }

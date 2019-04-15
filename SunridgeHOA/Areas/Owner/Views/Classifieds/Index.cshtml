@@ -1,5 +1,6 @@
-﻿@model List<SunridgeHOA.Models.ClassifiedListing>
-
+﻿@model List<SunridgeHOA.Models.ViewModels.ClassifiedListingViewModel>
+@using SunridgeHOA.Models.ViewModels
+@using SunridgeHOA.Extensions
 @{
     ViewData["Title"] = "Index";
 }
@@ -41,59 +42,57 @@
                         ClassifiedCategory
                     </th>
                     <th>
+                        Image
+                    </th>
+                    <th>
                         IsArchive
-                    </th>
-                    <th>
-                        LastModifiedBy
-                    </th>
-                    <th>
-                        LastModifiedDate
                     </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ItemName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Price)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ListingDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Phone)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Owner.FullName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ClassifiedCategory.ClassifiedCategoryId)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IsArchive)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LastModifiedBy)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LastModifiedDate)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.ClassifiedListingId">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.ClassifiedListingId">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.ClassifiedListingId">Delete</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClassifiedListing.ItemName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClassifiedListing.Price)
+                    </td>
+                    <td>
+                        @item.ClassifiedListing.Description.Truncate(100).Concatenate("...")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClassifiedListing.ListingDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClassifiedListing.Phone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClassifiedListing.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClassifiedListing.Owner.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClassifiedListing.ClassifiedCategory.Description)
+                    </td>
+                    <td class="col-2">
+                        @foreach (var image in item.ClassifiedImages.Where(x => x.ClassifiedListingId == item.ClassifiedListing.ClassifiedListingId))
+                        {
+                            @*<p>@image.ImageURL</p>*@
+                            <img class="col-3" src="../../..@image.ImageURL" style="border-radius:5px;" />
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClassifiedListing.IsArchive)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ClassifiedListing.ClassifiedListingId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ClassifiedListing.ClassifiedListingId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ClassifiedListing.ClassifiedListingId">Delete</a>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

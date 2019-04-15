@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting.Internal;
@@ -31,6 +32,7 @@ namespace SunridgeHOA.Areas.Owner.Controllers
             {
                 ClassifiedListing = new SunridgeHOA.Models.ClassifiedListing(),
                 ClassifiedCategory = _context.ClassifiedCategory.ToList(),
+                ClassifiedImages = _context.ClassifiedImage.Where(x => x.ClassifiedListingId == classifiedListingViewModel.ClassifiedListing.ClassifiedListingId),
                 Owner = _context.Owner.ToList()
             };
         }
@@ -38,7 +40,53 @@ namespace SunridgeHOA.Areas.Owner.Controllers
         // GET: Classifieds
         public async Task<ActionResult> Index()
         {
-            return View(await _context.ClassifiedListing.ToListAsync());
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+
+            var userRole = _context.UserRoles.Where(x => x.UserId == identityUser.Id);
+
+            
+            var vmList = new List<ClassifiedListingViewModel>();
+            foreach (var item in userRole)
+            {
+                var role = _context.Roles.Find(item.RoleId).Name;
+                if (role == "Admin" || role == "SuperAdmin")
+                {
+                    var adminItems = _context.ClassifiedListing.ToList();
+                    foreach (var listing in adminItems)
+                    {
+                        var vm = new ClassifiedListingViewModel()
+                        {
+                            ClassifiedListing = listing,
+                            ClassifiedCategory = _context.ClassifiedCategory.ToList(),
+                            ClassifiedImages = _context.ClassifiedImage.ToList(),
+                            Owner = _context.Owner.ToList()
+                        };
+                        vmList.Add(vm);
+                    }
+                    //var getAll = _context.ClassifiedListing.ToListAsync();
+                    //return View(await getAll);
+                    return View(vmList);
+                }
+            }
+
+            var ownerItems = _context.ClassifiedListing.Where(x => x.OwnerId == loggedInUser.OwnerId).ToList();
+            foreach (var listing in ownerItems)
+            {
+                var vm = new ClassifiedListingViewModel()
+                {
+                    ClassifiedListing = listing,
+                    ClassifiedCategory = _context.ClassifiedCategory.ToList(),
+                    ClassifiedImages = _context.ClassifiedImage.ToList(),
+                    Owner = _context.Owner.ToList()
+                };
+                vmList.Add(vm);
+            }
+            return View(vmList);
+
+            //return View(await items);
+            //return View(classifiedListingViewModel);
+
         }
 
         // GET: Classifieds/Details/5
@@ -55,6 +103,7 @@ namespace SunridgeHOA.Areas.Owner.Controllers
             {
                 return NotFound();
             }
+            item.Images = await _context.ClassifiedImage.Where(x => x.ClassifiedListingId == item.ClassifiedListingId).ToListAsync();
 
             return View(item);
         }
@@ -77,9 +126,43 @@ namespace SunridgeHOA.Areas.Owner.Controllers
 
                 classifiedListingViewModel.ClassifiedListing.LastModifiedBy = loggedInUser.FullName;
                 classifiedListingViewModel.ClassifiedListing.LastModifiedDate = DateTime.Now;
-
+                classifiedListingViewModel.ClassifiedListing.ListingDate = DateTime.Now;
+                classifiedListingViewModel.ClassifiedListing.Owner = loggedInUser;
                 _context.ClassifiedListing.Add(classifiedListingViewModel.ClassifiedListing);
                 await _context.SaveChangesAsync();
+
+                //image uploading
+                string webRootPath = _hostingEnvironment.WebRootPath;
+                var files = HttpContext.Request.Form.Files;
+                //var classifiedListingFromDb = _context.ClassifiedListing.Find(classifiedListingViewModel.ClassifiedListing.ClassifiedListingId);
+
+                var uploads = Path.Combine(webRootPath, @"img\ClassifiedsImages");
+
+                int i = 0;
+                foreach (var file in files)
+                {
+                    i++;
+                    var extension = Path.GetExtension(file.FileName);
+                    using (var filestream = new FileStream(Path.Combine(uploads, classifiedListingViewModel.ClassifiedListing.ClassifiedListingId + @"_" + i + extension), FileMode.Create))
+                    {
+                        file.CopyTo(filestream); // moves to server and renames
+                    }
+                    var image = new ClassifiedImage()
+                    {
+                        ClassifiedListingId = classifiedListingViewModel.ClassifiedListing.ClassifiedListingId,
+                        IsMainImage = (file == files.First()),
+                        ImageExtension = extension,
+                        ImageURL = @"\" + @"img\ClassifiedsImages" + @"\" + classifiedListingViewModel.ClassifiedListing.ClassifiedListingId + @"_" + i + extension
+                    };
+
+                    _context.ClassifiedImage.Add(image);
+                }
+
+                
+                //classifiedListingFromDb.Images.Add(image);
+
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(classifiedListingViewModel);
@@ -94,11 +177,13 @@ namespace SunridgeHOA.Areas.Owner.Controllers
             }
 
             var item = await _context.ClassifiedListing.FindAsync(id);
-            classifiedListingViewModel.ClassifiedListing = item;
+            
             if (item == null)
             {
                 return NotFound();
             }
+            item.Images = await _context.ClassifiedImage.Where(x => x.ClassifiedListingId == item.ClassifiedListingId).ToListAsync();
+            classifiedListingViewModel.ClassifiedListing = item;
             return View(classifiedListingViewModel);
         }
 
@@ -120,13 +205,53 @@ namespace SunridgeHOA.Areas.Owner.Controllers
 
             _context.Update(classifiedListingViewModel.ClassifiedListing);
             await _context.SaveChangesAsync();
+
+            string webRootPath = _hostingEnvironment.WebRootPath;
+            var files = HttpContext.Request.Form.Files;
+
+            var uploads = Path.Combine(webRootPath, @"img\ClassifiedsImages");
+            ClassifiedListing item = await _context.ClassifiedListing.FindAsync(id);
+            if (files.Count != 0)
+            {
+                var oldImages = await _context.ClassifiedImage.Where(x => x.ClassifiedListingId == item.ClassifiedListingId).ToListAsync();
+                foreach(var oldImage in oldImages)
+                {
+                    if (System.IO.File.Exists(Path.Combine(webRootPath, oldImage.ImageURL.Substring(1))))
+                    {
+                        System.IO.File.Delete(Path.Combine(webRootPath, oldImage.ImageURL.Substring(1)));
+                    }
+                    _context.ClassifiedImage.Remove(oldImage);
+                 }
+
+                int i = 0;
+                foreach (var file in files)
+                {
+                    i++;
+                    var extension = Path.GetExtension(file.FileName);
+                    using (var filestream = new FileStream(Path.Combine(uploads, classifiedListingViewModel.ClassifiedListing.ClassifiedListingId + @"_" + i + extension), FileMode.Create))
+                    {
+                        file.CopyTo(filestream); // moves to server and renames
+                    }
+                    var image = new ClassifiedImage()
+                    {
+                        ClassifiedListingId = classifiedListingViewModel.ClassifiedListing.ClassifiedListingId,
+                        IsMainImage = (file == files.First()),
+                        ImageExtension = extension,
+                        ImageURL = @"\" + @"img\ClassifiedsImages" + @"\" + classifiedListingViewModel.ClassifiedListing.ClassifiedListingId + @"_" + i + extension
+                    };
+
+                    _context.ClassifiedImage.Add(image);
+                }
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
 
         // GET: Classifieds/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            var item = await _context.ClassifiedListing.FindAsync(id);
+            return View(item);
         }
 
         // POST: Classifieds/Delete/5
@@ -135,6 +260,19 @@ namespace SunridgeHOA.Areas.Owner.Controllers
         public async Task<ActionResult> Delete(int id, ClassifiedListing listing)
         {
             ClassifiedListing item = await _context.ClassifiedListing.FindAsync(id);
+
+            string webRootPath = _hostingEnvironment.WebRootPath;
+            var uploads = Path.Combine(webRootPath, @"img\ClassifiedsImages");
+            var oldImages = await _context.ClassifiedImage.Where(x => x.ClassifiedListingId == item.ClassifiedListingId).ToListAsync();
+            foreach (var oldImage in oldImages)
+            {
+                if (System.IO.File.Exists(Path.Combine(webRootPath, oldImage.ImageURL.Substring(1))))
+                {
+                    System.IO.File.Delete(Path.Combine(webRootPath, oldImage.ImageURL.Substring(1)));
+                }
+                _context.ClassifiedImage.Remove(oldImage);
+            }
+            
             item.IsArchive = true;
             _context.ClassifiedListing.Update(item);
             //_context.ClassifiedListing.Remove(item);

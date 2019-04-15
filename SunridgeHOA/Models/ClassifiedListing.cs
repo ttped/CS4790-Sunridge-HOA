@@ -22,6 +22,6 @@ namespace SunridgeHOA.Models
         public Owner Owner { get; set; }
         public ClassifiedCategory ClassifiedCategory { get; set; }
 
-
+        public List<ClassifiedImage> Images { get; set; }
     }
 }
