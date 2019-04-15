@@ -1,5 +1,6 @@
-﻿@model List<SunridgeHOA.Models.ClassifiedListing>
-
+﻿@model List<SunridgeHOA.Models.ViewModels.ClassifiedListingViewModel>
+@using SunridgeHOA.Models.ViewModels
+@using SunridgeHOA.Extensions
 @{
     ViewData["Title"] = "Index";
 }
@@ -22,9 +23,9 @@
                     <th>
                         Price
                     </th>
-                    @*<th>
+                    <th>
                         Description
-                    </th>*@
+                    </th>
                     <th>
                         Listing Date
                     </th>
@@ -41,13 +42,10 @@
                         Classified<br />Category
                     </th>
                     <th>
-                        Archive
+                        Image
                     </th>
                     <th>
-                        Last Modified<br />By
-                    </th>
-                    <th>
-                        Last Modified<br />Date
+                        IsArchive
                     </th>
                     <th></th>
                 </tr>
@@ -58,43 +56,44 @@
                 {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ItemName)
+                        @Html.DisplayFor(modelItem => item.ClassifiedListing.ItemName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    @*<td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>*@
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ListingDate)
+                        @Html.DisplayFor(modelItem => item.ClassifiedListing.Price)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Phone)
+                        @item.ClassifiedListing.Description.Truncate(100).Concatenate("...")
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Email)
+                        @Html.DisplayFor(modelItem => item.ClassifiedListing.ListingDate)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Owner.FullName)
+                        @Html.DisplayFor(modelItem => item.ClassifiedListing.Phone)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ClassifiedCategory.ClassifiedCategoryId)
+                        @Html.DisplayFor(modelItem => item.ClassifiedListing.Email)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.IsArchive)
+                        @Html.DisplayFor(modelItem => item.ClassifiedListing.Owner.FullName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.LastModifiedBy)
+                        @Html.DisplayFor(modelItem => item.ClassifiedListing.ClassifiedCategory.Description)
+                    </td>
+                    <td id="postNewAdImage">
+                        @foreach (var image in item.ClassifiedImages.Where(x => x.ClassifiedListingId == item.ClassifiedListing.ClassifiedListingId))
+                        {
+                            @*<p>@image.ImageURL</p>*@
+                            <img src="../../..@image.ImageURL" style="border-radius:5px;" />
+                        }
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.LastModifiedDate)
+                        @Html.DisplayFor(modelItem => item.ClassifiedListing.IsArchive)
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.ClassifiedListingId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |                        
-                        <a asp-action="Details" asp-route-id="@item.ClassifiedListingId"><button type="button" class="btn btn-warning btn-sm">Details</button></a> |
-                        <a asp-action="Delete" asp-route-id="@item.ClassifiedListingId"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
-                    </td>                    
+                        <a asp-action="Edit" asp-route-id="@item.ClassifiedListing.ClassifiedListingId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
+                        <a asp-action="Details" asp-route-id="@item.ClassifiedListing.ClassifiedListingId"><button type="button" class="btn btn-warning btn-sm">Details</button></a> |
+                        <a asp-action="Delete" asp-route-id="@item.ClassifiedListing.ClassifiedListingId"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
+                    </td>
                 </tr>
                 }
             </tbody>
