@@ -259,3 +259,5 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/SunridgeHOA/wwwroot/docs/Lots
+/SunridgeHOA/wwwroot/docs/Owners

@@ -243,22 +243,159 @@ namespace SunridgeHOA.Data
                     });
             }
 
-// Sean
             context.SaveChanges();
-//---------
             if (!context.ClassifiedCategory.Any())
             {
                 context.ClassifiedCategory.AddRange(
                     new ClassifiedCategory
                     {
+                        Description = "Cabins"
                     },
                     new ClassifiedCategory
                     {
+                        Description = "Lots"
+                    },
+                    new ClassifiedCategory
+                    {
+                        Description = "Other"
                     }
                     );
                 context.SaveChanges();
             }
-//>>>>>>> master
+
+            if (!context.LotInventory.Any())
+            {
+                context.LotInventory.AddRange(
+                    new LotInventory
+                    {
+                        LotId = 1,
+                        InventoryId = 1,
+                        Description = "Septic tank"
+                    },
+                    new LotInventory
+                    {
+                        LotId = 1,
+                        InventoryId = 2,
+                        Description = "Solar panel"
+                    }
+                    );
+                context.SaveChanges();
+            }
+
+            if (!context.Key.Any())
+            {
+                context.Key.AddRange(
+                    new Key
+                    {
+                        SerialNumber = "28"
+                    },
+                    new Key
+                    {
+                        SerialNumber = "29"
+                    },
+                    new Key
+                    {
+                        SerialNumber = "30"
+                    },
+                    new Key
+                    {
+                        SerialNumber = "31"
+                    },
+                    new Key
+                    {
+                        SerialNumber = "1666"
+                    },
+                    new Key
+                    {
+                        SerialNumber = "1662"
+                    },
+                    new Key
+                    {
+                        SerialNumber = "1696"
+                    },
+                    new Key
+                    {
+                        SerialNumber = "482"
+                    },
+                    new Key
+                    {
+                        SerialNumber = "483"
+                    },
+                    new Key
+                    {
+                        SerialNumber = "1487"
+                    },
+                    new Key
+                    {
+                        SerialNumber = "485"
+                    },
+                    new Key
+                    {
+                        SerialNumber = "988"
+                    },
+                    new Key
+                    {
+                        SerialNumber = "989"
+                    },
+                    new Key
+                    {
+                        SerialNumber = "820501"
+                    }
+                    );
+                context.SaveChanges();
+            }
+
+            if (!context.KeyHistory.Any())
+            {
+                context.KeyHistory.AddRange(
+                    new KeyHistory
+                    {
+                        KeyId = 1,
+                        OwnerId = 1,
+                        Status = "Active",
+                        DateIssued = DateTime.Parse("1/1/2016"),
+                        DateReturned = DateTime.Parse("7/1/2018"),
+                        PaidAmount = 0
+                    },
+                    new KeyHistory
+                    {
+                        KeyId = 2,
+                        OwnerId = 1,
+                        Status = "Active",
+                        DateIssued = DateTime.Parse("1/1/2016"),
+                        DateReturned = DateTime.Parse("7/1/2018"),
+                        PaidAmount = 0
+                    },
+                    new KeyHistory
+                    {
+                        KeyId = 3,
+                        OwnerId = 1,
+                        Status = "Active",
+                        DateIssued = DateTime.Parse("1/1/2016"),
+                        DateReturned = DateTime.Parse("7/1/2018"),
+                        PaidAmount = 0
+                    },
+                    new KeyHistory
+                    {
+                        KeyId = 4,
+                        OwnerId = 1,
+                        Status = "Active",
+                        DateIssued = DateTime.Parse("1/1/2016"),
+                        DateReturned = DateTime.Parse("7/1/2018"),
+                        PaidAmount = 0
+                    },
+                    new KeyHistory
+                    {
+                        KeyId = 5,
+                        OwnerId = 1,
+                        Status = "Active",
+                        DateIssued = DateTime.Parse("1/1/2016"),
+                        DateReturned = DateTime.Parse("7/1/2018"),
+                        PaidAmount = 50
+                    }
+                    );
+                context.SaveChanges();
+            }
         }
     }
 }

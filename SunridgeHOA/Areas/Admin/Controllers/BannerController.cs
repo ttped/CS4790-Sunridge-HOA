@@ -65,7 +65,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 _context.Banner.Add(banner);
                 await _context.SaveChangesAsync();
 
-                var productsFromDb = _context.Banner.Find(banner.Id);
+                var bannerFromDb = _context.Banner.Find(banner.Id);
                 if (files.Count != 0)
                 {
                     var uploads = Path.Combine(webRootPath, @"img\BannerImages");
@@ -76,7 +76,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                         files[0].CopyTo(filestream); // moves to server and renames
                     }
 
-                    productsFromDb.Image = @"\" + @"img\BannerImages" + @"\" + banner.Id + extension;
+                    bannerFromDb.Image = @"\" + @"img\BannerImages" + @"\" + banner.Id + extension;
                 }
 
                 await _context.SaveChangesAsync();

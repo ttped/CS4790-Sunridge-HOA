@@ -33,6 +33,10 @@
     <Folder Include="Areas\Identity\Services\" />
 
     <Folder Include="Areas\Owner\Data\" />
+
+    <Folder Include="wwwroot\docs\Lots\" />
+
+    <Folder Include="wwwroot\docs\Owners\" />
     <Folder Include="wwwroot\images\PhotoGallery\" />
     <Folder Include="wwwroot\img\BannerImages\" />
   </ItemGroup>

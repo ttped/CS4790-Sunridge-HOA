@@ -15,7 +15,7 @@ namespace SunridgeHOA.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -250,6 +250,27 @@ namespace SunridgeHOA.Migrations
                     b.ToTable("ClassifiedCategory");
                 });
 
+            modelBuilder.Entity("SunridgeHOA.Models.ClassifiedImage", b =>
+                {
+                    b.Property<int>("ClassifiedImageId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ClassifiedListingId");
+
+                    b.Property<string>("ImageExtension");
+
+                    b.Property<string>("ImageURL");
+
+                    b.Property<bool>("IsMainImage");
+
+                    b.HasKey("ClassifiedImageId");
+
+                    b.HasIndex("ClassifiedListingId");
+
+                    b.ToTable("ClassifiedImage");
+                });
+
             modelBuilder.Entity("SunridgeHOA.Models.ClassifiedListing", b =>
                 {
                     b.Property<int>("ClassifiedListingId")
@@ -368,27 +389,23 @@ namespace SunridgeHOA.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ClassifiedListingId");
+                    b.Property<int?>("ClassifiedListingId");
 
                     b.Property<DateTime>("Date");
 
                     b.Property<string>("Description");
 
-                    b.Property<string>("FileStream");
-
                     b.Property<string>("FileURL");
 
-                    b.Property<string>("ImageContentType");
-
                     b.Property<bool>("IsArchive");
-
-                    b.Property<int>("IsMainImage");
 
                     b.Property<string>("LastModifiedBy");
 
                     b.Property<DateTime>("LastModifiedDate");
 
-                    b.Property<int>("LotHistoryId");
+                    b.Property<int?>("LotHistoryId");
+
+                    b.Property<int?>("OwnerHistoryId");
 
                     b.Property<string>("Type");
 
@@ -397,6 +414,8 @@ namespace SunridgeHOA.Migrations
                     b.HasIndex("ClassifiedListingId");
 
                     b.HasIndex("LotHistoryId");
+
+                    b.HasIndex("OwnerHistoryId");
 
                     b.ToTable("File");
                 });
@@ -701,8 +720,6 @@ namespace SunridgeHOA.Migrations
 
                     b.Property<int>("HistoryTypeId");
 
-                    b.Property<int?>("Hours");
-
                     b.Property<bool>("IsArchive");
 
                     b.Property<string>("LastModifiedBy");
@@ -711,7 +728,7 @@ namespace SunridgeHOA.Migrations
 
                     b.Property<int>("OwnerId");
 
-                    b.Property<string>("Status");
+                    b.Property<string>("PrivacyLevel");
 
                     b.HasKey("OwnerHistoryId");
 
@@ -774,6 +791,28 @@ namespace SunridgeHOA.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Photo");
+                });
+
+            modelBuilder.Entity("SunridgeHOA.Models.ScheduledEvent", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description");
+
+                    b.Property<DateTime?>("End");
+
+                    b.Property<bool>("IsFullDay");
+
+                    b.Property<DateTime>("Start");
+
+                    b.Property<string>("Subject")
+                        .IsRequired();
+
+                    b.HasKey("ID");
+
+                    b.ToTable("ScheduledEvents");
                 });
 
             modelBuilder.Entity("SunridgeHOA.Models.Transaction", b =>
@@ -886,6 +925,14 @@ namespace SunridgeHOA.Migrations
                         .HasForeignKey("OwnerId1");
                 });
 
+            modelBuilder.Entity("SunridgeHOA.Models.ClassifiedImage", b =>
+                {
+                    b.HasOne("SunridgeHOA.Models.ClassifiedListing")
+                        .WithMany("Images")
+                        .HasForeignKey("ClassifiedListingId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("SunridgeHOA.Models.ClassifiedListing", b =>
                 {
                     b.HasOne("SunridgeHOA.Models.ClassifiedCategory", "ClassifiedCategory")
@@ -919,13 +966,15 @@ namespace SunridgeHOA.Migrations
                 {
                     b.HasOne("SunridgeHOA.Models.ClassifiedListing", "ClassifiedListing")
                         .WithMany()
-                        .HasForeignKey("ClassifiedListingId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ClassifiedListingId");
 
                     b.HasOne("SunridgeHOA.Models.LotHistory", "LotHistory")
                         .WithMany("Files")
-                        .HasForeignKey("LotHistoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("LotHistoryId");
+
+                    b.HasOne("SunridgeHOA.Models.OwnerHistory")
+                        .WithMany("Files")
+                        .HasForeignKey("OwnerHistoryId");
                 });
 
             modelBuilder.Entity("SunridgeHOA.Models.KeyHistory", b =>
@@ -952,7 +1001,7 @@ namespace SunridgeHOA.Migrations
             modelBuilder.Entity("SunridgeHOA.Models.LotHistory", b =>
                 {
                     b.HasOne("SunridgeHOA.Models.HistoryType", "HistoryType")
-                        .WithMany("LotHistories")
+                        .WithMany()
                         .HasForeignKey("HistoryTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
 

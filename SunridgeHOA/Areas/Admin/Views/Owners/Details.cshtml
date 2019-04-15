@@ -1,107 +1,98 @@
 ﻿@model SunridgeHOA.Models.Owner
-
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>Owner</h4>
-    <hr />
-    <dl class="dl-horizontal">
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FullName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.FullName)
-        </dd>
-        @*<dt>
-            @Html.DisplayNameFor(model => model.IsPrimary)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IsPrimary)
-        </dd>*@
-        <!--
-    if (Model.CoOwner != null)
-    {
-        <dt>
-            Html.DisplayNameFor(model => model.CoOwner)
-        </dt>
-        <dd>
-            Html.DisplayFor(model => model.CoOwner.OwnerId)
-        </dd>
+<h2>@Model.FullName Details</h2>
+<hr />
+<div class="row">
     
-    -->
-        <dt>
-            @Html.DisplayNameFor(model => model.Occupation)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Occupation)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Birthday)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Birthday)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.EmergencyContactName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.EmergencyContactName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.EmergencyContactPhone)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.EmergencyContactPhone)
-        </dd>
-        @*<dt>
-            @Html.DisplayNameFor(model => model.IsArchive)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IsArchive)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.LastModifiedBy)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LastModifiedBy)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.LastModifiedDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LastModifiedDate)
-        </dd>*@
-        <dt>
-            @Html.DisplayNameFor(model => model.Address.StreetAddress)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Address.StreetAddress)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Address.City)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Address.City)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Address.Zip)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Address.Zip)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Address.State)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Address.State)
-        </dd>
-    </dl>
+    <div class="col-md-4">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.FullName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.FullName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Occupation)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Occupation)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Birthday)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Birthday)
+            </dd>
+            <dt>
+                User is an admin?
+            </dt>
+            <dd>
+                @if (ViewBag.IsAdmin)
+                {
+                    @:Yes
+                }
+                else
+                {
+                    @:No
+                }
+            </dd>
+        </dl>
+    </div>
+    <div class="col-md-4">
+        <dl>
+            <dt>
+                @Html.DisplayNameFor(model => model.Address.StreetAddress)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Address.StreetAddress)
+            </dd>
+            @if (!String.IsNullOrEmpty(Model.Address.Apartment))
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Address.Apartment)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Address.Apartment)
+                </dd>
+            }
+            
+            <dt>
+                @Html.DisplayNameFor(model => model.Address.City)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Address.City)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Address.Zip)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Address.Zip)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Address.State)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Address.State)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.EmergencyContactName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EmergencyContactName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.EmergencyContactPhone)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.EmergencyContactPhone)
+            </dd>
+        </dl>
+    </div>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.OwnerId">Edit</a> |

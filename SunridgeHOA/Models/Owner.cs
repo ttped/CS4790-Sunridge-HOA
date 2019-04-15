@@ -22,27 +22,30 @@ namespace SunridgeHOA.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
+        [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[None listed]")]
         public string Occupation { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}",
+            ConvertEmptyStringToNull = true, NullDisplayText = "[None listed]")]
         public DateTime? Birthday { get; set; }
 
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "Phone Number")]
+        [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[None listed]")]
         public string Phone { get; set; }
 
-        //[Required]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email Address")]
+        [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[None listed]")]
         public string Email { get; set; }
 
-        //[Required]
         [Display(Name = "Emergency Contact")]
+        [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[None listed]")]
         public string EmergencyContactName { get; set; }
 
-        //[Required]
         [Display(Name = "Emergency Contact #")]
+        [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[None listed]")]
         public string EmergencyContactPhone { get; set; }
 
         [Display(Name = "Archived")]
