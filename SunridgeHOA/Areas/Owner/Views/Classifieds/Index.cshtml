@@ -3,30 +3,30 @@
 @{
     ViewData["Title"] = "Index";
 }
-<div class="row col-12">
-    <div class="col-2">
-        <partial name="~/Views/Shared/_AdminNavbar.cshtml" />
-    </div>
-    <div id="windowFrame" class="col-10">
-        <h2>Index</h2>
 
-        <p>
-            <a asp-action="Create">Create New</a>
+
+<div class="row">
+    <div class="ownerContainer">
+        <h2>Post New Ad</h2>
+
+        <p id="createAlign">
+            <a asp-action="Create"><button type="button" class="btn btn-primary btn-sm">Create New Post Ad</button></a>
         </p>
-        <table class="table">
+
+        <table>
             <thead>
-                <tr>
+                <tr id="headTr">
                     <th>
-                        ItemName
+                        Item<br />Name
                     </th>
                     <th>
                         Price
                     </th>
-                    <th>
+                    @*<th>
                         Description
-                    </th>
+                    </th>*@
                     <th>
-                        ListingDate
+                        Listing Date
                     </th>
                     <th>
                         Phone
@@ -38,64 +38,73 @@
                         Owner
                     </th>
                     <th>
-                        ClassifiedCategory
+                        Classified<br />Category
                     </th>
                     <th>
-                        IsArchive
+                        Archive
                     </th>
                     <th>
-                        LastModifiedBy
+                        Last Modified<br />By
                     </th>
                     <th>
-                        LastModifiedDate
+                        Last Modified<br />Date
                     </th>
+                    <th></th>
                 </tr>
             </thead>
+
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ItemName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Price)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ListingDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Phone)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Owner.FullName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ClassifiedCategory.ClassifiedCategoryId)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IsArchive)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LastModifiedBy)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LastModifiedDate)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.ClassifiedListingId">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.ClassifiedListingId">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.ClassifiedListingId">Delete</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ItemName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ListingDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Owner.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClassifiedCategory.ClassifiedCategoryId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsArchive)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastModifiedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastModifiedDate)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ClassifiedListingId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |                        
+                        <a asp-action="Details" asp-route-id="@item.ClassifiedListingId"><button type="button" class="btn btn-warning btn-sm">Details</button></a> |
+                        <a asp-action="Delete" asp-route-id="@item.ClassifiedListingId"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
+                    </td>                    
+                </tr>
                 }
             </tbody>
         </table>
     </div>
 </div>
+
+
+
+
+
+
+

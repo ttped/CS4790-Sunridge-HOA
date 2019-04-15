@@ -5,68 +5,76 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Index</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Lot.LotNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address.StreetAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Owners)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lot.TaxId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InventoryItems)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Lot.LotNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Address.StreetAddress)
-                </td>
-                <td>
-                    <span style="font-weight:bold;">@Html.DisplayFor(modelItem => item.PrimaryOwner.FullName)</span>
-                    <br />
-                    @foreach (var owner in item.Owners)
-                    {
-                        @Html.DisplayFor(modelItem => owner.FullName)
+
+
+<div class="row">
+    <div class="ownerContainer">
+        <h2>My Lots</h2>
+
+        <p id="createAlign">
+            <a asp-action="Create"><button type="button" class="btn btn-primary btn-sm">Create New My Lots</button></a>
+        </p>
+
+        <table>
+            <thead id="headTr">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Lot.LotNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Address.StreetAddress)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Owners)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Lot.TaxId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.InventoryItems)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Lot.LotNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address.StreetAddress)
+                    </td>
+                    <td>
+                        <span style="font-weight:bold;">@Html.DisplayFor(modelItem => item.PrimaryOwner.FullName)</span>
                         <br />
-                    }
-                </td>
-                <td>
-                    @{ var taxLink = $"http://www3.co.weber.ut.us/psearch/tax_summary.php?id={item.Lot.TaxId}"; }
-                    <a href="@taxLink">@Html.DisplayFor(modelItem => item.Lot.TaxId)</a>
-                </td>
-                <td>
-                    @foreach (var inv in item.InventoryItems)
-                    {
-                        @Html.DisplayFor(modelItem => inv.Description)
-                        <br />
-                    }
-                </td>
-                <td>
-                    @*<a asp-action="Edit" asp-route-id="@item.Lot.LotId">Edit</a> |*@
-                    <a asp-action="EditLotItems" asp-route-id="@item.Lot.LotId">Edit Lot Items</a> |
-                    <a asp-action="Details" asp-route-id="@item.Lot.LotId">Details</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                        @foreach (var owner in item.Owners)
+                        {
+                            @Html.DisplayFor(modelItem => owner.FullName)
+                            <br />
+                        }
+                    </td>
+                    <td>
+                        @{ var taxLink = $"http://www3.co.weber.ut.us/psearch/tax_summary.php?id={item.Lot.TaxId}"; }
+                        <a href="@taxLink">@Html.DisplayFor(modelItem => item.Lot.TaxId)</a>
+                    </td>
+                    <td>
+                        @foreach (var inv in item.InventoryItems)
+                        {
+                            @Html.DisplayFor(modelItem => inv.Description)
+                            <br />
+                        }
+                    </td>                    
+                    <td>
+                        @*<a asp-action="Edit" asp-route-id="@item.CommonAreaAssetId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |*@
+                        <a asp-action="EditLotItems" asp-route-id="@item.Lot.LotId"><button type="button" class="btn btn-warning btn-sm">Edit Lot Items</button></a> |
+                        <a asp-action="Delete" asp-route-id="@item.Lot.LotId"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

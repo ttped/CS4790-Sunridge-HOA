@@ -5,66 +5,91 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Index</h2>
 
-<div class="row">
-    <div class="col-md-2">
-        <p>
-            <a asp-action="Create">Create New</a>
+<div class="row">    
+    <div class="ownerContainer">
+        <h2>Owners Index</h2>
+
+        <p id="createAlign">
+            <a asp-action="Create"><button type="button" class="btn btn-primary btn-sm">Create New Owner</button></a>
         </p>
-    </div>
-    <div class="col-md-6"></div>
-    <div class="col-md-4">
-        <form asp-action="Index" class="form-inline">
-            <label class="control-label mr-2">Search:</label>
-            <input type="text" class="form-control" name="Query" />
-            <input type="submit" value="Search" class="btn btn-default" />
-        </form>
+
+        <div id="searchalignBylot">
+            <form asp-action="Index" class="form-inline">
+                <div>
+                    <div class="row">
+                        <div>
+                            <b>Search by name : </b><input type="text" name="Query" />
+                        </div>
+                        <div id="divSpace"></div>
+                        <div>
+                            <input type="submit" value="Search" id="search" class="btn btn-secondary btn-sm" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <table>
+            <thead>
+                <tr id="headTr">
+                    <th>
+                        @Html.DisplayNameFor(model => model.Owner.FullName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Owner.EmergencyContactName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Owner.EmergencyContactPhone)
+                    </th>
+                    <th>
+                        Lot(s)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Owner.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Owner.EmergencyContactName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Owner.EmergencyContactPhone)
+                        </td>
+                        <td>
+                            @foreach (var lot in item.Lots)
+                            {
+                                <p>@lot</p>
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Owner.OwnerId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
+                            <a asp-action="LoginInfo" asp-route-id="@item.Owner.OwnerId"><button type="button" class="btn btn-success btn-sm">Login Info</button></a> |
+                            <a asp-action="Details" asp-route-id="@item.Owner.OwnerId"><button type="button" class="btn btn-warning btn-sm">Details</button></a> |
+                            <a asp-action="Delete" asp-route-id="@item.Owner.OwnerId"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Owner.FullName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Owner.EmergencyContactName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Owner.EmergencyContactPhone)
-            </th>
-            <th>
-                Lot(s)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Owner.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Owner.EmergencyContactName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Owner.EmergencyContactPhone)
-            </td>
-            <td>
-                @foreach (var lot in item.Lots)
-                {
-                    <p>@lot</p>
-                }
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Owner.OwnerId">Edit</a> |
-                <a asp-action="LoginInfo" asp-route-id="@item.Owner.OwnerId">Login Info</a> |
-                <a asp-action="Details" asp-route-id="@item.Owner.OwnerId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Owner.OwnerId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

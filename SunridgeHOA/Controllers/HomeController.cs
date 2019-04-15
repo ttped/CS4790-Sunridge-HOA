@@ -18,6 +18,8 @@ namespace SunridgeHOA.Controllers
             _db = db;
         }
 
+        public string CurrentFilter { get; set; }
+
         public async Task<IActionResult> Index()
         {
             // maybe need to send a model with the carousel news data to the view?
@@ -62,14 +64,31 @@ namespace SunridgeHOA.Controllers
         //    return View(viewName);
         //}
 
-        public async Task<IActionResult> News(int year)
+        public async Task<IActionResult> News(int year, string searchString)
         {
             var news = _db.NewsItem;
             var newsitem = from item in news
                            where item.Year == year
                            select item;
 
-            return View(await news.ToListAsync());
+
+
+
+            
+
+            IQueryable<NewsItem> NewsSearch = from c in _db.NewsItem
+                                            select c;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                NewsSearch = NewsSearch.Where(c => c.Content.Contains(searchString) || (c.Year.ToString()).Contains(searchString));
+            }
+            
+
+                
+
+
+            return View(await NewsSearch.AsNoTracking().ToListAsync());
         }
 
         //public async Task<IActionResult> News2019()

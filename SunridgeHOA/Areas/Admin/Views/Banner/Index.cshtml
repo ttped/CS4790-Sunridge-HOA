@@ -2,35 +2,44 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_ContentLayout.cshtml";
 }
+
+
+
 <div class="row col-12">
     <div class="col-2">
         <partial name="~/Views/Shared/_AdminNavbar.cshtml" />
     </div>
-    <div id="windowFrame" class="col-10">
-        <h2>Index</h2>
 
-        <p>
-            <a asp-action="Create">Create New</a>
-        </p>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        Head
-                    </th>
-                    <th>
-                        Body
-                    </th>
-                    <th>
-                        Image
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+    <div id="windowFrame" class="col-10">
+        <div>
+            <h2>Banner Item Index</h2>
+
+            <p id="createAlign">
+                <a asp-action="Create"><button type="button" class="btn btn-primary btn-sm">Create New Banner Item</button></a>
+            </p>
+
+            
+            <table>
+                <thead id="headTr">
+                    <tr>
+                        <th id="bannerHead">
+                            Head
+                        </th>
+                        <th id="bannerBody">
+                            Body
+                        </th>
+                        <th id="bannerImage">
+                            Image
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
                     <tr>
                         <td>
                             @Html.DisplayFor(modelItem => item.Header)
@@ -39,16 +48,17 @@
                             @Html.DisplayFor(modelItem => item.Body)
                         </td>
                         <td>
-                            <img class="col-10" src="../../..@Html.DisplayFor(modelItem => item.Image)" width="100%" style="border-radius:5px;" />
-                        </td>
+                            <img class="col-10" src="../../..@Html.DisplayFor(modelItem => item.Image)" style="border-radius:5px;width:100%;" />
+                        </td>                      
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
+                            <a asp-action="Details" asp-route-id="@item.Id"><button type="button" class="btn btn-warning btn-sm">Details</button></a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
                         </td>
                     </tr>
-                }
-            </tbody>
-        </table>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

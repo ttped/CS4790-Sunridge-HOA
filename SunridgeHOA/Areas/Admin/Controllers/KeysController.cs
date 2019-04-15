@@ -27,9 +27,24 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             _userManager = userManager;
         }
         // GET: Key
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string searchString)
         {
-            return View(await _context.Key.ToListAsync());
+            IQueryable<Key> KeySearch = from c in _context.Key
+                                            select c;
+            
+            if (!String.IsNullOrEmpty(searchString))
+            {
+
+                KeySearch = KeySearch.Where(c => c.SerialNumber.Contains(searchString) ||
+                c.LastModifiedBy.Contains(searchString) ||
+                c.LastModifiedDate.ToString("mm/dd/yyyy").Contains(searchString)
+                //c.LastModifiedDate.ToString("mm/dd/yyyy 0:HH:mm:ss tt").Contains(searchString)
+
+                );
+            }
+
+
+            return View(await KeySearch.ToListAsync());
         }
 
         // GET: Key/Details/5

@@ -7,35 +7,39 @@
 
 }
 
-    <h2>Index</h2>
 
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.AssetName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PurchasePrice)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Status)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Date)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+<div class="row">
+    <div class="ownerContainer">
+        <h2>Common Area Assets Index</h2>
+
+        <p id="createAlign">
+            <a asp-action="Create"><button type="button" class="btn btn-primary btn-sm">Create New Assets</button></a>
+        </p>
+
+        <table>
+            <thead id="headTr">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AssetName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PurchasePrice)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Date)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.AssetName)
@@ -52,13 +56,15 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Date)
                     </td>
+
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.CommonAreaAssetId">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.CommonAreaAssetId">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.CommonAreaAssetId">Delete</a>
+                        <a asp-action="Edit" asp-route-id="@item.CommonAreaAssetId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
+                        <a asp-action="Details" asp-route-id="@item.CommonAreaAssetId"><button type="button" class="btn btn-warning btn-sm">Details</button></a> |
+                        <a asp-action="Delete" asp-route-id="@item.CommonAreaAssetId"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
                     </td>
                 </tr>
-            }
-        </tbody>
-    </table>
+                }
+            </tbody>            
+        </table>
     </div>
+</div>

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace SunridgeHOA.Models
 {
@@ -12,8 +15,11 @@ namespace SunridgeHOA.Models
         public int OwnerId { get; set; }
 
         public string Status { get; set; }
+        [Display(Name ="Date Issued")]
         public DateTime DateIssued { get; set; }
+        [Display(Name = "Date Returned")]
         public DateTime DateReturned { get; set; }
+        [Display(Name = "Paid Amount")]
         public float PaidAmount { get; set; }
 
 
