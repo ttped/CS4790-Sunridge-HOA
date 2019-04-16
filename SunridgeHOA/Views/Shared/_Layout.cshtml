@@ -101,7 +101,7 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="Admin" asp-controller="Admin" asp-action="Transactions">Admin</a>
+                        <a class="nav-link" asp-area="" asp-controller="General" asp-action="Dashboard">Dashboard</a>
                     </li>
                 }
 
@@ -117,7 +117,7 @@
         </div>
     </nav>
 
-    <partial name="_CookieConsentPartial" />
+    @*<partial name="_CookieConsentPartial" />*@
 
     <div>
         @RenderBody()

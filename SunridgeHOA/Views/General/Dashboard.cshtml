@@ -32,7 +32,7 @@
                                 <div class="col-12">
                                     <div class="row">
                                         <h5 id="subtitle">Information </h5>
-                                        <a class="fas fa-edit float-right" id="edit" href="#"></a>
+                                        <a class="fas fa-edit float-right" id="edit" asp-area="Owner" asp-controller="OwnerPortal" asp-action="OwnerInfo"></a>
                                     </div>
                                     <div class="form-group row" id="formGroupLine">
                                         <div class="col-5">
@@ -210,13 +210,19 @@
                                     <table id="table" class="table table-striped table-bordered table-sm">
                                         <tr>
                                             <th>Lot#</th>
+                                            <th>Tax Id</th>
                                             <th>Inventory</th>
+                                            <th></th>
                                         </tr>
                                         @foreach (var lot in Model.OwnerLots.Where(x => x.OwnerId == ViewData.Model.Owner.OwnerId))
                                         {
                                             <tr>
                                                 <td>
-                                                    #@lot.Lot.LotNumber   @if (User.IsInRole("Admin")){<a asp-action="Edit" asp-area="Owner" asp-controller="Lots" asp-route-id="@lot.LotId">Edit</a>}
+                                                    #@lot.Lot.LotNumber   @*@if (User.IsInRole("Admin")){<a asp-action="Edit" asp-area="Owner" asp-controller="Lots" asp-route-id="@lot.LotId">Edit</a>}*@
+                                                </td>
+                                                <td>
+                                                    @{ var taxLink = $"http://www3.co.weber.ut.us/psearch/tax_summary.php?id={lot.Lot.TaxId}"; }
+                                                    <a href="@taxLink" target="_blank">@Html.DisplayFor(modelItem => lot.Lot.TaxId)</a>
                                                 </td>
                                                 <td>
 
@@ -232,6 +238,9 @@
                                                         }
 
                                                     }
+                                                </td>
+                                                <td>
+                                                    <a asp-area="Owner" asp-controller="Lots" asp-action="EditLotItems" asp-route-id="@lot.Lot.LotId"><button type="button" class="btn btn-warning btn-sm">Edit Lot Items</button></a>
                                                 </td>
                                             </tr>
                                         }
@@ -262,8 +271,8 @@
                                             {
                                             <tr>
                                                 <td>
-                                                    @key.Key.SerialNumber  @if (User.IsInRole("Admin"))
-                                                {<a asp-action="Edit" asp-area="Admin" asp-controller="KeyHistory" asp-route-id="@key.KeyHistoryId">Edit</a>}
+                                                    @key.Key.SerialNumber  @*@if (User.IsInRole("Admin"))
+                                                {<a asp-action="Edit" asp-area="Admin" asp-controller="KeyHistory" asp-route-id="@key.KeyHistoryId">Edit</a>}*@
                                                 </td>
                                                 <td>@DateTime.Parse(key.DateIssued.ToString()).ToShortDateString()</td>
                                                 <td>@DateTime.Parse(key.DateReturned.ToString()).ToShortDateString()</td>

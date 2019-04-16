@@ -322,8 +322,8 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 vm.Owner.LastModifiedDate = DateTime.Now;
 
                 // Don't save yet - need to link the Owner to the ApplicationUser
-                //_context.Add(vm.Owner);
-                //await _context.SaveChangesAsync();
+                _context.Add(vm.Owner);
+                await _context.SaveChangesAsync();
 
                 // Find a default username - adds a number to the end if there is a duplicate
                 var username = $"{vm.Owner.FirstName}{vm.Owner.LastName}";
@@ -357,7 +357,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
 
                     // Link Owner to the Application User
                     vm.Owner.ApplicationUserId = newOwner.Id;
-                    _context.Add(vm.Owner);
+                    //_context.Add(vm.Owner);
                     await _context.SaveChangesAsync();
 
                     // Add the Owner to a Lot
