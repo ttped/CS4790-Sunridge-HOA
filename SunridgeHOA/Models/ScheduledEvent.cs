@@ -12,6 +12,8 @@ namespace SunridgeHOA.Models
         public int ID { get; set; }
         [Required] public string Subject { get; set; }
         public string Description { get; set; }
+        public string Location { get; set; }
+        public string Image { get; set; }
         [Required] public DateTime Start { get; set; }
         public DateTime? End { get; set; }
         [Required] public bool IsFullDay { get; set; }
