@@ -1,5 +1,4 @@
-﻿@using SunridgeHOA.Utility
-
+﻿@using SunridgeHOA.Utility;
 @{
     ViewData["Title"] = "Event Calender";
 }
@@ -15,7 +14,10 @@
         </div>
     </div>
 </section>
-
+@if (User.IsInRole(StaticData.AdminEndUser))
+{
+    <a class="nav-link" asp-area="Admin" asp-controller="ScheduledEvents" asp-action="Index"><i class="far fa-edit"></i> Edit Events</a>
+}
 <!-- Calendar -->
 <section class="calendar text-center">
     <div class="container">
@@ -24,20 +26,15 @@
         <link href="~/lib/fullcalendar/fullcalendar.print.css" rel="stylesheet" media="print" />
         <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-        @if (User.IsInRole(StaticData.AdminEndUser))
-        {
-            <a class="nav-link" asp-area="Admin" asp-controller="ScheduledEvents" asp-action="Index">Edit Events</a>
-        }
-
         <div class="container"><button class="btn-primary mt-4"><a class="text-white" href="mailto:Webmaster@sunridge.info">Contact the Webmaster to publish a new event</a></button></div>
     </div>
 </section>
 
 <div id="calendarEventModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Event Title</h4>
+                <h4 class="modal-title" id="eventTitle">Event Title</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
@@ -46,7 +43,7 @@
             <div class="modal-footer">
                 @if (User.IsInRole(StaticData.AdminEndUser))
                 {
-                    <button type="button" class="btn btn-primary">Edit Event</button>
+                    <button type="button" class="btn btn-primary" onclick="editEvent()">Edit Event</button>
                 }
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
@@ -56,28 +53,27 @@
 
 @section Scripts
     {
-    @*
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-    *@
     <script src="~/lib/moment.js/moment.min.js"></script>
     <script src="~/lib/fullcalendar/fullcalendar.min.js"></script>
 
 
     <script>
+        var selectedEvent = null;
         $(document).ready(function () {
             var events = [];
             $.ajax({
                 type: "GET",
                 url: "/api/ScheduledEvents",
-                //url: "ScheduledEvents",
                 success: function (data) {
                     $.each(data, function (i, v) {
                         events.push({
+                            id: v.id,
                             title: v.subject,
                             description: v.description,
+                            location: v.location,
+                            image: v.image,
                             start: moment(v.start),
-                            end: v.End != null ? moment(v.end) : null,
+                            end: v.end != null ? moment(v.end) : null,
                             allDay: v.isFullDay
                         });
                     });
@@ -87,10 +83,8 @@
                     alert('failed');
                 }
             });
-
             function generateCalendar(events) {
                 // When generating cal, destroy whatever already exists
-                // Was commented out 
                 $('#calendar').fullCalendar('destroy');
                 // Calendar settings
                 $('#calendar').fullCalendar({
@@ -100,59 +94,37 @@
                     header: {
                         left: 'prev,next today',
                         center: 'title',
-                        right: 'month,basicWeek,listMonth'
+                        right: 'month,listYear'
                     },
                     eventLimit: true,
-                    //eventColor: '#378006',
-                    eventColor: '#009933',
-                    eventTextColor: '#ffffff',
+                    eventTextColor: 'white',
                     events: events,
                     eventClick: function (calEvent, jsEvent, view) {
+                        selectedEvent = calEvent.id;
                         $('#calendarEventModal #eventTitle').text(calEvent.title);
                         var $description = $('<div/>');
+                        if (calEvent.image != null) {
+                            $description.append($('<p/>').html('<img src="' + calEvent.image + '" class="img-responsive">'));
+                        }
+                        $description.append($('<p/>').html('<b>Description: </b>' + calEvent.description));
+                        if (calEvent.location != null) {
+                            $description.append($('<p/>')
+                                .html('<b>Location: </b>' + calEvent.location));
+                        }
                         $description.append($('<p/>')
-                            .html('<b>Start:</b>' + calEvent.start.format("DD-MMM-YYYY HH:mm a")));
-                        $description.append($('<p/>').html('<b>Description:</b>' + calEvent.description));
-
+                            .html('<b>Start: </b>' + calEvent.start.format("dddd, MMMM Do YYYY, h:mm:ss a")));
+                        if (calEvent.end != null) {
+                            $description.append($('<p/>')
+                                .html('<b>End: </b>' + calEvent.end.format("dddd, MMMM Do YYYY, h:mm:ss a")));
+                        }
                         $('#calendarEventModal #eventDetails').empty().html($description);
-
                         $('#calendarEventModal').modal();
                     }
                 });
             }
         })
+        function editEvent() {
+            window.location.href = '/Admin/ScheduledEvents/Edit/' + selectedEvent;
+        }
     </script>
 }
-
-
-
-
-
-@*
-    @{
-        ViewData["Title"] = "Calendar and Events";
-    }
-
-    <!-- inro section Grid -->
-    <section class="text-center p-5">
-        <div class="container">
-            <div class="container container-fluid no2">
-                <h1 class="main-heading mb-4">Important Events</h1>
-                <div>
-                    <p>All events and dates for the Sunridge community and be found below.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-
-    <!-- Testimonials -->
-    <section class="testimonials text-center">
-        <div class="container">
-            <div data-tockify-component="calendar" data-tockify-calendar="sunridge"></div>
-            <script data-cfasync="false" data-tockify-script="embed" src="https://public.tockify.com/browser/embed.js"></script>
-            <div class="container"><a class="btn btn-primary mt-4 text-white" href="mailto:Webmaster@sunridge.info">Contact the Webmaster to publish a new event</a></div>
-        </div>
-    </section>
-*@

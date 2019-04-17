@@ -10,5 +10,6 @@ namespace SunridgeHOA.Utility
         public const string AdminEndUser = "Admin";
         public const string SuperAdminEndUser = "SuperAdmin";
         public const string OwnerEndUser = "Owner";
+        public const string EventImagesPath = @"images\events";
     }
 }
