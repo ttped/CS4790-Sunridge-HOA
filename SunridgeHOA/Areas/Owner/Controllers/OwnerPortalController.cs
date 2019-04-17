@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using SunridgeHOA.Models;
 namespace SunridgeHOA.Areas.Owner.Controllers
 {
     [Area("Owner")]
+    [Authorize(Roles = "Owner")]
     public class OwnerPortalController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,17 +24,17 @@ namespace SunridgeHOA.Areas.Owner.Controllers
             _userManager = userManager;
         }
 
-    //Create a Login (with automatic password retrieval in case they forget)
-    public IActionResult Login()
-        {
-            return View();
-        }
+    ////Create a Login (with automatic password retrieval in case they forget)
+    //public IActionResult Login()
+    //    {
+    //        return View();
+    //    }
 
-        //View Lot Information, History (Claims, Payments, Complaints, Documents, etc.)
-        public IActionResult Lot()
-        {
-            return View();
-        }
+    //    //View Lot Information, History (Claims, Payments, Complaints, Documents, etc.)
+    //    public IActionResult Lot()
+    //    {
+    //        return View();
+    //    }
 
         //Edit Limited (Personal) Owner Information
         public async Task<IActionResult> OwnerInfo()
@@ -87,18 +89,18 @@ namespace SunridgeHOA.Areas.Owner.Controllers
             return View(vm);
         }
 
-        //Make a Payment (link to Paypal)
-        public IActionResult Payment()
-        {
-            return View();
-        }
+        ////Make a Payment (link to Paypal)
+        //public IActionResult Payment()
+        //{
+        //    return View();
+        //}
 
-        //File a Claim, Complaint, Exception to the Rule, or “Work in Kind” Form
-        //View the history and response of the item above
-        public IActionResult File()
-        {
-            return View();
-        }
+        ////File a Claim, Complaint, Exception to the Rule, or “Work in Kind” Form
+        ////View the history and response of the item above
+        //public IActionResult File()
+        //{
+        //    return View();
+        //}
 
     }
 }

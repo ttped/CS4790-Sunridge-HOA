@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,7 @@ using SunridgeHOA.Utility;
 namespace SunridgeHOA.Areas.Admin.Controllers
 {
     [Area("Owner")]
+    [Authorize(Roles = "Owner")]
     public class LotsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -30,6 +32,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         }
 
         // GET: Admin/Lots
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> Index(string query)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
@@ -441,6 +444,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         }
 
         // GET: Admin/Lots/Create
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public IActionResult Create()
         {
             //ViewData["AddressId"] = new SelectList(_context.Address, "Id", "Id");
@@ -452,6 +456,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> Create(LotEditVM vm)
         {
             if (_context.Lot.Where(u => u.LotNumber == vm.Lot.LotNumber).Any())
@@ -498,6 +503,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         }
 
         // GET: Admin/Lots/Edit/5
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -544,6 +550,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> Edit(int id, LotEditVM vm)
         {
             if (id != vm.Lot.LotId)
@@ -697,6 +704,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         }
 
         // GET: Admin/Lots/Delete/5
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -718,6 +726,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         // POST: Admin/Lots/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);

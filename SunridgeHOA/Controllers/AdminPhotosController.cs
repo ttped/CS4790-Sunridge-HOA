@@ -15,7 +15,7 @@ using SunridgeHOA.Utility;
 
 namespace SunridgeHOA.Controllers
 {
-    //[Authorize(Roles = SD.AdminEndUser)]
+    [Authorize(Roles = SD.AdminEndUser)]
     public class AdminPhotosController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -55,19 +55,19 @@ namespace SunridgeHOA.Controllers
             return View(await photos.ToListAsync());
         }
 
-        public async Task<IActionResult> MyPhotos()
-        {
-            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
-            var loggedInUser = _db.Owner.Find(identityUser.OwnerId);
+        //public async Task<IActionResult> MyPhotos()
+        //{
+        //    var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+        //    var loggedInUser = _db.Owner.Find(identityUser.OwnerId);
 
-            var ownerPhotos = _db.Photo
-                .Include(m => m.Owner)
-                .Where(m => m.OwnerId == loggedInUser.OwnerId);
-            //.Select(m => m.)
-            //.ToListAsync();
+        //    var ownerPhotos = _db.Photo
+        //        .Include(m => m.Owner)
+        //        .Where(m => m.OwnerId == loggedInUser.OwnerId);
+        //    //.Select(m => m.)
+        //    //.ToListAsync();
 
-            return View(await ownerPhotos.ToListAsync());
-        }
+        //    return View(await ownerPhotos.ToListAsync());
+        //}
 
         //GET: AdminPhoto Create
         public IActionResult Create()

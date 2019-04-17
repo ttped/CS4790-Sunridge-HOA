@@ -120,6 +120,8 @@ namespace SunridgeHOA
                 }
             }
 
+            await userManager.AddToRoleAsync(user, "Owner");
+
             var owner = new ApplicationUser
             {
                 UserName = "owner",

@@ -15,7 +15,7 @@ using SunridgeHOA.Utility;
 
 namespace SunridgeHOA.Controllers
 {
-    //[Authorize(Roles = SD.AdminEndUser)]
+    [Authorize(Roles = "Owner")]
     public class OwnerPhotosController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -55,6 +55,7 @@ namespace SunridgeHOA.Controllers
         //    return View(await photos.ToListAsync());
         //}
 
+        
         public async Task<IActionResult> MyPhotos()
         {
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -14,6 +15,7 @@ using SunridgeHOA.Models.ViewModels;
 namespace SunridgeHOA.Areas.Owner.Controllers
 {
     [Area("Owner")]
+    [Authorize(Roles = "Owner")]
     public class ClassifiedsController : Controller
     {
         private readonly ApplicationDbContext _context;

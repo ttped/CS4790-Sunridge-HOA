@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ using SunridgeHOA.Models.ViewModels;
 
 namespace SunridgeHOA.Controllers
 {
+    [Authorize(Roles = "Owner")]
     public class GeneralController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -61,29 +63,6 @@ namespace SunridgeHOA.Controllers
             return View(dashboardViewModel);
         }
 
-        public IActionResult MyLots()
-        {
-            return View();
-        }
-
-        public IActionResult BillingHistory()
-        {
-            return View();
-        }
-
-        //public IActionResult Classifieds()
-        //{
-        //    return View();
-        //}
-
-        public IActionResult ViewAds()
-        {
-            return View();
-        }
-
-        public IActionResult PostNewAd()
-        {
-            return View();
-        }
+        
     }
 }

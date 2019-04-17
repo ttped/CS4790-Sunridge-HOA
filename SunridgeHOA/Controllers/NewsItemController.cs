@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting.Internal;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace SunridgeHOA.Controllers
 {
-    //[Authorize(Roles = SD.AdminEndUser)]
+    [Authorize(Roles = SD.AdminEndUser)]
     public class NewsItemController : Controller
     {
         public readonly ApplicationDbContext _db;

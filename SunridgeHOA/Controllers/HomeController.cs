@@ -22,7 +22,6 @@ namespace SunridgeHOA.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // maybe need to send a model with the carousel news data to the view?
             return View(await _db.Banner.ToListAsync());
         }
 
