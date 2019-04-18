@@ -51,6 +51,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 lots = await _context.Lot
                     .Include(l => l.Address)
                     .Where(u => u.LotNumber.Contains(query)) // use contains so searching "H2" picks up all H2** lots
+                    .Where(u => u.LotNumber != "HOA") // exclude generic HOA lot
                     .OrderBy(u => u.LotNumber)
                     .ToListAsync();
             }
@@ -59,7 +60,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             {
                 lots = await _context.Lot
                        .Include(l => l.Address)
-                       
+                       .Where(u => u.LotNumber != "HOA")
                        .OrderBy(u => u.LotNumber)
                        .ToListAsync();
             }
@@ -87,7 +88,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                         Lot = lot,
                         Address = lot.Address,
                         PrimaryOwner = null,
-                        Owners = null,
+                        Owners = new List<SunridgeHOA.Models.Owner>(),
                         InventoryItems = lotItems
                     });
                 }
