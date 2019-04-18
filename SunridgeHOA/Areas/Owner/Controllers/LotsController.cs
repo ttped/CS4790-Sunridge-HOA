@@ -282,6 +282,12 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
             var roles = await _userManager.GetRolesAsync(identityUser);
             var isAdmin = roles.Contains("Admin") || roles.Contains("SuperAdmin");
+
+            if (lot.LotNumber == "HOA" && !isAdmin)
+            {
+                return NotFound();
+            }
+
             //var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
             var ownerLots = _context.OwnerLot
                 .Where(u => u.LotId == id)
@@ -326,7 +332,10 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 foreach (var file in files)
                 {
                     var webRootPath = _hostingEnv.WebRootPath;
-                    var uploads = Path.Combine(webRootPath, SD.LotDocsFolder);
+                    var folder = lot.LotNumber == "HOA" ?
+                        SD.HOADocsFolder :
+                        SD.LotDocsFolder;
+                    var uploads = Path.Combine(webRootPath, folder);
                     var name = Path.GetFileNameWithoutExtension(file.FileName);
                     var extension = Path.GetExtension(file.FileName);
                     var dateExt = DateTime.Now.ToString("MMddyyyy");
@@ -339,7 +348,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
 
                     var uploadFile = new SunridgeHOA.Models.File
                     {
-                        FileURL = $@"\{SD.LotDocsFolder}\{newFileName}",
+                        FileURL = $@"\{folder}\{newFileName}",
                         Date = DateTime.Now,
                         Description = Path.GetFileName(file.FileName)
                     };
@@ -380,6 +389,10 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             if (lot == null)
             {
                 return NotFound();
+            }
+            else if (lot.LotNumber == "HOA")
+            {
+                return RedirectToAction("Index", "HOADocs", new { area = "Admin" });
             }
 
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);

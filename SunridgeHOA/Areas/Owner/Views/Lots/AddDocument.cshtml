@@ -32,7 +32,9 @@
             </div>
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Save" />
-                <a asp-action="ViewFiles" asp-route-id="@ViewBag.LotId">Back to List</a>
+                @*<a asp-action="ViewFiles" asp-route-id="@ViewBag.LotId">Back to List</a>*@
+                @* This needs to go back arbitrarily to accomodate the HOA dummy lot *@
+                <a href="javascript:history.go(-1)">Back to List</a>
             </div>
         </form>
     </div>

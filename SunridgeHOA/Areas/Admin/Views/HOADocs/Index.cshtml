@@ -1,0 +1,37 @@
+﻿@model List<LotHistory>
+@{
+    ViewData["Title"] = "HOA Documents";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Sunridge HOA Documents</h2>
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <div class="row">
+        <div class="col-md-2">
+            <p>
+                <a asp-area="Owner" asp-controller="Lots" asp-action="AddDocument" asp-route-id="@ViewBag.LotId" class="btn btn-primary">Upload new Document</a>
+            </p>
+        </div>
+    </div>
+}
+
+@foreach (var hist in Model)
+{
+    <h4>@hist.Description</h4>
+    <label class="control-label">Uploaded on @hist.Date.ToString("MM/dd/yyyy") by @hist.LastModifiedBy</label>
+    <div>
+        @foreach (var file in hist.Files)
+        {
+            <div>
+                <a href="@file.FileURL">@file.Description</a>
+            </div>
+        }
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <p>Sunridge currently has no documents uploaded. Check back later!</p>
+}

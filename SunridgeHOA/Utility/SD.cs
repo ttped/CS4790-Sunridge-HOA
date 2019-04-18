@@ -12,6 +12,7 @@ namespace SunridgeHOA.Utility
         public const string NewsImageFolder = @"images\News";
         public const string LotDocsFolder = @"docs\Lots";
         public const string OwnerDocsFolder = @"docs\Owners";
+        public const string HOADocsFolder = @"docs\HOA";
 
         public const string AdminEndUser = "Admin";
         public const string SuperAdminEndUser = "Super Admin";

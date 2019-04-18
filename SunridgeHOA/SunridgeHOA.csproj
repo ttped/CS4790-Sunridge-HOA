@@ -37,6 +37,8 @@
 
     <Folder Include="wwwroot\docs\Lots\" />
 
+    <Folder Include="wwwroot\docs\HOA\" />
+
     <Folder Include="wwwroot\docs\Owners\" />
 
     <Folder Include="wwwroot\images\events\" />
