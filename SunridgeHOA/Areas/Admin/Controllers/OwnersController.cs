@@ -41,7 +41,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             {
                 owners = await _context.Owner
                     .Include(u => u.Address)
-                    .Where(u => u.FullName.Contains(query))
+                    .Where(u => u.FullName.ToLower().Contains(query.ToLower()))
                     .ToListAsync();
             }
             // No search - include all owners
