@@ -685,16 +685,20 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                     }
 
                     // Any items still in SelectedItems need to be added in the relationship table
-                    foreach (var invId in vm.SelectedItems)
+                    if (vm.SelectedItems != null)
                     {
-                        _context.LotInventory.Add(new LotInventory
+                        foreach (var invId in vm.SelectedItems)
                         {
-                            LotId = id,
-                            InventoryId = invId,
-                            LastModifiedBy = loggedInUser.FullName,
-                            LastModifiedDate = DateTime.Now
-                        });
+                            _context.LotInventory.Add(new LotInventory
+                            {
+                                LotId = id,
+                                InventoryId = invId,
+                                LastModifiedBy = loggedInUser.FullName,
+                                LastModifiedDate = DateTime.Now
+                            });
+                        }
                     }
+                    
 
                     await _context.SaveChangesAsync();
                 }
