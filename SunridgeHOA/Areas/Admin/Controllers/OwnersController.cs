@@ -407,6 +407,9 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 IsAdmin = roles.Contains("Admin")
             };
 
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            ViewData["CurrUserId"] = identityUser.Id;
+
             return View(vm);
         }
 

@@ -38,10 +38,14 @@
                 <input asp-for="Owner.Birthday" class="form-control" />
                 <span asp-validation-for="Owner.Birthday" class="text-danger"></span>
             </div>
-
+            @{ string isDisabled = ""; }
+            @if (ViewData["CurrUserId"].ToString() == Model.Owner.ApplicationUserId)
+            {
+                isDisabled = "disabled";
+            }
             <div class="form-group">
                 <label class="control-label">
-                    <input asp-for="IsAdmin" />
+                    <input asp-for="IsAdmin" disabled="@isDisabled"/>
                     Is the user an admin?
                 </label>
             </div>
