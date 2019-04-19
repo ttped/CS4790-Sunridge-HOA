@@ -443,6 +443,18 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var roles = await _userManager.GetRolesAsync(identityUser);
+            var isAdmin = roles.Contains("Admin") || roles.Contains("SuperAdmin");
+            //var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+            var ownerLots = _context.OwnerLot
+                .Where(u => u.LotId == id)
+                .Where(u => u.OwnerId == identityUser.OwnerId);
+            if (!isAdmin && !ownerLots.Any())
+            {
+                return NotFound();
+            }
+
             var lotItems = await _context.LotInventory
                     .Include(u => u.Inventory)
                     .Where(u => u.LotId == lot.LotId)
