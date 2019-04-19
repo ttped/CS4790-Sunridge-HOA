@@ -336,9 +336,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 foreach (var file in files)
                 {
                     var webRootPath = _hostingEnv.WebRootPath;
-                    var folder = lot.LotNumber == "HOA" ?
-                        SD.HOADocsFolder :
-                        SD.LotDocsFolder;
+                    var folder = SD.LotDocsFolder;
                     var uploads = Path.Combine(webRootPath, folder);
                     var name = Path.GetFileNameWithoutExtension(file.FileName);
                     var extension = Path.GetExtension(file.FileName);
