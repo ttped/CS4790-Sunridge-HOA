@@ -32,7 +32,8 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         }
 
         // GET: Admin/Lots
-        [Authorize(Roles = "SuperAdmin, Admin")]
+        // Don't need authorization, it checks in the code to see if a redirect needs to happen
+        //[Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> Index(string query)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
