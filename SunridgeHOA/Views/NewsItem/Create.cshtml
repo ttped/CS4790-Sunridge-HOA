@@ -51,9 +51,12 @@
                             <label asp-for="Year"></label>
                         </div>
                         <div class="col-5">
-                            <select asp-for="Year" class="form-control" asp-items="ViewBag.Year"></select>
+                            <select asp-for="Year" class="form-control" asp-items="ViewBag.Year">
+                                <option value="-1" hidden selected>Select a year</option>
+                            </select>
                             @*<select asp-for="@Model.Products.SpecialTagsId" asp-items="Model.SpecialTags.ToSelectListItem(Model.Products.SpecialTagsId)" class="form-control"></select>*@
                         </div>
+                        <span asp-validation-for="Year" class="text-danger"></span>
                     </div>
 
                     <div class="form-group row">
@@ -74,9 +77,11 @@
                 </div>
             </form>
 
-            @*@section Scripts{
-                    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-                }*@
+
         </div>
     </div>
 </div>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

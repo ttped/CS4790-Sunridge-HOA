@@ -44,7 +44,7 @@ namespace SunridgeHOA.Controllers
         //GET: Create NewsItem
         public IActionResult Create()
         {
-            ViewData["Year"] = new SelectList(new string[] { "Select an year", "2019", "2018", "2017", "2016" });
+            ViewData["Year"] = new SelectList(new string[] { "2019", "2018", "2017", "2016" });
             return View();
         }
 
@@ -64,10 +64,16 @@ namespace SunridgeHOA.Controllers
                 return RedirectToPage(nameof(Index));
             }
 
+            // This comes up if the user doesn't select a year
+            if (newsItem.Year == -1)
+            {
+                ModelState.AddModelError("Year", "Please select a year");
+            }
+
             //var news = _db.File.Find();
             //newsItem.FileId = news.FileId;
 
-            //if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 //newsItem.File = file;
                 _db.NewsItem.Add(newsItem);
@@ -110,8 +116,8 @@ namespace SunridgeHOA.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            //ViewData["Year"] = new SelectList(new string[] { "Select an year", "2019", "2018", "2017", "2016" });
-            //return View(newsItem);
+            ViewData["Year"] = new SelectList(new string[] { "2019", "2018", "2017", "2016" });
+            return View(newsItem);
         }
 
         //GET: NewsItem Details
