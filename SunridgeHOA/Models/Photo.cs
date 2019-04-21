@@ -11,9 +11,9 @@ namespace SunridgeHOA.Models
     {
         public int PhotoId { get; set; }
         public int OwnerId { get; set; }
-        //[Required(ErrorMessage = "Please select a category")]
+        [Required]
         public string Category { get; set; }
-        //[Required(ErrorMessage = "Please type a title")]
+        [Required(ErrorMessage = "Please type a title")]
         public string Title { get; set; }
         //[Required(ErrorMessage = "Please type an year")]
         public int Year { get; set; }

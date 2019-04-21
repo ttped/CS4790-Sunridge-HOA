@@ -73,7 +73,7 @@ namespace SunridgeHOA.Controllers
         //GET: AdminPhoto Create
         public IActionResult Create()
         {
-            ViewData["Category"] = new SelectList(new string[] { "Select Category", "Summer", "Winter", "People" });
+            ViewData["Category"] = new SelectList(new string[] { "Summer", "Winter", "People" });
             return View(AdminPhotoVM);
             //return View();
         }
@@ -81,10 +81,16 @@ namespace SunridgeHOA.Controllers
         //POST: AdminPhoto Create
         [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePOST([Bind("Image, Title, Year, Category")] Models.Photo photo)
+        public async Task<IActionResult> CreatePOST([Bind("Image, Title, Category")] Models.Photo photo)
         {
+            if (photo.Category == "-1")
+            {
+                ModelState.AddModelError("Category", "Please select a category");
+            }
+
             if (!ModelState.IsValid)
             {
+                ViewData["Category"] = new SelectList(new string[] { "Summer", "Winter", "People" });
                 //return View(AdminPhotoVM);
                 return View();
             }
@@ -98,6 +104,8 @@ namespace SunridgeHOA.Controllers
             var loggedInUser = _db.Owner.Find(identityUser.OwnerId);
             //var loggedInUser = _db.Owner.Find(1);
             photo.OwnerId = loggedInUser.OwnerId;
+
+            photo.Year = DateTime.Now.Year;
 
             //_db.Photo.Add(AdminPhotoVM.Photo);
             _db.Photo.Add(photo);
