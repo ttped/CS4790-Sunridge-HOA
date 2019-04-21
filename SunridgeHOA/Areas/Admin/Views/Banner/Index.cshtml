@@ -6,12 +6,12 @@
 
 
 
-<div class="row col-12">
+<div class="row">
     @*<div class="col-2">
         <partial name="~/Views/Shared/_AdminNavbar.cshtml" />
     </div>*@
 
-    <div id="windowFrame" class="col-10">
+    <div id="windowFrame" class="">
         <div>
             <h2>Banner Item Index</h2>
 
@@ -29,9 +29,9 @@
                         <th id="bannerBody">
                             Body
                         </th>
-                        <th id="bannerImage">
+                        @*<th id="bannerImage">
                             Image
-                        </th>
+                        </th>*@
                         <th></th>
                     </tr>
                 </thead>
@@ -40,15 +40,15 @@
                     @foreach (var item in Model)
                     {
                     <tr>
-                        <td>
+                        <td style="width: 25%">
                             @Html.DisplayFor(modelItem => item.Header)
                         </td>
-                        <td>
+                        <td style="width: 50%;">
                             @Html.DisplayFor(modelItem => item.Body)
                         </td>
-                        <td>
-                            <img class="col-10" src="../../..@Html.DisplayFor(modelItem => item.Image)" style="border-radius:5px;width:100%;" />
-                        </td>                      
+                        @*<td>
+                            <img class="col-10 img-responsive" src="../../..@Html.DisplayFor(modelItem => item.Image)" style="border-radius:5px;" />
+                        </td>*@                      
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.Id"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
                             <a asp-action="Details" asp-route-id="@item.Id"><button type="button" class="btn btn-warning btn-sm">Details</button></a> |

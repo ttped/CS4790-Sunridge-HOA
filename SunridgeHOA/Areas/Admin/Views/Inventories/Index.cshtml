@@ -21,7 +21,7 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Description)
                     </th>
-                    <th>
+                    @*<th>
                         @Html.DisplayNameFor(model => model.IsArchive)
                     </th>
                     <th>
@@ -29,7 +29,7 @@
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.LastModifiedDate)
-                    </th>
+                    </th>*@
                     <th></th>
                 </tr>
             </thead>
@@ -41,7 +41,7 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Description)
                         </td>
-                        <td>
+                        @*<td>
                             @Html.DisplayFor(modelItem => item.IsArchive)
                         </td>
                         <td>
@@ -49,7 +49,7 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.LastModifiedDate)
-                        </td>
+                        </td>*@
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.InventoryId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
                             <a asp-action="Details" asp-route-id="@item.InventoryId"><button type="button" class="btn btn-warning btn-sm">Details</button></a> |
