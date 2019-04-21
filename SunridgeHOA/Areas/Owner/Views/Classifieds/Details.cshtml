@@ -11,7 +11,6 @@
         <h2>Details</h2>
 
         <div>
-            <h4>ClassifiedListing</h4>
             <hr />
             <dl class="dl-horizontal">
                 <dt>
@@ -57,28 +56,10 @@
                     @Html.DisplayFor(model => model.Owner.EmergencyContactName)
                 </dd>
                 <dt>
-                    @Html.DisplayNameFor(model => model.ClassifiedCategory)
+                    @Html.DisplayNameFor(model => model.ClassifiedCategory.Description)
                 </dt>
                 <dd>
-                    @Html.DisplayFor(model => model.ClassifiedCategory.ClassifiedCategoryId)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.IsArchive)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.IsArchive)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.LastModifiedBy)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.LastModifiedBy)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.LastModifiedDate)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.LastModifiedDate)
+                    @Html.DisplayFor(model => model.ClassifiedCategory.Description)
                 </dd>
             </dl>
         </div>

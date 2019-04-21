@@ -16,18 +16,13 @@
         <h4>ClassifiedListing</h4>
         <hr />
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <form asp-action="Edit" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="ClassifiedListing.ClassifiedListingId" />
                     <div class="form-group">
-                        <label asp-for="ClassifiedListing.OwnerId" class="control-label"></label>
-                        <select asp-for="ClassifiedListing.OwnerId" class="form-control" asp-items="Model.Owner.ToSelectListItem(Model.ClassifiedListing.OwnerId, ownerString)"></select>
-                        <span asp-validation-for="ClassifiedListing.OwnerId" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="ClassifiedListing.ClassifiedCategory" class="control-label"></label>
-                        <select asp-for="ClassifiedListing.ClassifiedCategoryId" class="form-control" asp-items="Model.ClassifiedCategory.categoryDescriptionToSelectListItem(Model.ClassifiedListing.ClassifiedCategoryId)"></select>
+                        <label asp-for="ClassifiedListing.ClassifiedCategory.Description" class="control-label"></label>
+                        <select class="select form-control" asp-for="ClassifiedListing.ClassifiedCategoryId" asp-items="ViewBag.Category"></select>
                         <span asp-validation-for="ClassifiedListing.ClassifiedCategoryId" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -42,12 +37,12 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="ClassifiedListing.Description" class="control-label"></label>
-                        <input asp-for="ClassifiedListing.Description" class="form-control" />
+                        <textarea asp-for="ClassifiedListing.Description" class="form-control" style="overflow:auto; height:200px;"></textarea>
                         <span asp-validation-for="ClassifiedListing.Description" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="ClassifiedListing.ListingDate" class="control-label"></label>
-                        <input asp-for="ClassifiedListing.ListingDate" class="form-control" />
+                        <p>@Html.DisplayFor(u => u.ClassifiedListing.ListingDate)</p>
                         <span asp-validation-for="ClassifiedListing.ListingDate" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -60,13 +55,13 @@
                         <input asp-for="ClassifiedListing.Email" class="form-control" />
                         <span asp-validation-for="ClassifiedListing.Email" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
+                    @*<div class="form-group">
                         <div class="checkbox">
                             <label>
                                 <input asp-for="ClassifiedListing.IsArchive" /> @Html.DisplayNameFor(model => model.ClassifiedListing.IsArchive)
                             </label>
                         </div>
-                    </div>
+                    </div>*@
                     <div class="form-group">
                         <label>Upload images</label>
                         <input type="file" name="files" class="form-control" multiple />

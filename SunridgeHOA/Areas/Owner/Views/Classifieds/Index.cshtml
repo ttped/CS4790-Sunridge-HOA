@@ -18,31 +18,31 @@
             <thead>
                 <tr id="headTr">
                     <th>
-                        Item<br />Name
+                        Title
                     </th>
                     <th>
                         Price
                     </th>
-                    <th>
+                    @*<th>
                         Description
-                    </th>
+                    </th>*@
                     <th>
                         Listing Date
                     </th>
-                    <th>
+                    @*<th>
                         Phone
-                    </th>
-                    <th>
+                    </th>*@
+                    @*<th>
                         Email
-                    </th>
+                    </th>*@
                     <th>
                         Owner
                     </th>
                     <th>
-                        Classified<br />Category
+                        Category
                     </th>
-                    <th class="col-5">
-                        Image
+                    <th>
+                        Image Count
                     </th>
                     <th></th>
                 </tr>
@@ -58,30 +58,31 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.ClassifiedListing.Price)
                     </td>
-                    <td>
+                    @*<td>
                         @item.ClassifiedListing.Description.Truncate(100).Concatenate("...")
-                    </td>
+                    </td>*@
                     <td>
-                        @Html.DisplayFor(modelItem => item.ClassifiedListing.ListingDate)
+                        @*@Html.DisplayFor(modelItem => item.ClassifiedListing.ListingDate)*@
+                        @item.ClassifiedListing.ListingDate.ToString("MM/dd/yyyy")
                     </td>
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.ClassifiedListing.Phone)
-                    </td>
-                    <td>
+                    </td>*@
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.ClassifiedListing.Email)
-                    </td>
+                    </td>*@
                     <td>
                         @Html.DisplayFor(modelItem => item.ClassifiedListing.Owner.FullName)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.ClassifiedListing.ClassifiedCategory.Description)
                     </td>
-                    <td id="postNewAdImage" class="col-5">
-                        @foreach (var image in item.ClassifiedImages.Where(x => x.ClassifiedListingId == item.ClassifiedListing.ClassifiedListingId))
+                    <td >
+                        @*@foreach (var image in item.ClassifiedImages.Where(x => x.ClassifiedListingId == item.ClassifiedListing.ClassifiedListingId))
                         {
-                            @*<p>@image.ImageURL</p>*@
                             <img src="../../..@image.ImageURL" class="img-fluid" style="border-radius:5px; object-fit: cover;" />
-                        }
+                        }*@
+                        @item.ClassifiedImages.Where(u => u.ClassifiedListingId == item.ClassifiedListing.ClassifiedListingId).Count()
                     </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.ClassifiedListing.ClassifiedListingId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |

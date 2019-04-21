@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SunridgeHOA.Models;
 using SunridgeHOA.Models.ViewModels;
@@ -100,7 +101,7 @@ namespace SunridgeHOA.Areas.Owner.Controllers
 
             }
 
-            var item = await _context.ClassifiedListing.SingleOrDefaultAsync(m => m.ClassifiedListingId == id);
+            var item = await _context.ClassifiedListing.Include(u => u.ClassifiedCategory).SingleOrDefaultAsync(m => m.ClassifiedListingId == id);
             if (item == null)
             {
                 return NotFound();
@@ -113,7 +114,13 @@ namespace SunridgeHOA.Areas.Owner.Controllers
         // GET: Classifieds/Create
         public ActionResult Create()
         {
-            return View(classifiedListingViewModel);
+            ViewData["Category"] = new SelectList(_context.ClassifiedCategory, "ClassifiedCategoryId", "Description");
+            return View(new ClassifiedListingViewModel()
+            {
+                ClassifiedListing = new SunridgeHOA.Models.ClassifiedListing(),
+                //ClassifiedCategory = _context.ClassifiedCategory.ToList(),
+                ClassifiedImages = _context.ClassifiedImage.Where(x => x.ClassifiedListingId == classifiedListingViewModel.ClassifiedListing.ClassifiedListingId),
+            });
         }
 
         // POST: Classifieds/Create
@@ -167,7 +174,14 @@ namespace SunridgeHOA.Areas.Owner.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            return View(classifiedListingViewModel);
+
+            ViewData["Category"] = new SelectList(_context.ClassifiedCategory, "ClassifiedCategoryId", "Description");
+            return View(new ClassifiedListingViewModel()
+            {
+                ClassifiedListing = listing,
+                ClassifiedCategory = _context.ClassifiedCategory.ToList(),
+                ClassifiedImages = _context.ClassifiedImage.Where(x => x.ClassifiedListingId == classifiedListingViewModel.ClassifiedListing.ClassifiedListingId),
+            });
         }
 
         // GET: Classifieds/Edit/5
@@ -186,6 +200,9 @@ namespace SunridgeHOA.Areas.Owner.Controllers
             }
             item.Images = await _context.ClassifiedImage.Where(x => x.ClassifiedListingId == item.ClassifiedListingId).ToListAsync();
             classifiedListingViewModel.ClassifiedListing = item;
+
+            ViewData["Category"] = new SelectList(_context.ClassifiedCategory, "ClassifiedCategoryId", "Description", item.ClassifiedCategoryId);
+
             return View(classifiedListingViewModel);
         }
 
@@ -246,6 +263,8 @@ namespace SunridgeHOA.Areas.Owner.Controllers
                 }
                 await _context.SaveChangesAsync();
             }
+
+            ViewData["Category"] = new SelectList(_context.ClassifiedCategory, "ClassifiedCategoryId", "Description", item.ClassifiedCategoryId);
             return RedirectToAction(nameof(Index));
         }
 

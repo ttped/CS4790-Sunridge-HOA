@@ -24,35 +24,38 @@
         <partial name="~/Views/Shared/_AdminNavbar.cshtml" />
     </div>*@
     <div id="ownerContainer" class="col-10">
-        <h2>Create</h2>
+        <h2>Create new Classified Listing</h2>
 
-        <h4>ClassifiedListing</h4>
         <hr />
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <form asp-action="Create" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
+                    @*<div class="form-group">
                         <label asp-for="ClassifiedListing.OwnerId" class="control-label"></label>
                         <select asp-for="ClassifiedListing.OwnerId" class="form-control" asp-items="Model.Owner.ownerNameToSelectListItem(Model.ClassifiedListing.OwnerId)"></select>
-                    </div>
+                    </div>*@
                     
                     <div class="form-group">
-                        <label asp-for="ClassifiedCategory" class="control-label"></label>
+                        <label asp-for="ClassifiedCategory.First().Description" class="control-label"></label>
                         @*<select asp-for="ClassifiedListing.ClassifiedCategoryId" class="form-control" asp-items="ViewBag.ClassifiedCategoryId"></select>*@
-                        <select class="select" runat="Server" ClientIdMode="static" asp-for="ClassifiedListing.ClassifiedCategoryId" class="form-control" asp-items="Model.ClassifiedCategory.categoryDescriptionToSelectListItem(Model.ClassifiedListing.ClassifiedCategoryId)"></select>
+                        @*<select class="select form-control" runat="Server" ClientIdMode="static" asp-for="ClassifiedListing.ClassifiedCategoryId" asp-items="Model.ClassifiedCategory.categoryDescriptionToSelectListItem(Model.ClassifiedListing.ClassifiedCategoryId)"></select>*@
+                        <select class="select form-control" asp-for="ClassifiedListing.ClassifiedCategoryId" asp-items="ViewBag.Category"></select>
                     </div>
                     <div class="form-group">
                         <label asp-for="ClassifiedListing.ItemName" class="control-label">Title</label>
                         <input asp-for="ClassifiedListing.ItemName" class="form-control" />
+                        <span asp-validation-for="ClassifiedListing.ItemName" class="text-danger"></span>
                     </div>
                     <div id="hide" class="form-group">
                         <label asp-for="ClassifiedListing.Price" class="control-label"></label>
                         <input asp-for="ClassifiedListing.Price" class="form-control" />
+                        <span asp-validation-for="ClassifiedListing.Price" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="ClassifiedListing.Description" class="control-label"></label>
                         <textarea asp-for="ClassifiedListing.Description" style="overflow:auto; height:200px;" class="form-control"></textarea>
+                        <span asp-validation-for="ClassifiedListing.Description" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="ClassifiedListing.Phone" class="control-label"></label>
