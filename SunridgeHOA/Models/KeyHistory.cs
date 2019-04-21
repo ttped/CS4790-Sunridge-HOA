@@ -16,8 +16,12 @@ namespace SunridgeHOA.Models
 
         public string Status { get; set; }
         [Display(Name ="Date Issued")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime DateIssued { get; set; }
         [Display(Name = "Date Returned")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime DateReturned { get; set; }
         [Display(Name = "Paid Amount")]
         public float PaidAmount { get; set; }

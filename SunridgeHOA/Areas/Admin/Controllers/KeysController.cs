@@ -78,6 +78,12 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Key key)
         {
+            int testNum;
+            if (!Int32.TryParse(key.SerialNumber, out testNum))
+            {
+                ModelState.AddModelError("SerialNumber", "Serial number can only contain digits 0-9");
+            }
+
             if (ModelState.IsValid)
             {
                 var identityUser = await _userManager.GetUserAsync(HttpContext.User);

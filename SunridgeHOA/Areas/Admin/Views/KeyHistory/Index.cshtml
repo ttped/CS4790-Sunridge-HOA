@@ -37,6 +37,12 @@
             <thead>
                 <tr id="headTr">
                     <th>
+                        Key
+                    </th>
+                    <th>
+                        Owner
+                    </th>
+                    <th>
                         Status
                     </th>
                     <th>
@@ -48,61 +54,40 @@
                     <th>
                         Paid Amount
                     </th>
-                    <th>
-                        Key
-                    </th>
-                    <th>
-                        Owner
-                    </th>
-                    <th>
-                        Archive
-                    </th>
-                    <th>
-                        Last Modified By
-                    </th>
-                    <th>
-                        Last Modified Date
-                    </th>
+
+
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Status)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DateIssued)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DateReturned)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PaidAmount)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Key.SerialNumber)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Owner.FullName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IsArchive)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LastModifiedBy)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LastModifiedDate)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.KeyHistoryId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
-                            <a asp-action="Details" asp-route-id="@item.KeyHistoryId"><button type="button" class="btn btn-warning btn-sm">Details</button></a> |
-                            <a asp-action="Delete" asp-route-id="@item.KeyHistoryId"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Key.SerialNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Owner.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateIssued)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateReturned)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PaidAmount)
+                    </td>
+
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.KeyHistoryId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
+                        <a asp-action="Details" asp-route-id="@item.KeyHistoryId"><button type="button" class="btn btn-warning btn-sm">Details</button></a> |
+                        <a asp-action="Delete" asp-route-id="@item.KeyHistoryId"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

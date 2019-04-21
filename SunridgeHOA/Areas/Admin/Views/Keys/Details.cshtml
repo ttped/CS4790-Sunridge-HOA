@@ -2,12 +2,12 @@
 
 @{
     ViewData["Title"] = "Details";
-    //Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <div class="row col-12">
-    <div class="col-2">
+    @*<div class="col-2">
         <partial name="~/Views/Shared/_AdminNavbar.cshtml" />
-    </div>
+    </div>*@
     <div id="windowFrame" class="col-10">
         <h2>Details</h2>
 
@@ -27,7 +27,7 @@
                 <dd>
                     @Html.DisplayFor(model => model.SerialNumber)
                 </dd>
-                <dt>
+                @*<dt>
                     @Html.DisplayNameFor(model => model.IsArchive)
                 </dt>
                 <dd>
@@ -44,7 +44,7 @@
                 </dt>
                 <dd>
                     @Html.DisplayFor(model => model.LastModifiedDate)
-                </dd>
+                </dd>*@
             </dl>
         </div>
         <div>
