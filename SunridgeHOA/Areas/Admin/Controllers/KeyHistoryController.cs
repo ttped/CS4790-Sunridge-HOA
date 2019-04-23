@@ -36,9 +36,26 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             };
         }
 
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string searchString)
         {
-            return View(await _context.KeyHistory.ToListAsync());
+            IQueryable<KeyHistory> KeySearch = from c in _context.KeyHistory
+                                               select c;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+
+                KeySearch = KeySearch.Where(c => c.Status.Contains(searchString) ||
+                c.PaidAmount.ToString().Contains(searchString) ||
+                c.Key.SerialNumber.Contains(searchString) ||
+                c.Owner.FullName.Contains(searchString) ||
+                c.LastModifiedBy.Contains(searchString) ||
+                c.DateIssued.ToString("mm/dd/yyyy 0:HH:mm:ss tt").Contains(searchString) ||
+                c.DateReturned.ToString("mm/dd/yyyy 0:HH:mm:ss tt").Contains(searchString) ||
+                c.LastModifiedDate.ToString("mm/dd/yyyy 0:HH:mm:ss tt").Contains(searchString)
+                );
+            }
+
+            return View(await KeySearch.ToListAsync());
         }
 
         // GET: Key/Details/5

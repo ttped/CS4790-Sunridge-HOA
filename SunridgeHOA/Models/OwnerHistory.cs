@@ -13,15 +13,17 @@ namespace SunridgeHOA.Models
 
         public DateTime Date { get; set; }
         public string Description { get; set; }
-        public int? Hours { get; set; }
-        public string Status { get; set; }
+        //public int? Hours { get; set; }
+
+        public String PrivacyLevel { get; set; }
+
 
 
         // Nav properties
         public Owner Owner { get; set; }
         public HistoryType HistoryType { get; set; }
         public ICollection<Comment> Comments { get; set; }
-
+        public virtual ICollection<File> Files { get; set; }
 
     }
 }

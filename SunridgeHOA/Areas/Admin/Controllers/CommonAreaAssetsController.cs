@@ -176,5 +176,146 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         {
             return _context.CommonAreaAsset.Any(e => e.CommonAreaAssetId == id);
         }
+
+        public async Task<IActionResult> MaintenanceRecords(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var commonAreaAsset = await _context.CommonAreaAsset
+                .FirstOrDefaultAsync(m => m.CommonAreaAssetId == id);
+
+            var maintenance = await _context.Maintenance
+                .Where(m => m.CommonAreaAssetId == id && m.IsArchive == false)
+                .ToListAsync();
+
+            var vm = new Models.CommonAreaAssetVM
+            {
+                CommonAreaAsset = commonAreaAsset,
+                Maintenances = maintenance
+            };
+
+            if (maintenance == null || commonAreaAsset == null)
+            {
+                return NotFound();
+            }
+
+            return View(vm);
+        }
+
+        public IActionResult CreateMaintenance(int? id)
+        {
+            ViewBag.CommonAreaAssetID = id;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateMaintenance([Bind("CommonAreaAssetId,DateCompleted,Description,Cost")] Maintenance maintenance)
+        {
+            if (ModelState.IsValid)
+            {
+                var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+                var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+
+                maintenance.IsArchive = false;
+                maintenance.LastModifiedBy = loggedInUser.FullName;
+                maintenance.LastModifiedDate = DateTime.Now;
+
+                _context.Add(maintenance);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(maintenance);
+        }
+
+        public async Task<IActionResult> EditMaintenance(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var maintenance = await _context.Maintenance.FindAsync(id);
+            if (maintenance == null)
+            {
+                return NotFound();
+            }
+            return View(maintenance);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditMaintenance(int id, [Bind("MaintenanceId,CommonAreaAssetId,DateCompleted,Description,Cost")] Maintenance maintenance)
+        {
+            if (id != maintenance.MaintenanceId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+                    var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+
+                    maintenance.LastModifiedBy = loggedInUser.FullName;
+                    maintenance.LastModifiedDate = DateTime.Now;
+
+                    _context.Update(maintenance);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CommonAreaAssetExists(maintenance.MaintenanceId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(maintenance);
+        }
+
+        public async Task<IActionResult> DeleteMaintenance(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var maintenance = await _context.Maintenance
+                .FirstOrDefaultAsync(m => m.MaintenanceId == id);
+            if (maintenance == null)
+            {
+                return NotFound();
+            }
+
+            return View(maintenance);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteMaintenance(int id)
+        {
+            var maintenance = await _context.Maintenance.FindAsync(id);
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+            //_context.CommonAreaAsset.Remove(commonAreaAsset);
+
+            maintenance.IsArchive = true;
+            maintenance.LastModifiedBy = loggedInUser.FullName;
+            maintenance.LastModifiedDate = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

@@ -3,135 +3,144 @@
     ViewData["Title"] = "News";
 }
 
-<div class="row">
+@*<div class="row">
     <div class="col-8"></div>
     <div class="col-4">
         <span id="searchIcon" class="fa fa-search"></span><input id="searchBar" type="text" placeholder="Search...">
     </div>
-</div>
+</div>*@
 
-<!-- inro section Grid -->
-@*<section class="text-center p-5">
-    <div class="container">
-        <div class="container container-fluid no2">
-            <h1 class="main-heading mb-4">2019 News</h1>
+    <form asp-area="Views" asp-controller="Home" asp-action="News" method="get" class="form-inline">
+        <div>
+            <p>
+                Search : <input type="text" name="SearchString" />
+                <input type="submit" value="Search" />
+            </p>
         </div>
-    </div>
-</section>*@
+    </form>
 
-<!-- Testimonials -->
-<section class="m-5">
-    <div class="container">
-        <h1 class="mb-4">News History</h1>
-        <div id="accordion">
-            <div class="card">
-                <div class="card-header" id="headingOne">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                            2019
-                        </button>
-                    </h5>
-                </div>
-                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-                    <div class="card-body">
-                        @foreach (var news in Model)
-                        {
-                            @if (news.Year == 2019)
-                            {
-                                <hr class="mt-5 mb-5">
-                                <h2>@Html.DisplayFor(m => news.Header)</h2>
-                                <p>@Html.DisplayFor(m => news.Content)</p>
-                                <div style="box-shadow: 10px 10px 8px 10px #888888;" class="col-sm-12 text-center mb-5">
-                                    <a class="lightbox" href="~/images/News/@(news.NewsItemId).jpg">
-                                        <img src="@news.Image" alt="@news.Header">
-                                    </a>
-                                </div>
-                            }
-                        }
-                    </div>
+    <!-- inro section Grid -->
+    @*<section class="text-center p-5">
+            <div class="container">
+                <div class="container container-fluid no2">
+                    <h1 class="main-heading mb-4">2019 News</h1>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header" id="headingTwo">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            2018
-                        </button>
-                    </h5>
-                </div>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                    <div class="card-body">
-                        @foreach (var news in Model)
-                        {
-                            @if (news.Year == 2018)
+        </section>*@
+
+    <!-- Testimonials -->
+    <section class="m-5">
+        <div class="container">
+            <h1 class="mb-4">News History</h1>
+            <div id="accordion">
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                2019
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                        <div class="card-body">
+                            @foreach (var news in Model)
                             {
-                                <hr class="mt-5 mb-5">
-                                <h2>@Html.DisplayFor(m => news.Header)</h2>
-                                <p>@Html.DisplayFor(m => news.Content)</p>
-                                <div style="box-shadow: 10px 10px 8px 10px #888888;" class="col-sm-12 text-center mb-5">
-                                    <a class="lightbox" href="~/images/News/@(news.NewsItemId).jpg">
-                                        <img src="@news.Image" alt="@news.Header">
-                                    </a>
-                                </div>
+                                @if (news.Year == 2019)
+                                {
+                                    <hr class="mt-5 mb-5">
+                                    <h2>@Html.DisplayFor(m => news.Header)</h2>
+                                    <p>@Html.DisplayFor(m => news.Content)</p>
+                                    <div style="box-shadow: 10px 10px 8px 10px #888888;" class="col-sm-12 text-center mb-5">
+                                        <a class="lightbox" href="~/images/News/@(news.NewsItemId).jpg">
+                                            <img src="@news.Image" alt="@news.Header">
+                                        </a>
+                                    </div>
+                                }
                             }
-                        }
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="card">
-                <div class="card-header" id="headingThree">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            2017
-                        </button>
-                    </h5>
-                </div>
-                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                    <div class="card-body">
-                        @foreach (var news in Model)
-                        {
-                            @if (news.Year == 2017)
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                2018
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                        <div class="card-body">
+                            @foreach (var news in Model)
                             {
-                                <hr class="mt-5 mb-5">
-                                <h2>@Html.DisplayFor(m => news.Header)</h2>
-                                <p>@Html.DisplayFor(m => news.Content)</p>
-                                <div style="box-shadow: 10px 10px 8px 10px #888888;" class="col-sm-12 text-center mb-5">
-                                    <a class="lightbox" href="~/images/News/@(news.NewsItemId).jpg">
-                                        <img src="@news.Image" alt="@news.Header">
-                                    </a>
-                                </div>
+                                @if (news.Year == 2018)
+                                {
+                                    <hr class="mt-5 mb-5">
+                                    <h2>@Html.DisplayFor(m => news.Header)</h2>
+                                    <p>@Html.DisplayFor(m => news.Content)</p>
+                                    <div style="box-shadow: 10px 10px 8px 10px #888888;" class="col-sm-12 text-center mb-5">
+                                        <a class="lightbox" href="~/images/News/@(news.NewsItemId).jpg">
+                                            <img src="@news.Image" alt="@news.Header">
+                                        </a>
+                                    </div>
+                                }
                             }
-                        }
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="card">
-                <div class="card-header" id="headingFour">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                            2016
-                        </button>
-                    </h5>
-                </div>
-                <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
-                    <div class="card-body">
-                        @foreach (var news in Model)
-                        {
-                            @if (news.Year == 2016)
+                <div class="card">
+                    <div class="card-header" id="headingThree">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                2017
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                        <div class="card-body">
+                            @foreach (var news in Model)
                             {
-                                <hr class="mt-5 mb-5">
-                                <h2>@Html.DisplayFor(m => news.Header)</h2>
-                                <p>@Html.DisplayFor(m => news.Content)</p>
-                                <div style="box-shadow: 10px 10px 8px 10px #888888;" class="col-sm-12 text-center mb-5">
-                                    <a class="lightbox" href="~/images/News/@(news.NewsItemId).jpg">
-                                        <img src="@news.Image" alt="@news.Header">
-                                    </a>
-                                </div>
+                                @if (news.Year == 2017)
+                                {
+                                    <hr class="mt-5 mb-5">
+                                    <h2>@Html.DisplayFor(m => news.Header)</h2>
+                                    <p>@Html.DisplayFor(m => news.Content)</p>
+                                    <div style="box-shadow: 10px 10px 8px 10px #888888;" class="col-sm-12 text-center mb-5">
+                                        <a class="lightbox" href="~/images/News/@(news.NewsItemId).jpg">
+                                            <img src="@news.Image" alt="@news.Header">
+                                        </a>
+                                    </div>
+                                }
                             }
-                        }
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingFour">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                2016
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                        <div class="card-body">
+                            @foreach (var news in Model)
+                            {
+                                @if (news.Year == 2016)
+                                {
+                                    <hr class="mt-5 mb-5">
+                                    <h2>@Html.DisplayFor(m => news.Header)</h2>
+                                    <p>@Html.DisplayFor(m => news.Content)</p>
+                                    <div style="box-shadow: 10px 10px 8px 10px #888888;" class="col-sm-12 text-center mb-5">
+                                        <a class="lightbox" href="~/images/News/@(news.NewsItemId).jpg">
+                                            <img src="@news.Image" alt="@news.Header">
+                                        </a>
+                                    </div>
+                                }
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>

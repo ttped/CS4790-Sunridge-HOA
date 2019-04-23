@@ -7,17 +7,17 @@
     const String ownerString = "Owner";
 }
 <div class="row col-12">
-    <div class="col-2">
+    @*<div class="col-2">
         <partial name="~/Views/Shared/_AdminNavbar.cshtml" />
-    </div>
-    <div id="windowFrame" class="col-10">
+    </div>*@
+    <div id="ownerContainer" class="col-10">
         <h2>Edit</h2>
 
         <h4>ClassifiedListing</h4>
         <hr />
         <div class="row">
             <div class="col-md-4">
-                <form asp-action="Edit">
+                <form asp-action="Edit" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="ClassifiedListing.ClassifiedListingId" />
                     <div class="form-group">
@@ -26,8 +26,8 @@
                         <span asp-validation-for="ClassifiedListing.OwnerId" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="ClassifiedListing.ClassifiedCategoryId" class="control-label"></label>
-                        <select asp-for="ClassifiedListing.ClassifiedCategoryId" class="form-control" asp-items="Model.ClassifiedCategory.ToSelectListItem(Model.ClassifiedListing.ClassifiedCategoryId, classifiedCategoryString)"></select>
+                        <label asp-for="ClassifiedListing.ClassifiedCategory" class="control-label"></label>
+                        <select asp-for="ClassifiedListing.ClassifiedCategoryId" class="form-control" asp-items="Model.ClassifiedCategory.categoryDescriptionToSelectListItem(Model.ClassifiedListing.ClassifiedCategoryId)"></select>
                         <span asp-validation-for="ClassifiedListing.ClassifiedCategoryId" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -67,16 +67,20 @@
                             </label>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label>Upload images</label>
+                        <input type="file" name="files" class="form-control" multiple />
+                    </div>
                     @*<div class="form-group">
-                            <label asp-for="ClassifiedListing.LastModifiedBy" class="control-label"></label>
-                            <input asp-for="ClassifiedListing.LastModifiedBy" class="form-control" />
-                            <span asp-validation-for="ClassifiedListing.LastModifiedBy" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="ClassifiedListing.LastModifiedDate" class="control-label"></label>
-                            <input asp-for="ClassifiedListing.LastModifiedDate" class="form-control" />
-                            <span asp-validation-for="ClassifiedListing.LastModifiedDate" class="text-danger"></span>
-                        </div>*@
+            <label asp-for="ClassifiedListing.LastModifiedBy" class="control-label"></label>
+            <input asp-for="ClassifiedListing.LastModifiedBy" class="form-control" />
+            <span asp-validation-for="ClassifiedListing.LastModifiedBy" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ClassifiedListing.LastModifiedDate" class="control-label"></label>
+            <input asp-for="ClassifiedListing.LastModifiedDate" class="form-control" />
+            <span asp-validation-for="ClassifiedListing.LastModifiedDate" class="text-danger"></span>
+        </div>*@
                     <div class="form-group">
                         <input type="submit" value="Save" class="btn btn-default" />
                     </div>

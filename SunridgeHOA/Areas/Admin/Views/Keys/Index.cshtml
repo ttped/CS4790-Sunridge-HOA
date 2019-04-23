@@ -2,14 +2,9 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_ContentLayout.cshtml";
     //Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-<link rel="Stylesheet" href="~/css/Admin/transactions.css" type="text/css" />
-
-<link rel="Stylesheet" href="~/css/Admin/adminnavbar.css?version=51" type="text/css" />
-<link rel="Stylesheet" href="~/css/Admin/window.css" type="text/css" />
-<link rel="Stylesheet" href="~/css/Admin/table.css" type="text/css" />
-<link rel="Stylesheet" href="~/css/Admin/search-bar.css" type="text/css" />
 
 <div class="row col-12">
     <div class="col-2">
@@ -18,25 +13,43 @@
 
     <div id="windowFrame" class="col-10">
         <div>
-            <h2>Index</h2>
-
-            <p>
-                <a asp-action="Create">Create New</a>
+            <h2>Key Index</h2>
+                   
+            <p id="createAlign">
+                <a asp-action="Create"><button type="button" class="btn btn-primary btn-sm">Create New Key</button></a>
             </p>
-            <table class="table">
+
+            <div id="searchalign">
+                <form asp-action="Index" method="get" class="form-inline">
+                    <div>
+                        <div class="row">
+                            <div>
+                                <b>Search : </b><input type="text" name="SearchString" />
+                            </div>
+                            <div id="divSpace"></div>
+                            <div>
+                                <input type="submit" value="Search" id="search" class="btn btn-secondary btn-sm" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>           
+
+
+            <table>
                 <thead>
-                    <tr>
+                    <tr id="headTr">
                         <th>
-                            SerialNumber
+                            Serial Number
                         </th>
                         <th>
-                            IsArchive
+                            Archive
                         </th>
                         <th>
-                            LastModifiedBy
+                            Last Modified By
                         </th>
                         <th>
-                            LastModifiedDate
+                            Last Modified Date
                         </th>
                         <th></th>
                     </tr>
@@ -44,25 +57,25 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.SerialNumber)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.IsArchive)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.LastModifiedBy)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.LastModifiedDate)
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.KeyId">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.KeyId">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.KeyId">Delete</a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SerialNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsArchive)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastModifiedBy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastModifiedDate)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.KeyId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
+                            <a asp-action="Details" asp-route-id="@item.KeyId"><button type="button" class="btn btn-warning btn-sm">Details</button></a> |
+                            <a asp-action="Delete" asp-route-id="@item.KeyId"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>

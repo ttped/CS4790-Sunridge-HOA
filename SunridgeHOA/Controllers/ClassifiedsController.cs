@@ -3,21 +3,50 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SunridgeHOA.Models;
+using SunridgeHOA.Models.ViewModels;
 
 namespace SunridgeHOA.Controllers
 {
     public class ClassifiedsController : Controller
     {
-        public IActionResult Lots()
+        private readonly ApplicationDbContext _context;
+
+        public ClassifiedsController(ApplicationDbContext context)
         {
-            //TODO pull all lots from the classifieds table from the db and send them to the view
-            return View();
+            _context = context;
         }
 
-        public IActionResult Cabins()
+
+
+        public async  Task<IActionResult> Lots()
         {
-            //TODO pull all cabins from the classifieds table from the db and send them to the view
-            return View();
+            var classifieds = new List<ClassifiedListing>();
+            var items = await _context.ClassifiedListing.ToListAsync();
+            var lotCategory = await _context.ClassifiedCategory.Where(x => x.Description == "Lots").ToListAsync();
+            //lotCategory = await lotCategory.Where(x => x.Description == "Lots").ToListAsync();
+            foreach (var item in items)
+            {
+                item.Images = await _context.ClassifiedImage.Where(x => x.ClassifiedListingId == item.ClassifiedListingId).ToListAsync();
+                item.ClassifiedCategory = await _context.ClassifiedCategory.Where(x => x.ClassifiedCategoryId == item.ClassifiedCategoryId).FirstAsync();
+                classifieds.Add(item);
+            }
+            return View(classifieds);
+        }
+
+        public async Task<IActionResult> Cabins()
+        {
+            //var classifiedsVM = new List<ClassifiedListingPageViewModel>();
+            var classifieds = new List<ClassifiedListing>();
+            var items = await _context.ClassifiedListing.ToListAsync();
+            foreach(var item in items)
+            {
+                item.Images = await _context.ClassifiedImage.Where(x => x.ClassifiedListingId == item.ClassifiedListingId).ToListAsync();
+                item.ClassifiedCategory = await _context.ClassifiedCategory.Where(x => x.ClassifiedCategoryId == item.ClassifiedCategoryId).FirstAsync() ;
+                classifieds.Add(item);
+            }
+            return View(classifieds);
         }
 
         public IActionResult Other()

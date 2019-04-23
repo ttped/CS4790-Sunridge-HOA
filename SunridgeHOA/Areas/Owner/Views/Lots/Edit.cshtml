@@ -105,7 +105,9 @@
             type="text/javascript"></script>
     <script type="text/javascript">
         $(function () {
-            $('#owners').multiselect();
+            $('#owners').multiselect({
+                enableFiltering: true
+            });
         });
 
         let oldPrimaryVal = $('#primary').find('option:selected').val();

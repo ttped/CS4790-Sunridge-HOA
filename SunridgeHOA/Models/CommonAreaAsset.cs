@@ -9,8 +9,9 @@ namespace SunridgeHOA.Models
     public class CommonAreaAsset : DbItem
     {
         public int CommonAreaAssetId { get; set; }
-
+        [Display(Name = "Asset Name")]
         public string AssetName { get; set; }
+        [Display(Name = "Purchase Price")]
         public float PurchasePrice { get; set; }
         public string Description { get; set; }
         public string Status { get; set; }

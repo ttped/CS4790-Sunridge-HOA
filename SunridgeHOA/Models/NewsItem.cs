@@ -15,6 +15,7 @@ namespace SunridgeHOA.Models
         //public DateTime Year { get; set; }
         public int Year { get; set; }
         public string Image { get; set; }
+        //public string Searching { get; set; }
 
         // Nav properties
         //public File File { get; set; }
