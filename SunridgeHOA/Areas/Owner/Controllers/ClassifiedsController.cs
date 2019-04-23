@@ -126,17 +126,20 @@ namespace SunridgeHOA.Areas.Owner.Controllers
         // POST: Classifieds/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(ClassifiedListing listing)
+        public async Task<ActionResult> Create(ClassifiedListingViewModel listing)
         {
+
             if (ModelState.IsValid)
             {
                 var identityUser = await _userManager.GetUserAsync(HttpContext.User);
-                var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
-
+                var loggedInUser = await _context.Owner.FindAsync(identityUser.OwnerId);
+                
                 classifiedListingViewModel.ClassifiedListing.LastModifiedBy = loggedInUser.FullName;
                 classifiedListingViewModel.ClassifiedListing.LastModifiedDate = DateTime.Now;
                 classifiedListingViewModel.ClassifiedListing.ListingDate = DateTime.Now;
                 classifiedListingViewModel.ClassifiedListing.Owner = loggedInUser;
+                classifiedListingViewModel.ClassifiedListing.OwnerId = loggedInUser.OwnerId;
+
                 _context.ClassifiedListing.Add(classifiedListingViewModel.ClassifiedListing);
                 await _context.SaveChangesAsync();
 
@@ -178,7 +181,7 @@ namespace SunridgeHOA.Areas.Owner.Controllers
             ViewData["Category"] = new SelectList(_context.ClassifiedCategory, "ClassifiedCategoryId", "Description");
             return View(new ClassifiedListingViewModel()
             {
-                ClassifiedListing = listing,
+                ClassifiedListing = listing.ClassifiedListing,
                 ClassifiedCategory = _context.ClassifiedCategory.ToList(),
                 ClassifiedImages = _context.ClassifiedImage.Where(x => x.ClassifiedListingId == classifiedListingViewModel.ClassifiedListing.ClassifiedListingId),
             });
@@ -217,10 +220,11 @@ namespace SunridgeHOA.Areas.Owner.Controllers
             }
 
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
-            var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+            var loggedInUser = await _context.Owner.FindAsync(identityUser.OwnerId);
 
             classifiedListingViewModel.ClassifiedListing.LastModifiedBy = loggedInUser.FullName;
             classifiedListingViewModel.ClassifiedListing.LastModifiedDate = DateTime.Now;
+            classifiedListingViewModel.ClassifiedListing.OwnerId = loggedInUser.OwnerId;
 
             _context.Update(classifiedListingViewModel.ClassifiedListing);
             await _context.SaveChangesAsync();
