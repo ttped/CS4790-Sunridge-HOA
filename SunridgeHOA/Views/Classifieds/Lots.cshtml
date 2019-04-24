@@ -84,8 +84,14 @@
                     <div class="col-sm-6">
                         <h1>@item.value.ItemName - $@item.value.Price</h1>
                         <p>@item.value.Description</p>
-                        <h4>Email: @item.value.Email</h4>
-                        <h4>Phone: @item.value.Phone</h4>
+                        @if (!String.IsNullOrEmpty(item.value.Email))
+                        {
+                            <h4>Email: <a href="mailto:@item.value.Email">@item.value.Email</a></h4>
+                        }
+                        @if (!String.IsNullOrEmpty(item.value.Phone))
+                        {
+                            <h4>Phone: @item.value.Phone</h4>
+                        }
                     </div>
                 </div>
             </div>
