@@ -85,7 +85,13 @@ namespace SunridgeHOA.Controllers
         {
             if (photo.Category == "-1")
             {
-                ModelState.AddModelError("Category", "Please select a category");
+                ModelState.AddModelError("Photo.Category", "Please select a category");
+            }
+
+            var files = HttpContext.Request.Form.Files;
+            if (files.Count == 0)
+            {
+                ModelState.AddModelError("Photo.Image", "Please select an image");
             }
 
             if (!ModelState.IsValid)
@@ -114,7 +120,7 @@ namespace SunridgeHOA.Controllers
 
             //Save Physical Image
             string webRootPath = _hostingEnvironment.WebRootPath;
-            var files = HttpContext.Request.Form.Files;
+            
 
             //var photosFromDb = _db.Photo.Find(AdminPhotoVM.Photo.PhotoId);
             var photosFromDb = _db.Photo.Find(photo.PhotoId);
