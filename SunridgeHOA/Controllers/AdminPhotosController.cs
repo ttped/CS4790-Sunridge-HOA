@@ -15,7 +15,7 @@ using SunridgeHOA.Utility;
 
 namespace SunridgeHOA.Controllers
 {
-    [Authorize(Roles = SD.AdminEndUser)]
+    [Authorize(Roles = "Admin, SuperAdmin")]
     public class AdminPhotosController : Controller
     {
         private readonly ApplicationDbContext _db;
