@@ -14,7 +14,7 @@
         </div>
     </div>
 </section>
-@if (User.IsInRole(StaticData.AdminEndUser))
+@if (User.IsInRole(SD.AdminEndUser))
 {
     <a class="nav-link" asp-area="Admin" asp-controller="ScheduledEvents" asp-action="Index"><i class="far fa-edit"></i> Edit Events</a>
 }
@@ -40,7 +40,7 @@
                 <p id="eventDetails"></p>
             </div>
             <div class="modal-footer">
-                @if (User.IsInRole(StaticData.AdminEndUser))
+                @if (User.IsInRole(SD.AdminEndUser))
                 {
                     <button type="button" class="btn btn-primary" onclick="editEvent()">Edit Event</button>
                 }

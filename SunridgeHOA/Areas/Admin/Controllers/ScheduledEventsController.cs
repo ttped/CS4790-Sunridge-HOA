@@ -15,7 +15,7 @@ using SunridgeHOA.Utility;
 
 namespace SunridgeHOA.Areas.Admin.Controllers
 {
-    [Authorize(Roles = StaticData.AdminEndUser)]
+    [Authorize(Roles = SD.AdminEndUser)]
     [Area("Admin")]
     public class ScheduledEventsController : Controller
     {
@@ -77,7 +77,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
 
                 if (files.Count != 0)
                 {
-                    var uploads = Path.Combine(webRootPath, StaticData.EventImagesPath);
+                    var uploads = Path.Combine(webRootPath, SD.EventImagesPath);
                     var extension = Path.GetExtension(files[0].FileName);
 
                     using (var filestream = new FileStream(Path.Combine(uploads, eventFromDB.ID + extension), FileMode.Create))
@@ -85,7 +85,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                         files[0].CopyTo(filestream);
                     }
 
-                    eventFromDB.Image = @"\" + StaticData.EventImagesPath + @"\" + scheduledEvent.ID + extension;
+                    eventFromDB.Image = @"\" + SD.EventImagesPath + @"\" + scheduledEvent.ID + extension;
 
                     await _context.SaveChangesAsync();
                 }
@@ -132,7 +132,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
 
                     if (files.Count > 0 && files[0] != null)
                     {
-                        var uploads = Path.Combine(webRootPath, StaticData.EventImagesPath);
+                        var uploads = Path.Combine(webRootPath, SD.EventImagesPath);
                         var extensionNew = Path.GetExtension(files[0].FileName);
                         var extensionOld = Path.GetExtension(scheduledEvent.Image);
 
@@ -146,7 +146,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                             files[0].CopyTo(filestream);
                         }
 
-                        scheduledEvent.Image = @"\" + StaticData.EventImagesPath + @"\" + scheduledEvent.ID +
+                        scheduledEvent.Image = @"\" + SD.EventImagesPath + @"\" + scheduledEvent.ID +
                                                extensionNew;
                     }
 
@@ -202,7 +202,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             }
 
             string webRootPath = _hostingEnvironment.WebRootPath;
-            var uploads = Path.Combine(webRootPath, StaticData.EventImagesPath);
+            var uploads = Path.Combine(webRootPath, SD.EventImagesPath);
             var extension = Path.GetExtension(scheduledEvent.Image);
 
             if (System.IO.File.Exists(Path.Combine(uploads, scheduledEvent.ID + extension)))
