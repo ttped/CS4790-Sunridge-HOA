@@ -43,6 +43,7 @@ namespace SunridgeHOA.Models
         public DbSet<SunridgeHOA.Models.Banner> Banner { get; set; }
         public DbSet<ScheduledEvent> ScheduledEvents { get; set; }
         public DbSet<SunridgeHOA.Models.ClassifiedImage> ClassifiedImage { get; set; }
+        public DbSet<FormResponse> FormResponse { get; set; }
 
         //gk
         public DbSet<Photo> Photo { get; set; }

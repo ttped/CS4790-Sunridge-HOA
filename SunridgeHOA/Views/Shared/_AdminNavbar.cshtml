@@ -35,7 +35,7 @@
                 <div id="accordian" class="collapse">
                     <ul>
                         @*<li class="nav-item"><a id="accordian" class="nav-link far fa-circle" href="#">&nbsp;View&nbsp;Ads</a></li>*@
-                        <li class="nav-item"><a id="accordian" class="nav-link far fa-circle" asp-area="Owner" asp-controller="Classifieds" asp-action="Index">&nbsp;Post&nbsp;a&nbsp;New&nbsp;Ad</a></li>
+                        <li class="nav-item"><a id="accordian" class="nav-link fas fa-circle" asp-area="Owner" asp-controller="Classifieds" asp-action="Index">&nbsp;Post&nbsp;a&nbsp;New&nbsp;Ad</a></li>
                     </ul>
                 </div>
             </li>
@@ -46,6 +46,10 @@
 
             <li class="nav-item">
                 <a class="nav-link fas fa-archive" asp-area="Admin" asp-controller="HOADocs" asp-action="Index"> HOA Documents</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link fas fa-clipboard-list" asp-area="" asp-controller="Home" asp-action="Forms"> Forms</a>
             </li>
 
             @*<li class="nav-item">
@@ -75,6 +79,9 @@
                 @*<li class="nav-item">
                     <a class="nav-link fas fa-money-check-alt" asp-area="Admin" asp-controller="Admin" asp-action="Transactions"> Transactions</a>
                 </li>*@
+                <li class="nav-item">
+                    <a class="nav-link fas fa-clipboard-list" asp-area="Owner" asp-controller="Forms" asp-action="Index"> Reports</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link fas fa-wrench" asp-area="Admin" asp-controller="CommonAreaAssets" asp-action="Index"> Common Area Assets</a>
                 </li>

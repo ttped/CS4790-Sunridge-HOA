@@ -1,0 +1,76 @@
+﻿@model SunridgeHOA.Areas.Owner.Models.ViewModels.FormIndexVM
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Sunridge Submitted Forms</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <h4>Unresolved Forms</h4>
+        @if (Model.Unresolved.Any())
+        {
+            <table>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Unresolved[0].FormTypeName)</th>
+                    <th>@Html.DisplayNameFor(model => model.Unresolved[0].Owner)</th>
+                    <th>@Html.DisplayNameFor(model => model.Unresolved[0].SubmitDate)</th>
+                    <th></th>
+                </tr>
+                @foreach (var form in Model.Unresolved)
+                {
+                    <tr>
+                        <td>@form.FormTypeName</td>
+                        <td>@form.Owner.FullName</td>
+                        <td>@Html.DisplayFor(model => form.SubmitDate)</td>
+                        <td>
+                            @* Edit / comment / resolve? *@
+                            <a asp-action="SuggestionComplaint" asp-route-id="@form.FormResponseId" class="btn btn-primary">View</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <p>No unresolved forms right now!</p>
+        }
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-md-12">
+        <h4>Resolved Forms</h4>
+        @if (Model.Resolved.Any())
+        {
+            <table>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Unresolved[0].FormTypeName)</th>
+                    <th>@Html.DisplayNameFor(model => model.Resolved[0].Owner)</th>
+                    <th>@Html.DisplayNameFor(model => model.Resolved[0].SubmitDate)</th>
+                    <th>@Html.DisplayNameFor(model => model.Resolved[0].ResolveDate)</th>
+                    <th>@Html.DisplayNameFor(model => model.Resolved[0].ResolveUser)</th>
+                    <th></th>
+                </tr>
+                @foreach (var form in Model.Resolved)
+                {
+                    <tr>
+                        <td>@form.FormTypeName</td>
+                        <td>@form.Owner.FullName</td>
+                        <td>@Html.DisplayFor(model => form.SubmitDate)</td>
+                        <td>@Html.DisplayFor(model => form.ResolveDate)</td>
+                        <td>@form.ResolveUser</td>
+                        <td>
+                            @* Edit / comment / resolve? *@
+                            <a asp-action="SuggestionComplaint" asp-route-id="@form.FormResponseId" class="btn btn-primary">View</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <p>No resolved forms right now!</p>
+        }
+    </div>
+</div>

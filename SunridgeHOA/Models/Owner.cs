@@ -60,6 +60,7 @@ namespace SunridgeHOA.Models
 
         public virtual ICollection<Transaction> Transactions { get; set; }
         public virtual ICollection<OwnerHistory> OwnerHistories { get; set; }
+        public virtual ICollection<FormResponse> FormResponses { get; set; }
         public virtual ICollection<ClassifiedListing> ClassifiedListings { get; set; }
         public virtual ICollection<OwnerContactType> OwnerContactTypes { get; set; }
         public virtual ICollection<KeyHistory> KeyHistories { get; set; }

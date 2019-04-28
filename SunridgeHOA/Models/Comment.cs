@@ -9,7 +9,7 @@ namespace SunridgeHOA.Models
     {
         public int CommentId { get; set; }
         public int? LotHistoryId { get; set; }
-        public int? OwnerHistoryId { get; set; }
+        public int? FormResponseIdId { get; set; }
         public int OwnerId { get; set; }
 
         public string Content { get; set; }
@@ -18,7 +18,7 @@ namespace SunridgeHOA.Models
 
         // Nav properties
         public LotHistory LotHistory { get; set; }
-        public OwnerHistory OwnerHistory { get; set; }
+        public FormResponse FormResponse { get; set; }
         public Owner Owner { get; set; }
 
     }

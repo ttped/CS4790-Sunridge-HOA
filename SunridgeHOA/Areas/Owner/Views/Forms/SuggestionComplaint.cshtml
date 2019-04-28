@@ -1,0 +1,49 @@
+﻿@model  SunridgeHOA.Models.FormResponse
+@{
+    ViewData["Title"] = "Suggestions / Complaints";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Sunridge Owner Suggestion / Complaint Form</h2>
+
+@if (Model.FormResponseId != 0)
+{
+    <p>Submitted by @Model.Owner.FullName</p>
+    <p>@Model.SubmitDate</p>
+}
+
+<div class="row">
+    <div class="col-md-8">
+        @Html.ValidationSummary()
+        <form asp-action="SuggestionComplaint">
+            <input type="hidden" asp-for="FormResponseId" />
+            <input type="hidden" asp-for="FormType" value="SC" />
+            <div class="form-group">
+                <label class="control-label">Description of incident/problem/improvement:</label>
+                <textarea asp-for="Description" class="form-control" style="resize:none" rows="10"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Suggestion on how to correct the problem/make improvement:</label>
+                <textarea asp-for="Suggestion" class="form-control" style="resize:none" rows="10"></textarea>
+                <span asp-validation-for="Suggestion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-default" />
+            </div>
+        </form>
+        @if (Model.FormResponseId != 0)
+        {
+            <form asp-action="Resolve" asp-route-id="@Model.FormResponseId">
+                <div class="form-group">
+                    <input type="submit" value="Resolve" class="btn btn-primary" />
+                </div>
+            </form>
+        }
+        
+    </div>
+</div>
+
+<div>
+    <a asp-area="" asp-controller="General" asp-action="Dashboard">Back to Dashboard</a>
+</div>
