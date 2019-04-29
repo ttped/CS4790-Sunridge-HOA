@@ -104,7 +104,7 @@ namespace SunridgeHOA
 
             if (!context.Owner.Any())
             {
-                context.Owner.Add(new Owner
+                var owner = new Owner
                 {
                     FirstName = "Super",
                     LastName = "Admin",
@@ -115,19 +115,15 @@ namespace SunridgeHOA
                         State = "UT",
                         Zip = "84317"
                     }
-                });
+                };
+                context.Add(owner);
                 context.SaveChanges();
-            }
 
-            var user = await userManager.FindByNameAsync("admin");
-
-            if (user == null)
-            {
                 var superAdmin = new ApplicationUser
                 {
                     UserName = "admin",
                     //Email = "admin@email.com",
-                    OwnerId = 1
+                    OwnerId = owner.OwnerId
                 };
 
                 var pass = "Password123$";
@@ -137,24 +133,10 @@ namespace SunridgeHOA
                 {
                     await userManager.AddToRolesAsync(superAdmin, new List<string> { "SuperAdmin", "Admin", "Owner" });
                 }
+
+                owner.ApplicationUserId = superAdmin.Id;
+                context.SaveChanges();
             }
-
-            //var owner = new ApplicationUser
-            //{
-            //    UserName = "owner",
-            //    Email = "owner@email.com",
-            //    OwnerId = 4
-            //};
-
-            //user = await userManager.FindByEmailAsync("owner@email.com");
-            //if (user == null)
-            //{
-            //    var result = await userManager.CreateAsync(owner, pass);
-            //    if (result.Succeeded)
-            //    {
-            //        await userManager.AddToRoleAsync(owner, "Owner");
-            //    }
-            //}
         }
     }
 }
