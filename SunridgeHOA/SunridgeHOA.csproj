@@ -33,8 +33,6 @@
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Identity\Services\" />
 
-    <Folder Include="Areas\Owner\Data\" />
-
     <Folder Include="wwwroot\docs\Lots\" />
 
     <Folder Include="wwwroot\docs\HOA\" />

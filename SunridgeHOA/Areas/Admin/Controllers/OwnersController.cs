@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SunridgeHOA.Areas.Admin.Models;
+using SunridgeHOA.Areas.Owner.Data;
 using SunridgeHOA.Areas.Owner.Models.ViewModels;
 using SunridgeHOA.Models;
 using SunridgeHOA.Utility;
@@ -328,13 +329,16 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
 
                 // Find a default username - adds a number to the end if there is a duplicate
-                var username = $"{vm.Owner.FirstName}{vm.Owner.LastName}";
-                int count = 0;
-                while (await _userManager.FindByNameAsync(username) != null)
-                {
-                    count++;
-                    username = $"{username}{count}";
-                }
+                //var username = $"{vm.Owner.FirstName}{vm.Owner.LastName}";
+                //int count = 0;
+                //while (await _userManager.FindByNameAsync(username) != null)
+                //{
+                //    count++;
+                //    username = $"{username}{count}";
+                //}
+
+                var username = await OwnerUtility.GenerateUsername(_userManager, vm.Owner);
+                var defaultPassword = OwnerUtility.GenerateDefaultPassword(username);
 
                 // Create user with default credentials
                 //  - Username: FirstnameLastname (e.g. JessBrunker)
@@ -346,7 +350,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                     OwnerId = vm.Owner.OwnerId
                 };
 
-                var defaultPassword = $"Sunridge{username}123$";
+                //var defaultPassword = $"Sunridge{username}123$";
                 var result = await _userManager.CreateAsync(newOwner, defaultPassword);
                 if (result.Succeeded)
                 {
@@ -396,12 +400,14 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             var validUsers = new List<MinOwnerInfo>();
             foreach (var owner in vm.OwnerList)
             {
+                // Check that all first names have a last name and vice versa
                 if ((String.IsNullOrEmpty(owner.FirstName) && !String.IsNullOrEmpty(owner.LastName)) ||
                     (!String.IsNullOrEmpty(owner.FirstName) && String.IsNullOrEmpty(owner.LastName)))
                 {
                     ModelState.AddModelError("OwnerList", "Make sure all first names have a matching last name");
                 }
 
+                // Add the information to the list so we don't have to check the entire list again
                 if (!String.IsNullOrEmpty(owner.FirstName) && !String.IsNullOrEmpty(owner.LastName))
                 {
                     validUsers.Add(owner);
@@ -437,14 +443,16 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                     _context.Add(owner);
                     await _context.SaveChangesAsync();
 
-                    // Find a default username - adds a number to the end if there is a duplicate
-                    var username = $"{owner.FirstName}{owner.LastName}";
-                    int count = 0;
-                    while (await _userManager.FindByNameAsync(username) != null)
-                    {
-                        count++;
-                        username = $"{username}{count}";
-                    }
+                    //// Find a default username - adds a number to the end if there is a duplicate
+                    //var username = $"{owner.FirstName}{owner.LastName}";
+                    //int count = 0;
+                    //while (await _userManager.FindByNameAsync(username) != null)
+                    //{
+                    //    count++;
+                    //    username = $"{username}{count}";
+                    //}
+                    var username = await OwnerUtility.GenerateUsername(_userManager, owner);
+                    var defaultPassword = OwnerUtility.GenerateDefaultPassword(username);
 
                     // Create user with default credentials
                     //  - Username: FirstnameLastname (e.g. JessBrunker)
@@ -456,7 +464,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                         OwnerId = owner.OwnerId
                     };
 
-                    var defaultPassword = $"Sunridge{username}123$";
+                    //var defaultPassword = $"Sunridge{username}123$";
                     var result = await _userManager.CreateAsync(newOwner, defaultPassword);
                     if (result.Succeeded)
                     {
