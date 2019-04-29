@@ -1,0 +1,133 @@
+﻿@model SunridgeHOA.Areas.Admin.Models.BatchOwnerCreateVM
+@{
+    ViewData["Title"] = "CreateMany";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Create Many Owners</h2>
+
+<hr />
+<p class="text-danger">Only add owners this way if they all share the same address. If one or more of the owners have a different address, <a asp-area="Owner" asp-controller="Owners" asp-action="Create">click here</a> to create an owner individually.</p>
+<form asp-action="CreateMany">
+    <div class="row">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-md-4">
+            <h5>Owner Information</h5>
+            <div><span asp-validation-for="OwnerList" class="text-danger"></span></div>
+            @*<div class="form-group">
+                    <label asp-for="Owner.FirstName" class="control-label"></label>
+                    <input asp-for="Owner.FirstName" class="form-control" />
+                    <span asp-validation-for="Owner.FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Owner.LastName" class="control-label"></label>
+                    <input asp-for="Owner.LastName" class="form-control" />
+                    <span asp-validation-for="Owner.LastName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Owner.Occupation" class="control-label"></label>
+                    <input asp-for="Owner.Occupation" class="form-control" />
+                    <span asp-validation-for="Owner.Occupation" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Owner.Birthday" class="control-label"></label>
+                    <input asp-for="Owner.Birthday" class="form-control" />
+                    <span asp-validation-for="Owner.Birthday" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Add user immediately to a lot?</label>
+                    <select asp-for="LotId" asp-items="ViewBag.LotsSelect" class="form-control">
+                        <option value="-1" selected disabled hidden>--None--</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">
+                        <input asp-for="IsAdmin" />
+                        Is the user an admin?
+                    </label>
+                </div>*@
+            @for (int i = 0; i < 5; i++)
+            {
+                <label class="font-weight-bold">New Owner #@(i + 1)</label>
+                <div class="row form-group">
+                    <div class="col-md-4">
+                        <label class="control-label">First Name</label>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(model => model.OwnerList[i].FirstName)
+                    </div>
+                    @Html.ValidationMessageFor(model => model.OwnerList[i].FirstName)
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-4">
+                        <label class="control-label">Last Name</label>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(model => model.OwnerList[i].LastName)
+                    </div>
+                    @Html.ValidationMessageFor(model => model.OwnerList[i].LastName)
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-4">
+                        <label class="control-label">Email</label>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(model => model.OwnerList[i].Email)
+                    </div>
+                    @Html.ValidationMessageFor(model => model.OwnerList[i].Email)
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Is the user an admin?</label>
+                    @Html.EditorFor(model => model.OwnerList[i].IsAdmin)
+                </div>
+            }
+        </div>
+        <div class="col-md-4">
+            <h5>Address Information</h5>
+            <div class="form-group">
+                <label asp-for="Address.StreetAddress" class="control-label"></label>
+                <input asp-for="Address.StreetAddress" class="form-control" />
+                <span asp-validation-for="Address.StreetAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address.Apartment" class="control-label"></label>
+                <input asp-for="Address.Apartment" class="form-control" />
+                <span asp-validation-for="Address.Apartment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address.City" class="control-label"></label>
+                <input asp-for="Address.City" class="form-control" />
+                <span asp-validation-for="Address.City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address.Zip" class="control-label"></label>
+                <input asp-for="Address.Zip" class="form-control" />
+                <span asp-validation-for="Address.Zip" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address.State" class="control-label"></label>
+                <input asp-for="Address.State" class="form-control" />
+                <span asp-validation-for="Address.State" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Add user immediately to a lot?</label>
+                <select asp-for="LotId" asp-items="ViewBag.LotsSelect" class="form-control">
+                    <option value="-1" selected hidden>--None--</option>
+                </select>
+                <span asp-validation-for="LotId"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-default" />
+    </div>
+    <div class="row">
+        <a asp-action="Index">Back to List</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

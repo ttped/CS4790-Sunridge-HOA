@@ -383,6 +383,117 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             return View(vm);
         }
 
+        public IActionResult CreateMany()
+        {
+            ViewData["LotsSelect"] = new SelectList(_context.Lot.OrderBy(u => u.LotNumber).ToList(), "LotId", "LotNumber");
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateMany(BatchOwnerCreateVM vm)
+        {
+            var validUsers = new List<MinOwnerInfo>();
+            foreach (var owner in vm.OwnerList)
+            {
+                if ((String.IsNullOrEmpty(owner.FirstName) && !String.IsNullOrEmpty(owner.LastName)) ||
+                    (!String.IsNullOrEmpty(owner.FirstName) && String.IsNullOrEmpty(owner.LastName)))
+                {
+                    ModelState.AddModelError("OwnerList", "Make sure all first names have a matching last name");
+                }
+
+                if (!String.IsNullOrEmpty(owner.FirstName) && !String.IsNullOrEmpty(owner.LastName))
+                {
+                    validUsers.Add(owner);
+                }
+            }
+
+            if (!validUsers.Any())
+            {
+                ModelState.AddModelError("OwnerList", "Please enter at least one user");
+            }
+
+            if (ModelState.IsValid)
+            {
+                var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+                var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+
+                vm.Address.LastModifiedBy = loggedInUser.FullName;
+                vm.Address.LastModifiedDate = DateTime.Now;
+                _context.Add(vm.Address);
+
+                foreach (var ownerInfo in validUsers)
+                {
+                    var owner = new SunridgeHOA.Models.Owner
+                    {
+                        Address = vm.Address,
+                        FirstName = ownerInfo.FirstName,
+                        LastName = ownerInfo.LastName,
+                        Email = ownerInfo.Email,
+                        LastModifiedBy = loggedInUser.FullName,
+                        LastModifiedDate = DateTime.Now
+                    };
+
+                    _context.Add(owner);
+                    await _context.SaveChangesAsync();
+
+                    // Find a default username - adds a number to the end if there is a duplicate
+                    var username = $"{owner.FirstName}{owner.LastName}";
+                    int count = 0;
+                    while (await _userManager.FindByNameAsync(username) != null)
+                    {
+                        count++;
+                        username = $"{username}{count}";
+                    }
+
+                    // Create user with default credentials
+                    //  - Username: FirstnameLastname (e.g. JessBrunker)
+                    //  - Password: SunridgeUsername123$ (e.g. SunridgeJessBrunker123$)
+                    var newOwner = new ApplicationUser
+                    {
+                        UserName = username,
+                        Email = owner.Email,
+                        OwnerId = owner.OwnerId
+                    };
+
+                    var defaultPassword = $"Sunridge{username}123$";
+                    var result = await _userManager.CreateAsync(newOwner, defaultPassword);
+                    if (result.Succeeded)
+                    {
+                        var roles = new List<string> { "Owner" };
+                        if (ownerInfo.IsAdmin)
+                        {
+                            roles.Add("Admin");
+                        };
+                        await _userManager.AddToRolesAsync(newOwner, roles);
+
+                        // Link Owner to the Application User
+                        owner.ApplicationUserId = newOwner.Id;
+                        //_context.Add(vm.Owner);
+                        await _context.SaveChangesAsync();
+
+                        // Add the Owner to a Lot
+                        if (vm.LotId != -1)
+                        {
+                            _context.OwnerLot.Add(new OwnerLot
+                            {
+                                LotId = vm.LotId,
+                                OwnerId = owner.OwnerId,
+                                StartDate = DateTime.Now
+                            });
+
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewData["LotsSelect"] = new SelectList(_context.Lot.OrderBy(u => u.LotNumber).ToList(), "LotId", "LotNumber", vm.LotId);
+            return View();
+        }
+
         // GET: Admin/Owners/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
