@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SunridgeHOA.Migrations
 {
-    public partial class Initial2 : Migration
+    public partial class InitialDevMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -150,7 +150,7 @@ namespace SunridgeHOA.Migrations
                     LastModifiedDate = table.Column<DateTime>(nullable: false),
                     KeyId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    SerialNumber = table.Column<string>(nullable: true)
+                    SerialNumber = table.Column<string>(maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -163,14 +163,33 @@ namespace SunridgeHOA.Migrations
                 {
                     NewsItemId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Header = table.Column<string>(nullable: true),
-                    Content = table.Column<string>(nullable: true),
+                    Header = table.Column<string>(maxLength: 50, nullable: false),
+                    Content = table.Column<string>(nullable: false),
                     Year = table.Column<int>(nullable: false),
                     Image = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_NewsItem", x => x.NewsItemId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ScheduledEvents",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Subject = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    Location = table.Column<string>(nullable: true),
+                    Image = table.Column<string>(nullable: true),
+                    Start = table.Column<DateTime>(nullable: false),
+                    End = table.Column<DateTime>(nullable: true),
+                    IsFullDay = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ScheduledEvents", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -220,12 +239,13 @@ namespace SunridgeHOA.Migrations
                     OwnerId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     AddressId = table.Column<int>(nullable: false),
+                    ApplicationUserId = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: false),
                     LastName = table.Column<string>(nullable: false),
                     Occupation = table.Column<string>(nullable: true),
                     Birthday = table.Column<DateTime>(nullable: true),
                     Phone = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: true),
                     EmergencyContactName = table.Column<string>(nullable: true),
                     EmergencyContactPhone = table.Column<string>(nullable: true),
                     IsArchive = table.Column<bool>(nullable: false),
@@ -370,17 +390,18 @@ namespace SunridgeHOA.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    OwnerId = table.Column<int>(nullable: false)
+                    OwnerId = table.Column<int>(nullable: false),
+                    OwnerId1 = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUsers_Owner_OwnerId",
-                        column: x => x.OwnerId,
+                        name: "FK_AspNetUsers_Owner_OwnerId1",
+                        column: x => x.OwnerId1,
                         principalTable: "Owner",
                         principalColumn: "OwnerId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -394,9 +415,9 @@ namespace SunridgeHOA.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     OwnerId = table.Column<int>(nullable: false),
                     ClassifiedCategoryId = table.Column<int>(nullable: false),
-                    ItemName = table.Column<string>(nullable: true),
+                    ItemName = table.Column<string>(maxLength: 75, nullable: false),
                     Price = table.Column<float>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(maxLength: 1000, nullable: false),
                     ListingDate = table.Column<DateTime>(nullable: false),
                     Phone = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true)
@@ -412,6 +433,40 @@ namespace SunridgeHOA.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ClassifiedListing_Owner_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "Owner",
+                        principalColumn: "OwnerId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FormResponse",
+                columns: table => new
+                {
+                    FormResponseId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    OwnerId = table.Column<int>(nullable: false),
+                    FormType = table.Column<string>(maxLength: 3, nullable: false),
+                    LotId = table.Column<int>(nullable: true),
+                    SubmitDate = table.Column<DateTime>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    Suggestion = table.Column<string>(nullable: true),
+                    PrivacyLevel = table.Column<string>(nullable: true),
+                    Resolved = table.Column<bool>(nullable: false),
+                    ResolveDate = table.Column<DateTime>(nullable: true),
+                    ResolveUser = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FormResponse", x => x.FormResponseId);
+                    table.ForeignKey(
+                        name: "FK_FormResponse_Lot_LotId",
+                        column: x => x.LotId,
+                        principalTable: "Lot",
+                        principalColumn: "LotId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FormResponse_Owner_OwnerId",
                         column: x => x.OwnerId,
                         principalTable: "Owner",
                         principalColumn: "OwnerId",
@@ -494,8 +549,7 @@ namespace SunridgeHOA.Migrations
                     HistoryTypeId = table.Column<int>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     Description = table.Column<string>(nullable: true),
-                    Hours = table.Column<int>(nullable: true),
-                    Status = table.Column<string>(nullable: true)
+                    PrivacyLevel = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -553,8 +607,8 @@ namespace SunridgeHOA.Migrations
                     PhotoId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     OwnerId = table.Column<int>(nullable: false),
-                    Category = table.Column<string>(nullable: true),
-                    Title = table.Column<string>(nullable: true),
+                    Category = table.Column<string>(nullable: false),
+                    Title = table.Column<string>(nullable: false),
                     Year = table.Column<int>(nullable: false),
                     Image = table.Column<string>(nullable: true)
                 },
@@ -607,7 +661,7 @@ namespace SunridgeHOA.Migrations
                         column: x => x.TransactionTypeId,
                         principalTable: "TransactionType",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -696,39 +750,25 @@ namespace SunridgeHOA.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "File",
+                name: "ClassifiedImage",
                 columns: table => new
                 {
-                    IsArchive = table.Column<bool>(nullable: false),
-                    LastModifiedBy = table.Column<string>(nullable: true),
-                    LastModifiedDate = table.Column<DateTime>(nullable: false),
-                    FileId = table.Column<int>(nullable: false)
+                    ClassifiedImageId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    LotHistoryId = table.Column<int>(nullable: false),
                     ClassifiedListingId = table.Column<int>(nullable: false),
-                    IsMainImage = table.Column<int>(nullable: false),
-                    FileURL = table.Column<string>(nullable: true),
-                    ImageContentType = table.Column<string>(nullable: true),
-                    FileStream = table.Column<string>(nullable: true),
-                    Type = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    Date = table.Column<DateTime>(nullable: false)
+                    IsMainImage = table.Column<bool>(nullable: false),
+                    ImageURL = table.Column<string>(nullable: true),
+                    ImageExtension = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_File", x => x.FileId);
+                    table.PrimaryKey("PK_ClassifiedImage", x => x.ClassifiedImageId);
                     table.ForeignKey(
-                        name: "FK_File_ClassifiedListing_ClassifiedListingId",
+                        name: "FK_ClassifiedImage_ClassifiedListing_ClassifiedListingId",
                         column: x => x.ClassifiedListingId,
                         principalTable: "ClassifiedListing",
                         principalColumn: "ClassifiedListingId",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_File_LotHistory_LotHistoryId",
-                        column: x => x.LotHistoryId,
-                        principalTable: "LotHistory",
-                        principalColumn: "LotHistoryId",
-                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -738,15 +778,23 @@ namespace SunridgeHOA.Migrations
                     CommentId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     LotHistoryId = table.Column<int>(nullable: true),
-                    OwnerHistoryId = table.Column<int>(nullable: true),
+                    FormResponseIdId = table.Column<int>(nullable: true),
                     OwnerId = table.Column<int>(nullable: false),
                     Content = table.Column<string>(nullable: true),
                     Date = table.Column<DateTime>(nullable: false),
-                    Private = table.Column<bool>(nullable: false)
+                    Private = table.Column<bool>(nullable: false),
+                    FormResponseId = table.Column<int>(nullable: true),
+                    OwnerHistoryId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comment", x => x.CommentId);
+                    table.ForeignKey(
+                        name: "FK_Comment_FormResponse_FormResponseId",
+                        column: x => x.FormResponseId,
+                        principalTable: "FormResponse",
+                        principalColumn: "FormResponseId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Comment_LotHistory_LotHistoryId",
                         column: x => x.LotHistoryId,
@@ -765,6 +813,54 @@ namespace SunridgeHOA.Migrations
                         principalTable: "Owner",
                         principalColumn: "OwnerId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "File",
+                columns: table => new
+                {
+                    IsArchive = table.Column<bool>(nullable: false),
+                    LastModifiedBy = table.Column<string>(nullable: true),
+                    LastModifiedDate = table.Column<DateTime>(nullable: false),
+                    FileId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    LotHistoryId = table.Column<int>(nullable: true),
+                    FormHistoryId = table.Column<int>(nullable: true),
+                    FileURL = table.Column<string>(nullable: true),
+                    Type = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false),
+                    FormResponseId = table.Column<int>(nullable: true),
+                    ClassifiedListingId = table.Column<int>(nullable: true),
+                    OwnerHistoryId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_File", x => x.FileId);
+                    table.ForeignKey(
+                        name: "FK_File_ClassifiedListing_ClassifiedListingId",
+                        column: x => x.ClassifiedListingId,
+                        principalTable: "ClassifiedListing",
+                        principalColumn: "ClassifiedListingId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_File_FormResponse_FormResponseId",
+                        column: x => x.FormResponseId,
+                        principalTable: "FormResponse",
+                        principalColumn: "FormResponseId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_File_LotHistory_LotHistoryId",
+                        column: x => x.LotHistoryId,
+                        principalTable: "LotHistory",
+                        principalColumn: "LotHistoryId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_File_OwnerHistory_OwnerHistoryId",
+                        column: x => x.OwnerHistoryId,
+                        principalTable: "OwnerHistory",
+                        principalColumn: "OwnerHistoryId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -807,9 +903,14 @@ namespace SunridgeHOA.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_OwnerId",
+                name: "IX_AspNetUsers_OwnerId1",
                 table: "AspNetUsers",
-                column: "OwnerId");
+                column: "OwnerId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClassifiedImage_ClassifiedListingId",
+                table: "ClassifiedImage",
+                column: "ClassifiedListingId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClassifiedListing_ClassifiedCategoryId",
@@ -820,6 +921,11 @@ namespace SunridgeHOA.Migrations
                 name: "IX_ClassifiedListing_OwnerId",
                 table: "ClassifiedListing",
                 column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comment_FormResponseId",
+                table: "Comment",
+                column: "FormResponseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comment_LotHistoryId",
@@ -842,9 +948,29 @@ namespace SunridgeHOA.Migrations
                 column: "ClassifiedListingId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_File_FormResponseId",
+                table: "File",
+                column: "FormResponseId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_File_LotHistoryId",
                 table: "File",
                 column: "LotHistoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_File_OwnerHistoryId",
+                table: "File",
+                column: "OwnerHistoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FormResponse_LotId",
+                table: "FormResponse",
+                column: "LotId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FormResponse_OwnerId",
+                table: "FormResponse",
+                column: "OwnerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_KeyHistory_KeyId",
@@ -963,6 +1089,9 @@ namespace SunridgeHOA.Migrations
                 name: "Banner");
 
             migrationBuilder.DropTable(
+                name: "ClassifiedImage");
+
+            migrationBuilder.DropTable(
                 name: "Comment");
 
             migrationBuilder.DropTable(
@@ -990,6 +1119,9 @@ namespace SunridgeHOA.Migrations
                 name: "Photo");
 
             migrationBuilder.DropTable(
+                name: "ScheduledEvents");
+
+            migrationBuilder.DropTable(
                 name: "Transaction");
 
             migrationBuilder.DropTable(
@@ -999,13 +1131,16 @@ namespace SunridgeHOA.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "OwnerHistory");
-
-            migrationBuilder.DropTable(
                 name: "ClassifiedListing");
 
             migrationBuilder.DropTable(
+                name: "FormResponse");
+
+            migrationBuilder.DropTable(
                 name: "LotHistory");
+
+            migrationBuilder.DropTable(
+                name: "OwnerHistory");
 
             migrationBuilder.DropTable(
                 name: "Key");
@@ -1026,13 +1161,13 @@ namespace SunridgeHOA.Migrations
                 name: "ClassifiedCategory");
 
             migrationBuilder.DropTable(
-                name: "Owner");
+                name: "Lot");
 
             migrationBuilder.DropTable(
                 name: "HistoryType");
 
             migrationBuilder.DropTable(
-                name: "Lot");
+                name: "Owner");
 
             migrationBuilder.DropTable(
                 name: "Address");

@@ -89,6 +89,7 @@ namespace SunridgeHOA
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
 
             string[] roles = { "SuperAdmin", "Admin", "Owner" };
 
@@ -101,43 +102,59 @@ namespace SunridgeHOA
                 }
             }
 
-            var superAdmin = new ApplicationUser
+            if (!context.Owner.Any())
             {
-                UserName = "admin",
-                Email = "admin@email.com",
-                OwnerId = 1
-            };
+                context.Owner.Add(new Owner
+                {
+                    FirstName = "Super",
+                    LastName = "Admin",
+                    Address = new Address
+                    {
+                        StreetAddress = "123 Testing",
+                        City = "Testing",
+                        State = "UT",
+                        Zip = "84317"
+                    }
+                });
+                context.SaveChanges();
+            }
 
-            var pass = "Password123$";
-            var user = await userManager.FindByEmailAsync("admin@email.com");
+            var user = await userManager.FindByNameAsync("admin");
 
             if (user == null)
             {
+                var superAdmin = new ApplicationUser
+                {
+                    UserName = "admin",
+                    //Email = "admin@email.com",
+                    OwnerId = 1
+                };
+
+                var pass = "Password123$";
+
                 var result = await userManager.CreateAsync(superAdmin, pass);
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRolesAsync(superAdmin, new List<string> { "SuperAdmin", "Admin" });
+                    await userManager.AddToRolesAsync(superAdmin, new List<string> { "SuperAdmin", "Admin", "Owner" });
                 }
             }
 
-            await userManager.AddToRoleAsync(user, "Owner");
+            //var owner = new ApplicationUser
+            //{
+            //    UserName = "owner",
+            //    Email = "owner@email.com",
+            //    OwnerId = 4
+            //};
 
-            var owner = new ApplicationUser
-            {
-                UserName = "owner",
-                Email = "owner@email.com",
-                OwnerId = 4
-            };
-
-            user = await userManager.FindByEmailAsync("owner@email.com");
-            if (user == null)
-            {
-                var result = await userManager.CreateAsync(owner, pass);
-                if (result.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(owner, "Owner");
-                }
-            }
+            //user = await userManager.FindByEmailAsync("owner@email.com");
+            //if (user == null)
+            //{
+            //    var result = await userManager.CreateAsync(owner, pass);
+            //    if (result.Succeeded)
+            //    {
+            //        await userManager.AddToRoleAsync(owner, "Owner");
+            //    }
+            //}
         }
     }
 }
