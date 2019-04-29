@@ -40,7 +40,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             var roles = await _userManager.GetRolesAsync(user);
 
             // Redirect to /MyLots if the user is not an admin
-            if (!roles.Contains("Admin") || !roles.Contains("SuperAdmin"))
+            if (!roles.Contains("Admin") && !roles.Contains("SuperAdmin"))
             {
                 return RedirectToAction(nameof(MyLots));
             }
