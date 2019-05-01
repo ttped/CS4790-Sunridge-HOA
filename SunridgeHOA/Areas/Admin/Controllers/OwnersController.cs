@@ -398,25 +398,31 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         public async Task<IActionResult> CreateMany(BatchOwnerCreateVM vm)
         {
             var validUsers = new List<MinOwnerInfo>();
+
+            // Make sure that at least the first and last name for the primary owner is set
+            if (String.IsNullOrEmpty(vm.PrimaryOwner.FirstName) || String.IsNullOrEmpty(vm.PrimaryOwner.LastName))
+            {
+                ModelState.AddModelError("PrimaryOwner", "Please enter at least one user as a primary owner");
+            }
+            else
+            {
+                validUsers.Add(vm.PrimaryOwner);
+            }
+
             foreach (var owner in vm.OwnerList)
             {
+                var firstEmpty = String.IsNullOrEmpty(owner.FirstName);
+                var lastEmpty = String.IsNullOrEmpty(owner.LastName);
                 // Check that all first names have a last name and vice versa
-                if ((String.IsNullOrEmpty(owner.FirstName) && !String.IsNullOrEmpty(owner.LastName)) ||
-                    (!String.IsNullOrEmpty(owner.FirstName) && String.IsNullOrEmpty(owner.LastName)))
+                if ((firstEmpty && !lastEmpty) || (!firstEmpty && lastEmpty))
                 {
                     ModelState.AddModelError("OwnerList", "Make sure all first names have a matching last name");
                 }
-
-                // Add the information to the list so we don't have to check the entire list again
-                if (!String.IsNullOrEmpty(owner.FirstName) && !String.IsNullOrEmpty(owner.LastName))
+                else
                 {
+                    // Add the information to the list so we don't have to check the entire list again
                     validUsers.Add(owner);
                 }
-            }
-
-            if (!validUsers.Any())
-            {
-                ModelState.AddModelError("OwnerList", "Please enter at least one user");
             }
 
             if (ModelState.IsValid)
@@ -487,7 +493,8 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                             {
                                 LotId = vm.LotId,
                                 OwnerId = owner.OwnerId,
-                                StartDate = DateTime.Now
+                                StartDate = DateTime.Now,
+                                IsPrimary = ownerInfo == vm.PrimaryOwner
                             });
 
                             await _context.SaveChangesAsync();

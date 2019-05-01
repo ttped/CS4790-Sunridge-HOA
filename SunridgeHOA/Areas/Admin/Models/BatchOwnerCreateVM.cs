@@ -9,6 +9,7 @@ namespace SunridgeHOA.Areas.Admin.Models
     public class BatchOwnerCreateVM
     {
         public List<MinOwnerInfo> OwnerList { get; set; }
+        public MinOwnerInfo PrimaryOwner { get; set; }
         public Address Address { get; set; }
         public int LotId { get; set; }
 
