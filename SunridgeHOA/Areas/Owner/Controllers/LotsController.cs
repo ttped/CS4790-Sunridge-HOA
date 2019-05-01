@@ -271,6 +271,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             return View(null);
         }
 
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> AddDocument(int? id)
         {
             if (id == null)
@@ -313,6 +314,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> AddDocument(int id, DocumentVM vm)
         {
             if (id != vm.Id)

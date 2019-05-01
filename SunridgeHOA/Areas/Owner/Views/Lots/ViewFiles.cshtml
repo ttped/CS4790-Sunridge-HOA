@@ -9,7 +9,10 @@
 <div class="row">
     <div class="col-md-2">
         <p>
-            <a asp-action="AddDocument" asp-route-id="@ViewBag.LotId" class="btn btn-primary">Upload new Document</a>
+            @if (User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
+            {
+                <a asp-action="AddDocument" asp-route-id="@ViewBag.LotId" class="btn btn-primary">Upload new Document</a>
+            }
             <a asp-action="Index" class="d-block">Back to List</a>
         </p>
     </div>
