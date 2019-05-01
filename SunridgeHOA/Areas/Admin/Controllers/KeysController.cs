@@ -37,12 +37,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
 
-                KeySearch = KeySearch.Where(c => c.SerialNumber.Contains(searchString) ||
-                c.LastModifiedBy.Contains(searchString) ||
-                c.LastModifiedDate.ToString("mm/dd/yyyy").Contains(searchString)
-                //c.LastModifiedDate.ToString("mm/dd/yyyy 0:HH:mm:ss tt").Contains(searchString)
-
-                );
+                KeySearch = KeySearch.Where(c => c.FullSerial.Contains(searchString));
             }
 
 

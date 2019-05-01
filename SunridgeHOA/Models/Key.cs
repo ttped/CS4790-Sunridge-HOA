@@ -13,5 +13,17 @@ namespace SunridgeHOA.Models
         [Required]
         [StringLength(10, MinimumLength = 1)]
         public string SerialNumber { get; set; }
+
+        [Required]
+        [Range(2000, 2030)]
+        public int Year { get; set; }
+
+        public string FullSerial
+        {
+            get
+            {
+                return $"{Year}-{SerialNumber}";
+            }
+        }
     }
 }
