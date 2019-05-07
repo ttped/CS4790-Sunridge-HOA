@@ -80,19 +80,24 @@ namespace SunridgeHOA.Areas.Owner.Controllers
             }
 
             var user = await _userManager.GetUserAsync(HttpContext.User);
+            var roles = await _userManager.GetRolesAsync(user);
             var owner = _context.Owner.Find(user.OwnerId);
-
+            
             var form = await _context.FormResponse.Include(u => u.Owner).SingleOrDefaultAsync(u => u.FormResponseId == id);
 
-            if (form.OwnerId != owner.OwnerId)
+            if (!roles.Contains("Admin") && !roles.Contains("SuperAdmin"))
             {
-                return NotFound();
+                if (form.OwnerId != owner.OwnerId)
+                {
+                    return NotFound();
+                }
             }
 
             return View(form);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SuggestionComplaint(FormResponse form)
         {
             if (String.IsNullOrEmpty(form.Description))
@@ -146,12 +151,17 @@ namespace SunridgeHOA.Areas.Owner.Controllers
             }
 
             var user = await _userManager.GetUserAsync(HttpContext.User);
+            var roles = await _userManager.GetRolesAsync(user);
             var owner = _context.Owner.Find(user.OwnerId);
 
             var form = await _context.FormResponse.Include(u => u.Owner).Include(u => u.InKindWorkHours).SingleOrDefaultAsync(u => u.FormResponseId == id);
-            if (form.OwnerId != owner.OwnerId)
+
+            if (!roles.Contains("Admin") && !roles.Contains("SuperAdmin"))
             {
-                return NotFound();
+                if (form.OwnerId != owner.OwnerId)
+                {
+                    return NotFound();
+                }
             }
 
             return View(new InKindWorkSubmission
@@ -163,6 +173,7 @@ namespace SunridgeHOA.Areas.Owner.Controllers
         }
         
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> InKindWork(InKindWorkSubmission form)
         {
             if (String.IsNullOrEmpty(form.FormResponse.Description))
