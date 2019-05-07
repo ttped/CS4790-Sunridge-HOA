@@ -62,7 +62,7 @@
                         <td>@form.ResolveUser</td>
                         <td>
                             @* Edit / comment / resolve? *@
-                            <a asp-action="SuggestionComplaint" asp-route-id="@form.FormResponseId" class="btn btn-primary">View</a>
+                            <a asp-action="@form.FormAction" asp-route-id="@form.FormResponseId" class="btn btn-primary">View</a>
                         </td>
                     </tr>
                 }
