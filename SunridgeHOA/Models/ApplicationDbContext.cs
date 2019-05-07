@@ -44,6 +44,7 @@ namespace SunridgeHOA.Models
         public DbSet<ScheduledEvent> ScheduledEvents { get; set; }
         public DbSet<SunridgeHOA.Models.ClassifiedImage> ClassifiedImage { get; set; }
         public DbSet<FormResponse> FormResponse { get; set; }
+        public DbSet<InKindWorkHours> InKindWorkHours { get; set; }
 
         //gk
         public DbSet<Photo> Photo { get; set; }

@@ -53,6 +53,7 @@ namespace SunridgeHOA.Models
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<File> Files { get; set; }
         public virtual Lot Lot { get; set; }
+        public virtual List<InKindWorkHours> InKindWorkHours { get; set; }
 
         // Calculated properties
         [Display(Name = "Form Type")]
@@ -66,6 +67,26 @@ namespace SunridgeHOA.Models
                         return "Suggestion / Complaint";
                     case "WIK":
                         return "Work in kind";
+                    case "CL":
+                        return "Loss claim";
+                    case "BR":
+                        return "Building request";
+                    default:
+                        return FormType;
+                }
+            }
+        }
+
+        public string FormAction
+        {
+            get
+            {
+                switch (FormType)
+                {
+                    case "SC":
+                        return "SuggestionComplaint";
+                    case "WIK":
+                        return "InKindWork";
                     case "CL":
                         return "Loss claim";
                     case "BR":

@@ -27,6 +27,7 @@ namespace SunridgeHOA.Areas.Owner.Controllers
             _hostingEnv = env;
         }
 
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public IActionResult Index()
         {
             var forms = _context.FormResponse.Include(u => u.Owner).ToList();
@@ -78,7 +79,16 @@ namespace SunridgeHOA.Areas.Owner.Controllers
                 return View(new FormResponse { FormResponseId = 0 });
             }
 
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var owner = _context.Owner.Find(user.OwnerId);
+
             var form = await _context.FormResponse.Include(u => u.Owner).SingleOrDefaultAsync(u => u.FormResponseId == id);
+
+            if (form.OwnerId != owner.OwnerId)
+            {
+                return NotFound();
+            }
+
             return View(form);
         }
 
@@ -128,6 +138,111 @@ namespace SunridgeHOA.Areas.Owner.Controllers
             return View(form);
         }
 
+        public async Task<IActionResult> InKindWork(int? id)
+        {
+            if (id == null)
+            {
+                return View();
+            }
+
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var owner = _context.Owner.Find(user.OwnerId);
+
+            var form = await _context.FormResponse.Include(u => u.Owner).Include(u => u.InKindWorkHours).SingleOrDefaultAsync(u => u.FormResponseId == id);
+            if (form.OwnerId != owner.OwnerId)
+            {
+                return NotFound();
+            }
+
+            return View(new InKindWorkSubmission
+            {
+                FormResponse = form,
+                LaborHours = form.InKindWorkHours.Where(u => u.Type == "Labor").ToList(),
+                EquipmentHours = form.InKindWorkHours.Where(u => u.Type == "Equipment").ToList()
+            });
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> InKindWork(InKindWorkSubmission form)
+        {
+            if (String.IsNullOrEmpty(form.FormResponse.Description))
+            {
+                ModelState.AddModelError("FormResponse.Description", "Please fill in the \"Describe Activity\" field");
+            }
+            if (String.IsNullOrEmpty(form.FormResponse.Suggestion))
+            {
+                ModelState.AddModelError("FormResponse.Suggestion", "Please fill in the \"Describe Equipment\" field");
+            }
+
+            // Check hour validation here
+            var hourEntries = new List<InKindWorkHours>();
+            foreach (var entry in form.LaborHours)
+            {
+                var hasActivity = !String.IsNullOrEmpty(entry.Description);
+                var hasHours = entry.Hours != null && entry.Hours != 0;
+                if ((hasActivity && !hasHours) || (!hasActivity && hasHours))
+                {
+                    ModelState.AddModelError("LaborHours", "Please make sure all labor activities have a filled in hours value");
+                }
+                else if (hasActivity && hasHours)
+                {
+                    entry.Type = "Labor";
+                    hourEntries.Add(entry);
+                }
+            }
+
+            foreach (var entry in form.EquipmentHours)
+            {
+                var hasActivity = !String.IsNullOrEmpty(entry.Description);
+                var hasHours = entry.Hours != null && entry.Hours != 0;
+                if ((hasActivity && !hasHours) || (!hasActivity && hasHours))
+                {
+                    ModelState.AddModelError("EquipmentHours", "Please make sure all equipment entries have a filled in hours value");
+                }
+                else if (hasActivity && hasHours)
+                {
+                    entry.Type = "Equipment";
+                    hourEntries.Add(entry);
+                }
+            }
+
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                var owner = _context.Owner.Find(user.OwnerId);
+
+                var existingForm = await _context.FormResponse.SingleOrDefaultAsync(u => u.FormResponseId == form.FormResponse.FormResponseId);
+                if (existingForm == null)
+                {
+                    var newForm = new FormResponse
+                    {
+                        FormType = "WIK",
+                        OwnerId = owner.OwnerId,
+                        SubmitDate = DateTime.Now,
+                        Description = form.FormResponse.Description,
+                        Suggestion = form.FormResponse.Suggestion,
+                        PrivacyLevel = "Public",
+                        InKindWorkHours = hourEntries
+                    };
+
+                    _context.Add(newForm);
+                }
+                else
+                {
+                    existingForm.Description = form.FormResponse.Description;
+                    existingForm.Suggestion = form.FormResponse.Suggestion;
+                    existingForm.InKindWorkHours = hourEntries;
+                }
+
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Dashboard", "General", new { area = "" });
+            }
+
+            return View(form);
+        }
+
+        [Authorize(Roles = "SuperAdmin, Admin")]
         [HttpPost]
         public async Task<IActionResult> Resolve(int id)
         {

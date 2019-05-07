@@ -26,7 +26,7 @@
                         <td>@Html.DisplayFor(model => form.SubmitDate)</td>
                         <td>
                             @* Edit / comment / resolve? *@
-                            <a asp-action="SuggestionComplaint" asp-route-id="@form.FormResponseId" class="btn btn-primary">View</a>
+                            <a asp-action="@form.FormAction" asp-route-id="@form.FormResponseId" class="btn btn-primary">View</a>
                         </td>
                     </tr>
                 }
@@ -42,7 +42,7 @@
     <div class="col-md-12">
         <h4>Resolved Forms</h4>
         @if (Model.Resolved.Any())
-        {
+                        {
             <table>
                 <tr>
                     <th>@Html.DisplayNameFor(model => model.Unresolved[0].FormTypeName)</th>

@@ -32,15 +32,18 @@
                 <input type="submit" value="Submit" class="btn btn-default" />
             </div>
         </form>
-        @if (Model.FormResponseId != 0)
+
+        @if (User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
         {
-            <form asp-action="Resolve" asp-route-id="@Model.FormResponseId">
-                <div class="form-group">
-                    <input type="submit" value="Resolve" class="btn btn-primary" />
-                </div>
-            </form>
+            @if (Model.FormResponseId != 0)
+            {
+                <form asp-action="Resolve" asp-route-id="@Model.FormResponseId">
+                    <div class="form-group">
+                        <input type="submit" value="Resolve" class="btn btn-primary" />
+                    </div>
+                </form>
+            }
         }
-        
     </div>
 </div>
 

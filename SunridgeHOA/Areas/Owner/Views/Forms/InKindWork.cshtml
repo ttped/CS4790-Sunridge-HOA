@@ -1,0 +1,96 @@
+﻿@model SunridgeHOA.Areas.Owner.Models.ViewModels.InKindWorkSubmission
+@{
+    ViewData["Title"] = "In-Kind Work";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Sunridge Owner In-Kind Work Form</h2>
+
+@if (Model != null && Model.FormResponse.FormResponseId != 0)
+{
+    <p>Submitted by @Model.FormResponse.Owner.FullName</p>
+    <p>@Model.FormResponse.SubmitDate</p>
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="InKindWork">
+            <input type="hidden" asp-for="FormResponse.FormResponseId" value="0" />
+            <input type="hidden" asp-for="FormResponse.FormType" value="WIK" />
+            <div class="form-group">
+                <label class="control-label">Describe Activity (List what you did):</label>
+                <textarea asp-for="FormResponse.Description" class="form-control" style="resize:none" rows="10"></textarea>
+                <span asp-validation-for="FormResponse.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Describe Equipment used (make, model of chainsaw, weed eater, two-wheel drive/four-wheel drive truck, ATV, tractor, dozer, dump truck, total hours, etc.):</label>
+                <textarea asp-for="FormResponse.Suggestion" class="form-control" style="resize:none" rows="10"></textarea>
+                <span asp-validation-for="FormResponse.Suggestion" class="text-danger"></span>
+            </div>
+
+            <label class="control-label">Total Monthly Labor Hours:</label>
+            <div><span asp-validation-for="LaborHours" class="text-danger"></span></div>
+            @for (int i = 0; i < 3; i++)
+            {
+                if (i >= Model.LaborHours.Count)
+                {
+                    break;
+                }
+                <div class="row form-group">
+                    <div class="col-md-5">
+                        <label class="control-label">Activity:</label>
+                        @Html.TextBoxFor(model => model.LaborHours[i].Description)
+                        @Html.ValidationMessageFor(model => model.LaborHours[i].Description)
+                    </div>
+                    <div class="col-md-5">
+                        <label class="control-label">Hours:</label>
+                        @Html.TextBoxFor(model => model.LaborHours[i].Hours)
+                        @Html.ValidationMessageFor(model => model.LaborHours[i].Hours)
+                    </div>
+                </div>
+            }
+            <br />
+
+            <label class="control-label">Total Monthly Equipment Hours:</label>
+            <div><span asp-validation-for="EquipmentHours" class="text-danger"></span></div>
+            @for (int i = 0; i < 3; i++)
+            {
+                if (i >= Model.EquipmentHours.Count)
+                {
+                    break;
+                }
+                <div class="row form-group">
+                    <div class="col-md-5">
+                        <label class="control-label">Equipment:</label>
+                        @Html.TextBoxFor(model => model.EquipmentHours[i].Description)
+                        @Html.ValidationMessageFor(model => model.EquipmentHours[i].Description)
+                    </div>
+                    <div class="col-md-5">
+                        <label class="control-label">Hours:</label>
+                        @Html.TextBoxFor(model => model.EquipmentHours[i].Hours)
+                        @Html.ValidationMessageFor(model => model.EquipmentHours[i].Hours)
+                    </div>
+                </div>
+            }
+
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-default" />
+            </div>
+        </form>
+        @if (User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
+        {
+            @if (Model != null && Model.FormResponse.FormResponseId != 0)
+            {
+                <form asp-action="Resolve" asp-route-id="@Model.FormResponse.FormResponseId">
+                    <div class="form-group">
+                        <input type="submit" value="Resolve" class="btn btn-primary" />
+                    </div>
+                </form>
+            }
+        }
+    </div>
+</div>
+
+<div>
+    <a asp-area="" asp-controller="General" asp-action="Dashboard">Back to Dashboard</a>
+</div>
