@@ -9,7 +9,7 @@ namespace SunridgeHOA.Models
     {
         public int Id { get; set; }
         public string Description { get; set; }
-        public int? Hours { get; set; }
+        public double? Hours { get; set; }
         public string Type { get; set; }
         public int FormResponseId { get; set; }
     }
