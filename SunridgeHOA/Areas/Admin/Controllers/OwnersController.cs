@@ -338,7 +338,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 //}
 
                 var username = await OwnerUtility.GenerateUsername(_userManager, vm.Owner);
-                var defaultPassword = OwnerUtility.GenerateDefaultPassword(username);
+                var defaultPassword = OwnerUtility.GenerateDefaultPassword(vm.Owner);
 
                 // Create user with default credentials
                 //  - Username: FirstnameLastname (e.g. JessBrunker)
@@ -458,7 +458,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                     //    username = $"{username}{count}";
                     //}
                     var username = await OwnerUtility.GenerateUsername(_userManager, owner);
-                    var defaultPassword = OwnerUtility.GenerateDefaultPassword(username);
+                    var defaultPassword = OwnerUtility.GenerateDefaultPassword(owner);
 
                     // Create user with default credentials
                     //  - Username: FirstnameLastname (e.g. JessBrunker)

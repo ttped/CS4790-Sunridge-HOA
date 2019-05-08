@@ -9,9 +9,9 @@ namespace SunridgeHOA.Areas.Owner.Data
 {
     public static class OwnerUtility
     {
-        public static string GenerateDefaultPassword(string username)
+        public static string GenerateDefaultPassword(SunridgeHOA.Models.Owner owner)
         {
-            return $"Sunridge{username}123$";
+            return "1234";
         }
 
         public static async Task<string> GenerateUsername(UserManager<ApplicationUser> userManager, SunridgeHOA.Models.Owner owner)

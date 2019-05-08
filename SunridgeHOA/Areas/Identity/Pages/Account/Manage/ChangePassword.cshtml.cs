@@ -40,7 +40,7 @@ namespace SunridgeHOA.Areas.Identity.Pages.Account.Manage
             public string OldPassword { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 4)]
             [DataType(DataType.Password)]
             [Display(Name = "New password")]
             public string NewPassword { get; set; }
@@ -95,7 +95,7 @@ namespace SunridgeHOA.Areas.Identity.Pages.Account.Manage
             _logger.LogInformation("User changed their password successfully.");
             StatusMessage = "Your password has been changed.";
 
-            return RedirectToPage();
+            return RedirectToAction("Dashboard", "General", new { area = "" });
         }
     }
 }
