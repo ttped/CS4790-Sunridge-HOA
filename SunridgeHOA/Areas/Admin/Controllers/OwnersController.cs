@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SunridgeHOA.Areas.Admin.Models;
-using SunridgeHOA.Areas.Owner.Data;
+using SunridgeHOA.Areas.Admin.Data;
 using SunridgeHOA.Areas.Owner.Models.ViewModels;
 using SunridgeHOA.Models;
 using SunridgeHOA.Utility;
@@ -342,7 +342,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
 
                 // Create user with default credentials
                 //  - Username: FirstnameLastname (e.g. JessBrunker)
-                //  - Password: SunridgeUsername123$ (e.g. SunridgeJessBrunker123$)
+                //  - Password: 1234 (change in Areas/Admin/Data/OwnerUtility.cs)
                 var newOwner = new ApplicationUser
                 {
                     UserName = username,
@@ -350,7 +350,6 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                     OwnerId = vm.Owner.OwnerId
                 };
 
-                //var defaultPassword = $"Sunridge{username}123$";
                 var result = await _userManager.CreateAsync(newOwner, defaultPassword);
                 if (result.Succeeded)
                 {
@@ -462,7 +461,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
 
                     // Create user with default credentials
                     //  - Username: FirstnameLastname (e.g. JessBrunker)
-                    //  - Password: SunridgeUsername123$ (e.g. SunridgeJessBrunker123$)
+                    //  - Password: 1234 (change in Areas/Admin/Data/OwnerUtility.cs)
                     var newOwner = new ApplicationUser
                     {
                         UserName = username,

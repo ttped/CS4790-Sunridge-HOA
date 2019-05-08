@@ -15,15 +15,18 @@ namespace SunridgeHOA.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
+        private readonly ApplicationDbContext _context;
 
         public ChangePasswordModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            ILogger<ChangePasswordModel> logger)
+            ILogger<ChangePasswordModel> logger,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _context = context;
         }
 
         [BindProperty]
@@ -63,6 +66,13 @@ namespace SunridgeHOA.Areas.Identity.Pages.Account.Manage
             if (!hasPassword)
             {
                 return RedirectToPage("./SetPassword");
+            }
+
+            var owner = _context.Owner.Find(user.OwnerId);
+            var defaultPassword = Areas.Admin.Data.OwnerUtility.GenerateDefaultPassword(owner);
+            if (_userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, defaultPassword) == PasswordVerificationResult.Success)
+            {
+                ModelState.AddModelError("Password", "Your password is currently the default password and must be changed.");
             }
 
             return Page();

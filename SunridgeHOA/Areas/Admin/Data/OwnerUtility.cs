@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SunridgeHOA.Areas.Owner.Data
+namespace SunridgeHOA.Areas.Admin.Data
 {
     public static class OwnerUtility
     {

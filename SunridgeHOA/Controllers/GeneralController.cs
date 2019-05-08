@@ -34,6 +34,14 @@ namespace SunridgeHOA.Controllers
         {
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
             var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+
+            // Redirect to the password change page if the user is still using the default password
+            var defaultPassword = Areas.Admin.Data.OwnerUtility.GenerateDefaultPassword(loggedInUser);
+            if (_userManager.PasswordHasher.VerifyHashedPassword(identityUser, identityUser.PasswordHash, defaultPassword) == PasswordVerificationResult.Success)
+            {
+                return RedirectToPage("/Account/Manage/ChangePassword", new { area = "Identity" });
+            }
+
             var dashboardViewModel = new DashboardViewModel()
             {
                 Owner = await _context.Owner.Where(x => x.OwnerId == loggedInUser.OwnerId).FirstAsync(),
