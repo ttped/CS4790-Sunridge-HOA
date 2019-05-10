@@ -93,6 +93,8 @@ namespace SunridgeHOA
 
             SeedData.EnsurePopulated(app, serviceProvider);
             CreateRoles(serviceProvider).Wait();
+            //FixPrimaryOwners(serviceProvider).Wait();
+            //CreateInitialIdentityUsers(serviceProvider).Wait();
         }
 
         private async Task CreateRoles(IServiceProvider serviceProvider)
@@ -112,7 +114,7 @@ namespace SunridgeHOA
                 }
             }
 
-            if (!context.Owner.Any())
+            if (!userManager.Users.Any())
             {
                 var owner = new Owner
                 {
@@ -147,6 +149,79 @@ namespace SunridgeHOA
                 owner.ApplicationUserId = superAdmin.Id;
                 context.SaveChanges();
             }
+        }
+
+        private async Task CreateInitialIdentityUsers(IServiceProvider serviceProvider)
+        {
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
+
+            var owners = context.Owner;
+
+            foreach (var owner in owners)
+            {
+                // The owner already has an identity user
+                if (!String.IsNullOrEmpty(owner.ApplicationUserId))
+                {
+                    continue;
+                }
+
+                var username = await Areas.Admin.Data.OwnerUtility.GenerateUsername(userManager, owner);
+                var defaultPassword = Areas.Admin.Data.OwnerUtility.GenerateDefaultPassword(owner);
+
+                // Create user with default credentials
+                //  - Username: FirstnameLastname (e.g. JessBrunker)
+                //  - Password: 1234 (change in Areas/Admin/Data/OwnerUtility.cs)
+                var newOwner = new ApplicationUser
+                {
+                    UserName = username,
+                    Email = owner.Email,
+                    OwnerId = owner.OwnerId
+                };
+
+                var result = await userManager.CreateAsync(newOwner, defaultPassword);
+                if (result.Succeeded)
+                {
+                    var roles = new List<string> { "Owner" };
+
+                    await userManager.AddToRolesAsync(newOwner, roles);
+
+                    // Link Owner to the Application User
+                    owner.ApplicationUserId = newOwner.Id;
+                    //_context.Add(vm.Owner);
+                    await context.SaveChangesAsync();
+                }
+            }
+            
+        }
+
+        private async Task FixPrimaryOwners(IServiceProvider serviceProvider)
+        {
+            var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
+
+            var lots = context.Lot.Include(u => u.OwnerLots);
+
+            foreach (var lot in lots)
+            {
+                var primary = lot.OwnerLots.Where(u => u.IsPrimary);
+
+                // If the lot has owners, and none of them are listed as a primary
+                if (lot.OwnerLots.Any() && !primary.Any())
+                {
+                    // Only one owner on the lot, therefore they are primary
+                    if (lot.OwnerLots.Count == 1)
+                    {
+                        lot.OwnerLots.ToList()[0].IsPrimary = true;
+                    }
+                    // More than one owner on the lot, just assume the first entry is primary (change later?)
+                    else
+                    {
+                        lot.OwnerLots.ToList()[0].IsPrimary = true;
+                    }
+                }
+            }
+
+            await context.SaveChangesAsync();
         }
     }
 }
