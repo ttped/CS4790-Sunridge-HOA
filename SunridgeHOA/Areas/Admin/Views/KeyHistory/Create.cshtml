@@ -21,14 +21,14 @@
                         <select asp-for="KeyHistory.KeyId" class="form-control" asp-items="Model.Key.keyIdToSelectListItem(Model.KeyHistory.KeyHistoryId)"></select>
                     </div>
                     <div class="form-group">
-                        <label asp-for="KeyHistory.OwnerId" class="control-label">Owner</label>
-                        <select asp-for="KeyHistory.OwnerId" class="form-control" asp-items="Model.Owner.ownerNameToSelectListItem(Model.KeyHistory.KeyHistoryId)"></select>
+                        <label asp-for="KeyHistory.LotId" class="control-label">Lot</label>
+                        <select asp-for="KeyHistory.LotId" class="form-control" asp-items="@ViewBag.LotsSelect"></select>
                     </div>
-                    <div class="form-group">
+                    @*<div class="form-group">
                         <label asp-for="KeyHistory.Status" class="control-label"></label>
                         <input asp-for="KeyHistory.Status" class="form-control" />
                         <span asp-validation-for="KeyHistory.Status" class="text-danger"></span>
-                    </div>
+                    </div>*@
                     <div class="form-group">
                         <label asp-for="KeyHistory.DateIssued" class="control-label"></label>
                         <input asp-for="KeyHistory.DateIssued" class="form-control" />

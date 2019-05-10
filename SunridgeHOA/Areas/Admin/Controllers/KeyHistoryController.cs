@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SunridgeHOA.Models;
 using SunridgeHOA.Models.ViewModels;
@@ -34,7 +35,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             {
                 KeyHistory = new SunridgeHOA.Models.KeyHistory(),
                 Key = _context.Key.ToList(),
-                Owner = _context.Owner.ToList()
+                Lot = _context.Lot.ToList()
             };
         }
 
@@ -49,7 +50,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 KeySearch = KeySearch.Where(c => //c.Status.Contains(searchString) ||
                 //c.PaidAmount.ToString().Contains(searchString) ||
                 c.Key.SerialNumber.Contains(searchString) ||
-                c.Owner.FullName.Contains(searchString)// ||
+                c.Lot.LotNumber.Contains(searchString)// ||
                 //c.LastModifiedBy.Contains(searchString) ||
                 //c.DateIssued.ToString("mm/dd/yyyy 0:HH:mm:ss tt").Contains(searchString) ||
                 //c.DateReturned?.ToString("mm/dd/yyyy 0:HH:mm:ss tt").Contains(searchString) ||
@@ -69,7 +70,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
 
             }
 
-            var keyHistory = await _context.KeyHistory.SingleOrDefaultAsync(m => m.KeyHistoryId == id);
+            var keyHistory = await _context.KeyHistory.Include(u => u.Lot).SingleOrDefaultAsync(m => m.KeyHistoryId == id);
             if (keyHistory == null)
             {
                 return NotFound();
@@ -81,6 +82,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         // GET: Key/Create
         public ActionResult Create()
         {
+            ViewData["LotsSelect"] = new SelectList(_context.Lot.OrderBy(u => u.LotNumber), "LotId", "LotNumber");
             return View(keyHistoryViewModel);
         }
 
@@ -94,6 +96,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 var identityUser = await _userManager.GetUserAsync(HttpContext.User);
                 var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
 
+                keyHistory.Status = "Active";
                 keyHistory.IsArchive = false;
                 keyHistory.LastModifiedBy = loggedInUser.FullName;
                 keyHistory.LastModifiedDate = DateTime.Now;
@@ -103,6 +106,8 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["LotsSelect"] = new SelectList(_context.Lot.OrderBy(u => u.LotNumber), "LotId", "LotNumber", keyHistory.LotId);
             return View();
         }
 
@@ -120,6 +125,8 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+
+            ViewData["LotsSelect"] = new SelectList(_context.Lot.OrderBy(u => u.LotNumber), "LotId", "LotNumber", item.LotId);
             return View(keyHistoryViewModel);
         }
 

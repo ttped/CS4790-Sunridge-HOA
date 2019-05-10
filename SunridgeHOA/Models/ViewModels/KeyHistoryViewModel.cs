@@ -9,6 +9,6 @@ namespace SunridgeHOA.Models.ViewModels
     {
         public KeyHistory KeyHistory { get; set; }
         public IEnumerable<Key> Key { get; set; }
-        public IEnumerable<Owner> Owner { get; set; }
+        public IEnumerable<Lot> Lot { get; set; }
     }
 }

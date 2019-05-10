@@ -12,7 +12,9 @@ namespace SunridgeHOA.Models
     {
         public int KeyHistoryId { get; set; }
         public int KeyId { get; set; }
-        public int OwnerId { get; set; }
+
+        [Display(Name = "Lot")]
+        public int LotId { get; set; }
 
         public string Status { get; set; }
         [Display(Name ="Date Issued")]
@@ -29,7 +31,7 @@ namespace SunridgeHOA.Models
 
         //Nav properties
         public Key Key { get; set; }
-        public Owner Owner { get; set; }
+        public Lot Lot { get; set; }
 
     }
 }

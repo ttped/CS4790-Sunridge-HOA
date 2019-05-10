@@ -42,11 +42,18 @@ namespace SunridgeHOA.Controllers
                 return RedirectToPage("/Account/Manage/ChangePassword", new { area = "Identity" });
             }
 
+            var myLots = await _context.OwnerLot
+                .Include(u => u.Lot)
+                .Where(u => u.OwnerId == loggedInUser.OwnerId)
+                .Where(u => !u.IsArchive)
+                .Select(u => u.Lot.LotId)
+                .ToListAsync();
+
             var dashboardViewModel = new DashboardViewModel()
             {
                 Owner = await _context.Owner.Where(x => x.OwnerId == loggedInUser.OwnerId).FirstAsync(),
                 OwnerLots = await _context.OwnerLot.Where(x => x.OwnerId == loggedInUser.OwnerId).ToListAsync(),
-                KeyHistories = await _context.KeyHistory.Where(x => x.OwnerId == loggedInUser.OwnerId).ToListAsync()
+                KeyHistories = await _context.KeyHistory.Where(x => myLots.Contains(x.LotId)).ToListAsync()
             };
             dashboardViewModel.Owner.Address = _context.Address.Where(x => x.Id == dashboardViewModel.Owner.AddressId).First();
 
