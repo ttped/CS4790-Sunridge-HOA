@@ -46,14 +46,14 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
 
-                KeySearch = KeySearch.Where(c => c.Status.Contains(searchString) ||
-                c.PaidAmount.ToString().Contains(searchString) ||
+                KeySearch = KeySearch.Where(c => //c.Status.Contains(searchString) ||
+                //c.PaidAmount.ToString().Contains(searchString) ||
                 c.Key.SerialNumber.Contains(searchString) ||
-                c.Owner.FullName.Contains(searchString) ||
-                c.LastModifiedBy.Contains(searchString) ||
-                c.DateIssued.ToString("mm/dd/yyyy 0:HH:mm:ss tt").Contains(searchString) ||
-                c.DateReturned.ToString("mm/dd/yyyy 0:HH:mm:ss tt").Contains(searchString) ||
-                c.LastModifiedDate.ToString("mm/dd/yyyy 0:HH:mm:ss tt").Contains(searchString)
+                c.Owner.FullName.Contains(searchString)// ||
+                //c.LastModifiedBy.Contains(searchString) ||
+                //c.DateIssued.ToString("mm/dd/yyyy 0:HH:mm:ss tt").Contains(searchString) ||
+                //c.DateReturned?.ToString("mm/dd/yyyy 0:HH:mm:ss tt").Contains(searchString) ||
+                //c.LastModifiedDate.ToString("mm/dd/yyyy 0:HH:mm:ss tt").Contains(searchString)
                 );
             }
 
