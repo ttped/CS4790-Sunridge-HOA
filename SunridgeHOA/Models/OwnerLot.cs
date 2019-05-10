@@ -14,7 +14,7 @@ namespace SunridgeHOA.Models
         public bool IsPrimary { get; set; }
 
         public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         // Nav properties
         public Owner Owner { get; set; }
