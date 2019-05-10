@@ -299,12 +299,6 @@ namespace SunridgeHOA.Data
                         Description = "Solar panel",
                         LastModifiedBy = "Seed",
                         LastModifiedDate = DateTime.Now
-                    },
-                    new Inventory
-                    {
-                        Description = "Outhouse",
-                        LastModifiedBy = "Seed",
-                        LastModifiedDate = DateTime.Now
                     });
             }
 
@@ -347,68 +341,68 @@ namespace SunridgeHOA.Data
             //    context.SaveChanges();
             //}
 
-            if (!context.Key.Any())
-            {
-                context.Key.AddRange(
-                    new Key
-                    {
-                        SerialNumber = "28"
-                    },
-                    new Key
-                    {
-                        SerialNumber = "29"
-                    },
-                    new Key
-                    {
-                        SerialNumber = "30"
-                    },
-                    new Key
-                    {
-                        SerialNumber = "31"
-                    },
-                    new Key
-                    {
-                        SerialNumber = "1666"
-                    },
-                    new Key
-                    {
-                        SerialNumber = "1662"
-                    },
-                    new Key
-                    {
-                        SerialNumber = "1696"
-                    },
-                    new Key
-                    {
-                        SerialNumber = "482"
-                    },
-                    new Key
-                    {
-                        SerialNumber = "483"
-                    },
-                    new Key
-                    {
-                        SerialNumber = "1487"
-                    },
-                    new Key
-                    {
-                        SerialNumber = "485"
-                    },
-                    new Key
-                    {
-                        SerialNumber = "988"
-                    },
-                    new Key
-                    {
-                        SerialNumber = "989"
-                    },
-                    new Key
-                    {
-                        SerialNumber = "820501"
-                    }
-                    );
-                context.SaveChanges();
-            }
+            //if (!context.Key.Any())
+            //{
+            //    context.Key.AddRange(
+            //        new Key
+            //        {
+            //            SerialNumber = "28"
+            //        },
+            //        new Key
+            //        {
+            //            SerialNumber = "29"
+            //        },
+            //        new Key
+            //        {
+            //            SerialNumber = "30"
+            //        },
+            //        new Key
+            //        {
+            //            SerialNumber = "31"
+            //        },
+            //        new Key
+            //        {
+            //            SerialNumber = "1666"
+            //        },
+            //        new Key
+            //        {
+            //            SerialNumber = "1662"
+            //        },
+            //        new Key
+            //        {
+            //            SerialNumber = "1696"
+            //        },
+            //        new Key
+            //        {
+            //            SerialNumber = "482"
+            //        },
+            //        new Key
+            //        {
+            //            SerialNumber = "483"
+            //        },
+            //        new Key
+            //        {
+            //            SerialNumber = "1487"
+            //        },
+            //        new Key
+            //        {
+            //            SerialNumber = "485"
+            //        },
+            //        new Key
+            //        {
+            //            SerialNumber = "988"
+            //        },
+            //        new Key
+            //        {
+            //            SerialNumber = "989"
+            //        },
+            //        new Key
+            //        {
+            //            SerialNumber = "820501"
+            //        }
+            //        );
+            //    context.SaveChanges();
+            //}
 
             //if (!context.KeyHistory.Any())
             //{
