@@ -24,18 +24,6 @@ namespace SunridgeHOA.Areas.Owner.Controllers
             _userManager = userManager;
         }
 
-    ////Create a Login (with automatic password retrieval in case they forget)
-    //public IActionResult Login()
-    //    {
-    //        return View();
-    //    }
-
-    //    //View Lot Information, History (Claims, Payments, Complaints, Documents, etc.)
-    //    public IActionResult Lot()
-    //    {
-    //        return View();
-    //    }
-
         //Edit Limited (Personal) Owner Information
         public async Task<IActionResult> OwnerInfo()
         {
@@ -76,6 +64,7 @@ namespace SunridgeHOA.Areas.Owner.Controllers
             owner.Phone = vm.Owner.Phone;
             owner.EmergencyContactName = vm.Owner.EmergencyContactName;
             owner.EmergencyContactPhone = vm.Owner.EmergencyContactPhone;
+            owner.ReceiveEmails = vm.Owner.ReceiveEmails;
 
             var addr = await _context.Address.SingleOrDefaultAsync(u => u.Id == vm.Address.Id);
             addr.StreetAddress = vm.Address.StreetAddress;
@@ -84,23 +73,10 @@ namespace SunridgeHOA.Areas.Owner.Controllers
             addr.Zip = vm.Address.Zip;
             addr.LastModifiedBy = owner.FullName;
             addr.LastModifiedDate = DateTime.Now;
-            _context.Update(addr);
 
-            return View(vm);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Dashboard", "General", new { area = "" });
         }
-
-        ////Make a Payment (link to Paypal)
-        //public IActionResult Payment()
-        //{
-        //    return View();
-        //}
-
-        ////File a Claim, Complaint, Exception to the Rule, or “Work in Kind” Form
-        ////View the history and response of the item above
-        //public IActionResult File()
-        //{
-        //    return View();
-        //}
-
     }
 }

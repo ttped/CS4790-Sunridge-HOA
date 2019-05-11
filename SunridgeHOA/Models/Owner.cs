@@ -48,6 +48,9 @@ namespace SunridgeHOA.Models
         [DisplayFormat(ConvertEmptyStringToNull = true, NullDisplayText = "[None listed]")]
         public string EmergencyContactPhone { get; set; }
 
+        [Display(Name = "Receive Sunridge emails")]
+        public bool? ReceiveEmails { get; set; }
+
         [Display(Name = "Archived")]
         public bool IsArchive { get; set; } = false;
 

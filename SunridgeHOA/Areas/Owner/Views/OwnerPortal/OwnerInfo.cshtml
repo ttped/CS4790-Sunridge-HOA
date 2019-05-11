@@ -41,6 +41,11 @@
                 <label asp-for="Owner.Email" class="control-label"></label>
                 <input asp-for="Owner.Email" class="form-control" />
                 <span asp-validation-for="Owner.Email" class="text-danger"></span>
+            </div><div class="form-group">
+                <label asp-for="Owner.ReceiveEmails" class="control-label"></label>
+                @*<input type="checkbox" asp-for="Owner.ReceiveEmails" class="form-control" />*@
+                @Html.CheckBox("Owner.ReceiveEmails", Model.Owner.ReceiveEmails ?? false)
+                <span asp-validation-for="Owner.ReceiveEmails" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Owner.Phone" class="control-label"></label>
