@@ -94,6 +94,7 @@ namespace SunridgeHOA
             SeedData.EnsurePopulated(app, serviceProvider);
             CreateRoles(serviceProvider).Wait();
             //FixPrimaryOwners(serviceProvider).Wait();
+            //FixAddresses(serviceProvider).Wait();
             //CreateInitialIdentityUsers(serviceProvider).Wait();
         }
 
@@ -219,6 +220,30 @@ namespace SunridgeHOA
                         lot.OwnerLots.ToList()[0].IsPrimary = true;
                     }
                 }
+            }
+
+            await context.SaveChangesAsync();
+        }
+
+        private async Task FixAddresses(IServiceProvider serviceProvider)
+        {
+            var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
+
+            var lots = context.Lot;
+
+            foreach (var lot in lots)
+            {
+                var addr = new Address
+                {
+                    StreetAddress = "Unknown - Check Weber County Tax Site & Update",
+                    City = "Huntsville",
+                    State = "UT",
+                    Zip = "84317",
+                    LastModifiedBy = "Admin",
+                    LastModifiedDate = DateTime.Now
+                };
+
+                lot.Address = addr;
             }
 
             await context.SaveChangesAsync();
