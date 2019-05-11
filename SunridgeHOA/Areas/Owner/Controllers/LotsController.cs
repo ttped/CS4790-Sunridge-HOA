@@ -34,8 +34,10 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         // GET: Admin/Lots
         // Don't need authorization, it checks in the code to see if a redirect needs to happen
         //[Authorize(Roles = "SuperAdmin, Admin")]
-        public async Task<IActionResult> Index(string query)
+        public async Task<IActionResult> Index(string query, int? pageNumber)
         {
+            ViewData["CurrentQuery"] = query ?? String.Empty;
+
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var roles = await _userManager.GetRolesAsync(user);
 
@@ -45,69 +47,32 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 return RedirectToAction(nameof(MyLots));
             }
 
-            List<Lot> lots = null;
+            IQueryable<Lot> lots = null;
+
             // Need to filter the search
             if (!String.IsNullOrEmpty(query))
             {
-                lots = await _context.Lot
+                lots = _context.Lot
                     .Include(l => l.Address)
+                    .Include(l => l.OwnerLots).ThenInclude(u => u.Owner)
+                    .Include(l => l.LotInventories).ThenInclude(l => l.Inventory)
                     .Where(u => u.LotNumber.ToLower().Contains(query.ToLower())) // use contains so searching "H2" picks up all H2** lots
-                    .Where(u => u.LotNumber != "HOA") // exclude generic HOA lot
-                    .OrderBy(u => u.LotNumber)
-                    .ToListAsync();
+                    //.Where(u => u.LotNumber != "HOA") // exclude generic HOA lot
+                    .OrderBy(u => u.LotNumber);
             }
             // No search string - include all lots
             else
             {
-                lots = await _context.Lot
+                lots = _context.Lot
                        .Include(l => l.Address)
-                       .Where(u => u.LotNumber != "HOA")
-                       .OrderBy(u => u.LotNumber)
-                       .ToListAsync();
+                       .Include(l => l.OwnerLots).ThenInclude(u => u.Owner)
+                       .Include(l => l.LotInventories).ThenInclude(l => l.Inventory)
+                       //.Where(u => u.LotNumber != "HOA")
+                       .OrderBy(u => u.LotNumber);
             }
 
-            var vm = new List<LotIndexVM>();
-
-            foreach (var lot in lots)
-            {
-                var owners = _context.OwnerLot
-                    .Include(u => u.Owner)
-                    .Where(u => u.LotId == lot.LotId)
-                    .Where(u => !u.IsArchive);
-
-                var lotItems = await _context.LotInventory
-                    .Include(u => u.Inventory)
-                    .Where(u => u.LotId == lot.LotId)
-                    .Select(u => u.Inventory)
-                    .ToListAsync();
-
-
-                if (!owners.Any())
-                {
-                    vm.Add(new LotIndexVM
-                    {
-                        Lot = lot,
-                        Address = lot.Address,
-                        PrimaryOwner = null,
-                        Owners = new List<SunridgeHOA.Models.Owner>(),
-                        InventoryItems = lotItems
-                    });
-                }
-                else
-                {
-                    vm.Add(new LotIndexVM
-                    {
-                        Lot = lot,
-                        Address = lot.Address,
-                        PrimaryOwner = owners.Where(u => u.IsPrimary).First().Owner,
-                        Owners = owners.Where(u => !u.IsPrimary).Select(u => u.Owner).ToList(),
-                        InventoryItems = lotItems
-                    });
-                }
-
-                
-            }
-            return View(vm);
+            int pageSize = 25;
+            return View(await PaginatedList<Lot>.Create(lots, pageNumber ?? 1, pageSize));
         }
 
         public async Task<IActionResult> MyLots()

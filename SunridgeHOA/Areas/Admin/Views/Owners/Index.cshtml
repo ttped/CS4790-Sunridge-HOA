@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SunridgeHOA.Areas.Admin.Models.OwnerIndexVM>
+﻿@model SunridgeHOA.Utility.PaginatedList<SunridgeHOA.Models.Owner>
 
 @{
     ViewData["Title"] = "Index";
@@ -36,13 +36,13 @@
             <thead>
                 <tr id="headTr">
                     <th>
-                        @Html.DisplayNameFor(model => model.Owner.FullName)
+                        @Html.DisplayNameFor(model => model[0].FullName)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Owner.EmergencyContactName)
+                        @Html.DisplayNameFor(model => model[0].EmergencyContactName)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Owner.EmergencyContactPhone)
+                        @Html.DisplayNameFor(model => model[0].EmergencyContactPhone)
                     </th>
                     <th>
                         Lot(s)
@@ -55,31 +55,39 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Owner.FullName)
+                            @Html.DisplayFor(modelItem => item.FullName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Owner.EmergencyContactName)
+                            @Html.DisplayFor(modelItem => item.EmergencyContactName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Owner.EmergencyContactPhone)
+                            @Html.DisplayFor(modelItem => item.EmergencyContactPhone)
                         </td>
                         <td>
-                            @foreach (var lot in item.Lots)
+                            @foreach (var lot in item.OwnerLots)
                             {
-                                <p>@lot</p>
+                                <p>@lot.Lot.LotNumber</p>
                             }
                         </td>
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.Owner.OwnerId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
-                            <a asp-action="LoginInfo" asp-route-id="@item.Owner.OwnerId"><button type="button" class="btn btn-success btn-sm">Login Info</button></a> |
-                            <a asp-action="Details" asp-route-id="@item.Owner.OwnerId"><button type="button" class="btn btn-warning btn-sm">Details</button></a> |
-                            <a asp-action="ViewFiles" asp-route-id="@item.Owner.OwnerId"><button type="button" class="btn btn-dark btn-sm">Files</button></a> |
-                            <a asp-action="Delete" asp-route-id="@item.Owner.OwnerId"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
+                            <a asp-action="Edit" asp-route-id="@item.OwnerId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
+                            <a asp-action="LoginInfo" asp-route-id="@item.OwnerId"><button type="button" class="btn btn-success btn-sm">Login Info</button></a> |
+                            <a asp-action="Details" asp-route-id="@item.OwnerId"><button type="button" class="btn btn-warning btn-sm">Details</button></a> |
+                            <a asp-action="ViewFiles" asp-route-id="@item.OwnerId"><button type="button" class="btn btn-dark btn-sm">Files</button></a> |
+                            <a asp-action="Delete" asp-route-id="@item.OwnerId"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
+
+        @{ 
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+        }
+
+        <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-query="@ViewBag.CurrentQuery" class="btn btn-default @prevDisabled">Previous</a>
+        <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-query="@ViewBag.CurrentQuery" class="btn btn-default @nextDisabled">Next</a>
     </div>
 </div>
 

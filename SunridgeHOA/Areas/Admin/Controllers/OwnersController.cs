@@ -33,44 +33,30 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         }
 
         // GET: Admin/Owners
-        public async Task<IActionResult> Index(string query)
+        public async Task<IActionResult> Index(string query, int? pageNumber)
         {
-            List<SunridgeHOA.Models.Owner> owners = null;
+            ViewData["CurrentQuery"] = query ?? String.Empty;
+
+            IQueryable<SunridgeHOA.Models.Owner> owners = null;
 
             // Need to filter the search
             if (!String.IsNullOrEmpty(query))
             {
-                owners = await _context.Owner
-                    .Include(u => u.Address)
+                owners = _context.Owner
+                    .Include(u => u.OwnerLots).ThenInclude(m => m.Lot)
                     .Where(u => u.FullName.ToLower().Contains(query.ToLower()))
-                    .ToListAsync();
+                    .OrderBy(u => u.LastName);
             }
             // No search - include all owners
             else
             {
-                owners = await _context.Owner
-                    .Include(u => u.Address)
-                    .ToListAsync();
+                owners = _context.Owner
+                    .Include(u => u.OwnerLots).ThenInclude(m => m.Lot)
+                    .OrderBy(u => u.LastName);
             }
 
-            var vmList = new List<OwnerIndexVM>();
-            foreach (var owner in owners)
-            {
-                var lots = await _context.OwnerLot
-                    .Include(u => u.Lot)
-                    .Where(u => u.OwnerId == owner.OwnerId)
-                    .Where(u => !u.IsArchive)
-                    .Select(u => u.Lot.LotNumber)
-                    .ToListAsync();
-
-                vmList.Add(new OwnerIndexVM
-                {
-                    Owner = owner,
-                    Lots = lots
-                });
-            }
-
-            return View(vmList);
+            int pageSize = 25;
+            return View(await PaginatedList<SunridgeHOA.Models.Owner>.Create(owners, pageNumber ?? 1, pageSize));
         }
 
         // GET: Admin/Owners/Details/5
