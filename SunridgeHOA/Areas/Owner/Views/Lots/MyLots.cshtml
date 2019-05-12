@@ -65,10 +65,10 @@
                         }
                     </td>                    
                     <td>
-                        @*<a asp-action="Edit" asp-route-id="@item.CommonAreaAssetId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |*@
+                        <a asp-action="Edit" asp-route-id="@item.Lot.LotId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
                         <a asp-action="EditLotItems" asp-route-id="@item.Lot.LotId"><button type="button" class="btn btn-warning btn-sm">Edit Lot Items</button></a> |
-                        <a asp-action="ViewFiles" asp-route-id="@item.Lot.LotId"><button type="button" class="btn btn-dark btn-sm">Files</button></a> |
-                        <a asp-action="Delete" asp-route-id="@item.Lot.LotId"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
+                        <a asp-action="ViewFiles" asp-route-id="@item.Lot.LotId"><button type="button" class="btn btn-dark btn-sm">Files</button></a>
+                        @*<a asp-action="Delete" asp-route-id="@item.Lot.LotId"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>*@
                     </td>
                 </tr>
                 }

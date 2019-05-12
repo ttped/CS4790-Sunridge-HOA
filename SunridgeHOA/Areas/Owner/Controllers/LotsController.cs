@@ -499,7 +499,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         }
 
         // GET: Admin/Lots/Edit/5
-        [Authorize(Roles = "SuperAdmin, Admin")]
+        //[Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -546,7 +546,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "SuperAdmin, Admin")]
+        //[Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> Edit(int id, LotEditVM vm)
         {
             if (id != vm.Lot.LotId)
