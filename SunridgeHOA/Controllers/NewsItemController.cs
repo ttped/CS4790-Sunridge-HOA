@@ -91,22 +91,24 @@ namespace SunridgeHOA.Controllers
                     //Image(s) has been uploaded with form
                     var uploads = Path.Combine(webRootPath, SD.NewsImageFolder);
                     var extension = Path.GetExtension(files[0].FileName);
+                    var filename = Path.GetFileName(files[0].FileName);
 
-                    using (var filestream = new FileStream(Path.Combine(uploads, newsItem.NewsItemId + extension), FileMode.Create))
+                    using (var filestream = new FileStream(Path.Combine(uploads, filename), FileMode.Create))
                     {
                         files[0].CopyTo(filestream); //moves to server and renames
                     }
 
                     //now I know the new image name, so I can save the STRING image to the database
-                    newsFromDb.Image = @"\" + SD.NewsImageFolder + @"\" + newsItem.NewsItemId + extension;
+                    newsFromDb.FilePath = @"\" + SD.NewsImageFolder + @"\" + filename;
+                    newsFromDb.FileName = filename;
                 }
-                else
-                {
-                    //when the user didn't give us an image so we'll upload the placeholder
-                    var uploads = Path.Combine(webRootPath, SD.NewsImageFolder + @"\" + SD.DefaultImage);
-                    System.IO.File.Copy(uploads, webRootPath + @"\" + SD.NewsImageFolder + @"\" + newsItem.NewsItemId + ".jpg");
-                    newsFromDb.Image = @"\" + SD.NewsImageFolder + @"\" + newsItem.NewsItemId + ".jpg";
-                }
+                //else
+                //{
+                //    //when the user didn't give us an image so we'll upload the placeholder
+                //    var uploads = Path.Combine(webRootPath, SD.NewsImageFolder + @"\" + SD.DefaultImage);
+                //    System.IO.File.Copy(uploads, webRootPath + @"\" + SD.NewsImageFolder + @"\" + newsItem.NewsItemId + ".jpg");
+                //    newsFromDb.Image = @"\" + SD.NewsImageFolder + @"\" + newsItem.NewsItemId + ".jpg";
+                //}
                 //------------------------------------------------------------------------------------------------------
 
                 //newsItem.File = file;
@@ -199,29 +201,33 @@ namespace SunridgeHOA.Controllers
                 {
                     //if user uploads a new image
                     var uploads = Path.Combine(webRootPath, SD.NewsImageFolder);
-                    var extension_new = Path.GetExtension(files[0].FileName);
-                    var extension_old = Path.GetExtension(newsFromDb.Image);
+                    //var extension_new = Path.GetExtension(files[0].FileName);
+                    //var extension_old = Path.GetExtension(newsFromDb.Image);
 
-                    if (System.IO.File.Exists(Path.Combine(uploads, newsItem.NewsItemId + extension_old)))
+                    var newFilename = Path.GetFileName(files[0].FileName);
+                    var oldFilename = newsFromDb.FileName;
+
+                    if (System.IO.File.Exists(Path.Combine(uploads, oldFilename)))
                     {
-                        System.IO.File.Delete(Path.Combine(uploads, newsItem.NewsItemId + extension_old));
+                        System.IO.File.Delete(Path.Combine(uploads, oldFilename));
                     }
-                    using (var filestream = new FileStream(Path.Combine(uploads, newsItem.NewsItemId + extension_new), FileMode.Create))
+                    using (var filestream = new FileStream(Path.Combine(uploads, newFilename), FileMode.Create))
                     {
                         files[0].CopyTo(filestream);
                     }
-                    newsItem.Image = @"\" + SD.NewsImageFolder + @"\" + newsItem.NewsItemId + extension_new;
+                    newsFromDb.FilePath = @"\" + SD.NewsImageFolder + @"\" + newFilename;
+                    newsFromDb.FileName = newFilename;
                 }
 
-                if (newsItem.Image != null)
-                {
-                    newsFromDb.Image = newsItem.Image;
-                }
+                //if (newsItem.FilePath != null)
+                //{
+                //    newsFromDb.FilePath = newsItem.FilePath;
+                //}
 
                 newsFromDb.Header = newsItem.Header;
                 newsFromDb.Content = newsItem.Content;
                 newsFromDb.Year = newsItem.Year;
-                newsFromDb.Image = newsItem.Image;
+                //newsFromDb.Image = newsItem.Image;
                 //newsFromDb.FileId = file.FileId;
 
                 await _db.SaveChangesAsync();

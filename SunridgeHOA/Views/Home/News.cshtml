@@ -51,9 +51,7 @@
                                     <h2>@Html.DisplayFor(m => news.Header)</h2>
                                     <p>@Html.DisplayFor(m => news.Content)</p>
                                     <div style="box-shadow: 10px 10px 8px 10px #888888;" class="col-sm-12 text-center mb-5">
-                                        <a class="lightbox" href="~/images/News/@(news.NewsItemId).jpg">
-                                            <img class="img-responsive" src="@news.Image" alt="@news.Header">
-                                        </a>
+                                        <a class="lightbox" href="@news.FilePath" target="_blank">@news.FileName</a>
                                     </div>
                                 }
                             }
@@ -78,9 +76,7 @@
                                     <h2>@Html.DisplayFor(m => news.Header)</h2>
                                     <p>@Html.DisplayFor(m => news.Content)</p>
                                     <div style="box-shadow: 10px 10px 8px 10px #888888;" class="col-sm-12 text-center mb-5">
-                                        <a class="lightbox" href="~/images/News/@(news.NewsItemId).jpg">
-                                            <img class="img-responsive" src="@news.Image" alt="@news.Header">
-                                        </a>
+                                        <a class="lightbox" href="@news.FilePath" target="_blank">@news.FileName</a>
                                     </div>
                                 }
                             }
@@ -105,9 +101,7 @@
                                     <h2>@Html.DisplayFor(m => news.Header)</h2>
                                     <p>@Html.DisplayFor(m => news.Content)</p>
                                     <div style="box-shadow: 10px 10px 8px 10px #888888;" class="col-sm-12 text-center mb-5">
-                                        <a class="lightbox" href="~/images/News/@(news.NewsItemId).jpg">
-                                            <img class="img-responsive" src="@news.Image" alt="@news.Header">
-                                        </a>
+                                        <a class="lightbox" href="@news.FilePath" target="_blank">@news.FileName</a>
                                     </div>
                                 }
                             }
@@ -132,9 +126,7 @@
                                     <h2>@Html.DisplayFor(m => news.Header)</h2>
                                     <p>@Html.DisplayFor(m => news.Content)</p>
                                     <div style="box-shadow: 10px 10px 8px 10px #888888;" class="col-sm-12 text-center mb-5">
-                                        <a class="lightbox" href="~/images/News/@(news.NewsItemId).jpg">
-                                            <img class="img-responsive" src="@news.Image" alt="@news.Header">
-                                        </a>
+                                        <a class="lightbox" href="@news.FilePath" target="_blank">@news.FileName</a>
                                     </div>
                                 }
                             }
