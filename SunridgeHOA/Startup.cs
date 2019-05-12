@@ -91,11 +91,12 @@ namespace SunridgeHOA
                 //  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             });
 
+            // Populate and "fix" seed data
             SeedData.EnsurePopulated(app, serviceProvider);
             CreateRoles(serviceProvider).Wait();
-            //FixPrimaryOwners(serviceProvider).Wait();
-            //FixAddresses(serviceProvider).Wait();
-            //CreateInitialIdentityUsers(serviceProvider).Wait();
+            FixPrimaryOwners(serviceProvider).Wait();
+            FixAddresses(serviceProvider).Wait();
+            CreateInitialIdentityUsers(serviceProvider).Wait();
         }
 
         private async Task CreateRoles(IServiceProvider serviceProvider)
@@ -233,6 +234,12 @@ namespace SunridgeHOA
 
             foreach (var lot in lots)
             {
+                // AddressId == 1 is the default one the scripts set the lots to. If it's different, we've already run the script
+                if (lot.AddressId != 1)
+                {
+                    continue;
+                }
+
                 var addr = new Address
                 {
                     StreetAddress = "Unknown - Check Weber County Tax Site & Update",
