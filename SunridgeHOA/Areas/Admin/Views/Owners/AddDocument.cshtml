@@ -1,10 +1,10 @@
 ﻿@model SunridgeHOA.Areas.Owner.Models.ViewModels.DocumentVM
 @{
-    ViewData["Title"] = "AddDocument";
+    ViewData["Title"] = "Add Owner Document";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Add Document</h2>
+<h2>Add Owner Document</h2>
 
 <div class="row">
     <div class="col-md-6">
@@ -25,11 +25,6 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
-                <label asp-for="AdminOnly" class="control-label"></label>
-                <input asp-for="AdminOnly" class="form-control" />
-                <span asp-validation-for="AdminOnly" class="text-danger"></span>
-            </div>*@
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Save" />
                 <a asp-action="ViewFiles" asp-route-id="@ViewBag.OwnerId">Back to List</a>

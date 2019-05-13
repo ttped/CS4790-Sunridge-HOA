@@ -1,13 +1,11 @@
 ﻿@model SunridgeHOA.Areas.Admin.Models.OwnerVM
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Owner";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Edit</h2>
-
-<h4>Owner</h4>
+<h2>Edit Information for @Model.Owner.FullName</h2>
 <hr />
 <form asp-action="Edit">
     <div class="row">
