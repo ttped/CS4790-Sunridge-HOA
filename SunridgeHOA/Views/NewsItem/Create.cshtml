@@ -1,6 +1,7 @@
 ﻿@model SunridgeHOA.Models.NewsItem
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create News Item";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <link rel="Stylesheet" href="~/css/Admin/transactions.css" type="text/css" />
@@ -10,14 +11,11 @@
 <link rel="Stylesheet" href="~/css/Admin/search-bar.css" type="text/css" />
 
 <div class="row col-12">
-    <div class="col-2">
-        <partial name="~/Views/Shared/_AdminNavbar.cshtml" />
-    </div>
     <div id="windowFrame" class="col-10">
         <div class="col-12">
             <div class="row">
                 <div id="titleDiv" class="col-12">
-                    <p id="title">Add News</p>
+                    <p id="title">Add News Item</p>
                 </div>
             </div>
             <hr />
@@ -54,7 +52,6 @@
                             <select asp-for="Year" class="form-control" asp-items="ViewBag.Year">
                                 <option value="-1" hidden selected>Select a year</option>
                             </select>
-                            @*<select asp-for="@Model.Products.SpecialTagsId" asp-items="Model.SpecialTags.ToSelectListItem(Model.Products.SpecialTagsId)" class="form-control"></select>*@
                         </div>
                         <span asp-validation-for="Year" class="text-danger"></span>
                     </div>

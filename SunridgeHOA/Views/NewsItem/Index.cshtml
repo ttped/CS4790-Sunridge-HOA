@@ -1,16 +1,11 @@
 ﻿@model IEnumerable<SunridgeHOA.Models.NewsItem>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "News Items";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-
-
 <div class="row col-12">
-    <div class="col-2">
-        <partial name="~/Views/Shared/_AdminNavbar.cshtml" />
-    </div>
-
     <div id="windowFrame" class="col-10">
         <div>
             <h2>News Item List</h2>
@@ -25,10 +20,6 @@
                         <th>@Html.DisplayNameFor(m => m.Year)</th>
                         <th>@Html.DisplayNameFor(m => m.Header)</th>
                         <th id="actionsHeader">Actions</th>
-
-                        @*<th>Header</th>
-                        <th>Year</th>
-                        <th id="actionsHeader">Actions</th>*@
                         <th></th>
                     </tr>
                 </thead>

@@ -1,4 +1,8 @@
 ﻿@model SunridgeHOA.Models.NewsItem
+@{
+    ViewData["Title"] = "News Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
 
 <link rel="Stylesheet" href="~/css/Admin/transactions.css" type="text/css" />
 <link rel="Stylesheet" href="~/css/Admin/adminnavbar.css?version=51" type="text/css" />
@@ -7,22 +11,16 @@
 <link rel="Stylesheet" href="~/css/Admin/search-bar.css" type="text/css" />
 
 <div class="row col-12">
-    <div class="col-2">
-        <partial name="~/Views/Shared/_AdminNavbar.cshtml" />
-    </div>
     <div id="windowFrame" class="col-10">
         <div class="col-12">
             <div class="row">
                 <div id="titleDiv" class="col-12">
-                    <p id="title">News Details</p>
+                    <p id="title">"@Model.Header" Details</p>
                 </div>
             </div>
             <hr />
-            
-            <div class="p-4 border rounded">
-                @*<input type="hidden" asp-for="NewsItemId" />
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
 
+            <div class="p-4 border rounded">
                 <div class="form-group row">
                     <div class="col-2">
                         <label asp-for="Header"></label>
@@ -44,18 +42,9 @@
                         <label asp-for="Year"></label>
                     </div>
                     <div class="col-5">
-                        <input asp-for="Year" readonly class="form-control" asp-items="ViewBag.Year"/>
+                        <input asp-for="Year" readonly class="form-control" asp-items="ViewBag.Year" />
                     </div>
                 </div>
-                @*<div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="Image"></label>
-                    </div>
-                    <div class="col-5">
-                        <input asp-for="Image" name="files" readonly class="form-control" />
-                    </div>
-                </div>*@
-
                 <div class="col-1">
                 </div>
                 <div class="col-3">
@@ -67,11 +56,6 @@
                     <a asp-action="Index" class="btn btn-success">Back to List</a>
                 </div>
             </div>
-            
-
-            @*@section Scripts{
-                      @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-                }*@
         </div>
     </div>
 </div>
