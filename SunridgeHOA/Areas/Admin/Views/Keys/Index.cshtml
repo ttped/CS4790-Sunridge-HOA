@@ -1,15 +1,11 @@
 ﻿@model List<SunridgeHOA.Models.Key>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Key Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="row col-12">
-    @*<div class="col-2">
-        <partial name="~/Views/Shared/_AdminNavbar.cshtml" />
-    </div>*@
-
     <div id="windowFrame" class="col-10">
         <div>
             <h2>Key Index</h2>
@@ -41,15 +37,6 @@
                         <th>
                             Serial Number
                         </th>
-                        @*<th>
-                            Archive
-                        </th>
-                        <th>
-                            Last Modified By
-                        </th>
-                        <th>
-                            Last Modified Date
-                        </th>*@
                         <th></th>
                     </tr>
                 </thead>
@@ -60,18 +47,8 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.FullSerial)
                         </td>
-                        @*<td>
-                            @Html.DisplayFor(modelItem => item.IsArchive)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LastModifiedBy)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LastModifiedDate)
-                        </td>*@
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.KeyId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
-                            @*<a asp-action="Details" asp-route-id="@item.KeyId"><button type="button" class="btn btn-warning btn-sm">Details</button></a> |*@
                             <a asp-action="Delete" asp-route-id="@item.KeyId"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
                         </td>
                     </tr>
