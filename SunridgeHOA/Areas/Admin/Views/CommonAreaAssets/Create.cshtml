@@ -1,13 +1,11 @@
 ﻿@model SunridgeHOA.Models.CommonAreaAsset
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Common Area Asset";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Create</h2>
-
-<h4>CommonAreaAsset</h4>
+<h2>Create New Common Area Asset</h2>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -38,25 +36,6 @@
                 <input asp-for="Date" class="form-control" />
                 <span asp-validation-for="Date" class="text-danger"></span>
             </div>
-            @*
-        <div class="form-group">
-            <div class="checkbox">
-                <label>
-                    <input asp-for="IsArchive" /> @Html.DisplayNameFor(model => model.IsArchive)
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="LastModifiedBy" class="control-label"></label>
-            <input asp-for="LastModifiedBy" class="form-control" />
-            <span asp-validation-for="LastModifiedBy" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="LastModifiedDate" class="control-label"></label>
-            <input asp-for="LastModifiedDate" class="form-control" />
-            <span asp-validation-for="LastModifiedDate" class="text-danger"></span>
-        </div>
-            *@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>

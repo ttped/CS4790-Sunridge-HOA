@@ -1,14 +1,13 @@
 ﻿@model SunridgeHOA.Models.CommonAreaAsset
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Common Area Asset Details";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Details</h2>
+<h2>@Model.AssetName Details</h2>
 
 <div>
-    <h4>CommonAreaAsset</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -40,24 +39,6 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Date)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.IsArchive)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IsArchive)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.LastModifiedBy)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LastModifiedBy)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.LastModifiedDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LastModifiedDate)
         </dd>
     </dl>
 </div>
