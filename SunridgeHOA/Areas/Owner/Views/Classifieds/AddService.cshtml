@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Add Service";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row col-12">
+    <div id="ownerContainer" class="col-10">
+        <h2>Create New Service Listing</h2>
+
+        <hr />
+        <div class="row">
+            <div class="col-md-6">
+                <form asp-action="AddService" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label>Upload images</label>
+                        <input type="file" name="files" class="form-control" accept="image/*"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+</div>

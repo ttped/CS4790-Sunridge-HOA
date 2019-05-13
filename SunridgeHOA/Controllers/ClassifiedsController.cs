@@ -52,14 +52,23 @@ namespace SunridgeHOA.Controllers
 
         public async Task<IActionResult> Other()
         {
-            var classifieds = new List<ClassifiedListing>();
-            var items = await _context.ClassifiedListing.ToListAsync();
-            foreach (var item in items)
-            {
-                item.Images = await _context.ClassifiedImage.Where(x => x.ClassifiedListingId == item.ClassifiedListingId).ToListAsync();
-                item.ClassifiedCategory = await _context.ClassifiedCategory.Where(x => x.ClassifiedCategoryId == item.ClassifiedCategoryId).FirstAsync();
-                classifieds.Add(item);
-            }
+            //var classifieds = new List<ClassifiedListing>();
+            //var items = await _context.ClassifiedListing.ToListAsync();
+            //foreach (var item in items)
+            //{
+            //    item.Images = await _context.ClassifiedImage.Where(x => x.ClassifiedListingId == item.ClassifiedListingId).ToListAsync();
+            //    item.ClassifiedCategory = await _context.ClassifiedCategory.Where(x => x.ClassifiedCategoryId == item.ClassifiedCategoryId).FirstAsync();
+            //    classifieds.Add(item);
+            //}
+            //return View(classifieds);
+
+            var classifieds = await _context.ClassifiedListing
+                .Include(u => u.Images)
+                .Include(u => u.ClassifiedCategory)
+                .Where(u => u.ClassifiedCategoryId == 3)
+                .Where(u => u.Images.Any())
+                .Select(u => u.Images[0].ImageURL)
+                .ToListAsync();
             return View(classifieds);
         }
     }
