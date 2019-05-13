@@ -1,16 +1,11 @@
 ﻿@model SunridgeHOA.Models.ViewModels.KeyHistoryViewModel
 @using SunridgeHOA.Extensions
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Key Assignment";
 }
 <div class="row col-12">
-    @*<div class="col-2">
-        <partial name="~/Views/Shared/_AdminNavbar.cshtml" />
-    </div>*@
     <div id="windowFrame" class="col-10">
-        <h2>Create</h2>
-
-        <h4>KeyHistory</h4>
+        <h2>Create Key Assignment</h2>
         <hr />
         <div class="row">
             <div class="col-md-4">
@@ -24,45 +19,16 @@
                         <label asp-for="KeyHistory.LotId" class="control-label">Lot</label>
                         <select asp-for="KeyHistory.LotId" class="form-control" asp-items="@ViewBag.LotsSelect"></select>
                     </div>
-                    @*<div class="form-group">
-                        <label asp-for="KeyHistory.Status" class="control-label"></label>
-                        <input asp-for="KeyHistory.Status" class="form-control" />
-                        <span asp-validation-for="KeyHistory.Status" class="text-danger"></span>
-                    </div>*@
                     <div class="form-group">
                         <label asp-for="KeyHistory.DateIssued" class="control-label"></label>
                         <input asp-for="KeyHistory.DateIssued" class="form-control" />
                         <span asp-validation-for="KeyHistory.DateIssued" class="text-danger"></span>
                     </div>
-                    @*<div class="form-group">
-                        <label asp-for="KeyHistory.DateReturned" class="control-label"></label>
-                        <input asp-for="KeyHistory.DateReturned" class="form-control" />
-                        <span asp-validation-for="KeyHistory.DateReturned" class="text-danger"></span>
-                    </div>*@
                     <div class="form-group">
                         <label asp-for="KeyHistory.PaidAmount" class="control-label"></label>
                         <input asp-for="KeyHistory.PaidAmount" class="form-control" />
                         <span asp-validation-for="KeyHistory.PaidAmount" class="text-danger"></span>
                     </div>
-
-                    @*<div class="form-group">
-                            <div class="checkbox">
-                                <label>
-                                    <input asp-for="IsArchive" /> @Html.DisplayNameFor(model => model.IsArchive)
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="LastModifiedBy" class="control-label"></label>
-                            <input asp-for="LastModifiedBy" class="form-control" />
-                            <span asp-validation-for="LastModifiedBy" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="LastModifiedDate" class="control-label"></label>
-                            <input asp-for="LastModifiedDate" class="form-control" />
-                            <span asp-validation-for="LastModifiedDate" class="text-danger"></span>
-                        </div>*@
-
                     <div class="form-group">
                         <input type="submit" value="Create" class="btn btn-default" />
                     </div>
