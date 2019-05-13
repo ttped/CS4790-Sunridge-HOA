@@ -28,16 +28,20 @@
                 <a class="nav-link fas fa-dollar-sign" href="#"> Billing History</a>
             </li>*@
 
-            <li class="nav-item">
+            @*<li class="nav-item">
                 <a class="nav-link fas fa-file-alt dropdown-toggle" data-toggle="collapse" data-target="#accordian">
                     Classifieds
                 </a>
                 <div id="accordian" class="collapse">
                     <ul>
-                        @*<li class="nav-item"><a id="accordian" class="nav-link far fa-circle" href="#">&nbsp;View&nbsp;Ads</a></li>*@
+                        <li class="nav-item"><a id="accordian" class="nav-link far fa-circle" href="#">&nbsp;View&nbsp;Ads</a></li>
                         <li class="nav-item"><a id="accordian" class="nav-link fas fa-circle" asp-area="Owner" asp-controller="Classifieds" asp-action="Index">&nbsp;Post&nbsp;a&nbsp;New&nbsp;Ad</a></li>
                     </ul>
                 </div>
+            </li>*@
+
+            <li class="nav-item">
+                <a class="nav-link fas fa-file-alt" asp-area="Owner" asp-controller="Classifieds" asp-action="Index"> Classifieds</a>
             </li>
 
             <li class="nav-item">
@@ -95,7 +99,10 @@
                     <a class="nav-link fas fa-camera" href="~/AdminPhotos/Index"> Photos </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link far fa-newspaper" href="~/NewsItem/Index"> <b>News Items</b> </a>
+                    <a class="nav-link fas fa-newspaper" href="~/NewsItem/Index"> <b>News Items</b> </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fas fa-calendar-alt" asp-area="Admin" asp-controller="Scheduled Events" asp-action="Index"> Events</a>
                 </li>
             }
         </ul>
