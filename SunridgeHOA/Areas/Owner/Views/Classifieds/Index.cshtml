@@ -2,13 +2,12 @@
 @using SunridgeHOA.Models.ViewModels
 @using SunridgeHOA.Extensions
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Classifieds Index";
 }
-
 
 <div class="row">
     <div class="ownerContainer">
-        <h2>Post New Ad</h2>
+        <h2>Classifieds Index</h2>
 
         <p id="createAlign">
             <a asp-action="Create"><button type="button" class="btn btn-primary btn-sm">Create New Post Ad</button></a>
@@ -23,18 +22,9 @@
                     <th>
                         Price
                     </th>
-                    @*<th>
-                        Description
-                    </th>*@
                     <th>
                         Listing Date
                     </th>
-                    @*<th>
-                        Phone
-                    </th>*@
-                    @*<th>
-                        Email
-                    </th>*@
                     <th>
                         Owner
                     </th>
@@ -58,19 +48,9 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.ClassifiedListing.Price)
                     </td>
-                    @*<td>
-                        @item.ClassifiedListing.Description.Truncate(100).Concatenate("...")
-                    </td>*@
                     <td>
-                        @*@Html.DisplayFor(modelItem => item.ClassifiedListing.ListingDate)*@
                         @item.ClassifiedListing.ListingDate.ToString("MM/dd/yyyy")
                     </td>
-                    @*<td>
-                        @Html.DisplayFor(modelItem => item.ClassifiedListing.Phone)
-                    </td>*@
-                    @*<td>
-                        @Html.DisplayFor(modelItem => item.ClassifiedListing.Email)
-                    </td>*@
                     <td>
                         @Html.DisplayFor(modelItem => item.ClassifiedListing.Owner.FullName)
                     </td>
@@ -78,10 +58,6 @@
                         @Html.DisplayFor(modelItem => item.ClassifiedListing.ClassifiedCategory.Description)
                     </td>
                     <td >
-                        @*@foreach (var image in item.ClassifiedImages.Where(x => x.ClassifiedListingId == item.ClassifiedListing.ClassifiedListingId))
-                        {
-                            <img src="../../..@image.ImageURL" class="img-fluid" style="border-radius:5px; object-fit: cover;" />
-                        }*@
                         @item.ClassifiedImages.Where(u => u.ClassifiedListingId == item.ClassifiedListing.ClassifiedListingId).Count()
                     </td>
                     <td>

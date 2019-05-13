@@ -2,44 +2,20 @@
 @using SunridgeHOA.Extensions
 
 @{
-    ViewData["Title"] = "Create";
-    const String ownerString = "Owner";
+    ViewData["Title"] = "Create Classified";
 }
-<script type="text/javascript">
-    $(document).ready(function () {
-        $(".select").change(function () {
-            if ($(this).val() == "5") {
-                $("#hide").hide();
-            }
-            else {
-                $("#hide").show();
-            }
-
-        });
-    });
-</script>
 
 <div class="row col-12">
-    @*<div class="col-2">
-        <partial name="~/Views/Shared/_AdminNavbar.cshtml" />
-    </div>*@
     <div id="ownerContainer" class="col-10">
-        <h2>Create new Classified Listing</h2>
+        <h2>Create New Classified Listing</h2>
 
         <hr />
         <div class="row">
             <div class="col-md-6">
                 <form asp-action="Create" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    @*<div class="form-group">
-                        <label asp-for="ClassifiedListing.OwnerId" class="control-label"></label>
-                        <select asp-for="ClassifiedListing.OwnerId" class="form-control" asp-items="Model.Owner.ownerNameToSelectListItem(Model.ClassifiedListing.OwnerId)"></select>
-                    </div>*@
-                    
                     <div class="form-group">
                         <label asp-for="ClassifiedCategory.First().Description" class="control-label"></label>
-                        @*<select asp-for="ClassifiedListing.ClassifiedCategoryId" class="form-control" asp-items="ViewBag.ClassifiedCategoryId"></select>*@
-                        @*<select class="select form-control" runat="Server" ClientIdMode="static" asp-for="ClassifiedListing.ClassifiedCategoryId" asp-items="Model.ClassifiedCategory.categoryDescriptionToSelectListItem(Model.ClassifiedListing.ClassifiedCategoryId)"></select>*@
                         <select class="select form-control" asp-for="ClassifiedListing.ClassifiedCategoryId" asp-items="ViewBag.Category"></select>
                     </div>
                     <div class="form-group">
@@ -69,16 +45,6 @@
                         <label>Upload images</label>
                         <input type="file" name="files" class="form-control" multiple />
                     </div>
-                    @*<div class="form-group">
-            <label asp-for="ClassifiedListing.LastModifiedBy" class="control-label"></label>
-            <input asp-for="ClassifiedListing.LastModifiedBy" class="form-control" />
-            <span asp-validation-for="ClassifiedListing.LastModifiedBy" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="ClassifiedListing.LastModifiedDate" class="control-label"></label>
-            <input asp-for="ClassifiedListing.LastModifiedDate" class="form-control" />
-            <span asp-validation-for="ClassifiedListing.LastModifiedDate" class="text-danger"></span>
-        </div>*@
                     <div class="form-group">
                         <input type="submit" value="Create" class="btn btn-default" />
                     </div>
@@ -92,3 +58,18 @@
     </div>
 </div>
 
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".select").change(function () {
+                if ($(this).val() == "5") {
+                    $("#hide").hide();
+                }
+                else {
+                    $("#hide").show();
+                }
+
+            });
+        });
+    </script>
+}
