@@ -1,7 +1,7 @@
 ﻿@model SunridgeHOA.Utility.PaginatedList<Lot>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lot Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -89,7 +89,6 @@
                         </td>
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.LotId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
-                            @*<a asp-action="Details" asp-route-id="@item.Lot.LotId"><button type="button" class="btn btn-warning btn-sm">Details</button></a> |*@
                             <a asp-action="ViewFiles" asp-route-id="@item.LotId"><button type="button" class="btn btn-dark btn-sm">Files</button></a> |
                             <a asp-action="Delete" asp-route-id="@item.LotId"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
                         </td>

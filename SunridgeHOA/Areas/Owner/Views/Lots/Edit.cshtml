@@ -1,15 +1,14 @@
 ﻿@model SunridgeHOA.Areas.Owner.Models.LotEditVM
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Lot";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 
     var inventory = ViewBag.Inventory as List<Inventory>;
 }
 
-<h2>Edit</h2>
+<h2>Edit Lot @Model.Lot.LotNumber</h2>
 
-<h4>Lot</h4>
 <hr />
 <form asp-action="Edit">
     <div class="row">

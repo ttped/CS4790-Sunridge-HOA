@@ -1,7 +1,7 @@
 ﻿@model LotEditInventoryVM
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Lot Inventory";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 
     var inventory = ViewBag.Inventory as List<Inventory>;
@@ -53,6 +53,5 @@
     </div>
 </div>
 <div>
-    @*<a asp-action="Details" asp-route-id="@Model.Lot.LotId">Full Details</a> |*@
     <a href="javascript:history.go(-1)">Back to List</a>
 </div>

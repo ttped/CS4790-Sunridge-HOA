@@ -1,18 +1,13 @@
 ﻿@model IEnumerable<LotIndexVM>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "My Lots";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
-
-
 
 <div class="row">
     <div class="ownerContainer">
         <h2>My Lots</h2>
-
-
         <table>
             <thead id="headTr">
                 <tr>
@@ -68,7 +63,6 @@
                         <a asp-action="Edit" asp-route-id="@item.Lot.LotId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
                         <a asp-action="EditLotItems" asp-route-id="@item.Lot.LotId"><button type="button" class="btn btn-warning btn-sm">Edit Lot Items</button></a> |
                         <a asp-action="ViewFiles" asp-route-id="@item.Lot.LotId"><button type="button" class="btn btn-dark btn-sm">Files</button></a>
-                        @*<a asp-action="Delete" asp-route-id="@item.Lot.LotId"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>*@
                     </td>
                 </tr>
                 }
