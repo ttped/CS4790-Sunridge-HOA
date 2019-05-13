@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<SunridgeHOA.Models.Inventory>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lot Inventory Item Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -9,7 +9,7 @@
 
 <div class="row">
     <div class="ownerContainer">
-        <h2>Inventory Items Index</h2>
+        <h2>Lot Inventory Items Index</h2>
 
         <p id="createAlign">
             <a asp-action="Create"><button type="button" class="btn btn-primary btn-sm">Create New Inventory Items</button></a>
@@ -21,15 +21,6 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Description)
                     </th>
-                    @*<th>
-                        @Html.DisplayNameFor(model => model.IsArchive)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.LastModifiedBy)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.LastModifiedDate)
-                    </th>*@
                     <th></th>
                 </tr>
             </thead>
@@ -41,15 +32,6 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Description)
                         </td>
-                        @*<td>
-                            @Html.DisplayFor(modelItem => item.IsArchive)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LastModifiedBy)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LastModifiedDate)
-                        </td>*@
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.InventoryId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
                             <a asp-action="Details" asp-route-id="@item.InventoryId"><button type="button" class="btn btn-warning btn-sm">Details</button></a> |
