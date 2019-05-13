@@ -1,19 +1,14 @@
 ﻿@model SunridgeHOA.Models.Banner
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Banner Item";
 }
 <div class="row col-12">
-    @*<div class="col-2">
-        <partial name="~/Views/Shared/_AdminNavbar.cshtml" />
-    </div>*@
     <div id="windowFrame" class="col-10">
-        <h2>Edit</h2>
-
-        <h4>Banner</h4>
+        <h2>Edit Banner Item</h2>
         <hr />
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <form asp-action="Edit" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="Id" />
@@ -24,7 +19,7 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Body" class="control-label"></label>
-                        <input asp-for="Body" class="form-control" />
+                        <textarea  asp-for="Body" class="form-control" style="resize:none" rows="10"></textarea>
                         <span asp-validation-for="Body" class="text-danger"></span>
                     </div>
                     <div class="form-group">
