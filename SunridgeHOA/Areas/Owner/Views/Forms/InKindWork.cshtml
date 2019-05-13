@@ -2,11 +2,13 @@
 @{
     ViewData["Title"] = "In-Kind Work";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var newResponse = Model == null || Model.FormResponse == null || Model.FormResponse.FormResponseId == 0;
 }
 
 <h2>Sunridge Owner In-Kind Work Form</h2>
 
-@if (Model != null && Model.FormResponse.FormResponseId != 0)
+@*@if (Model != null && Model.Model.FormResponse.FormResponseId != 0)*@
+@if (!newResponse)
 {
     <p>Submitted by @Model.FormResponse.Owner.FullName</p>
     <p>@Model.FormResponse.SubmitDate</p>
@@ -32,7 +34,7 @@
             <div><span asp-validation-for="LaborHours" class="text-danger"></span></div>
             @for (int i = 0; i < 3; i++)
             {
-                if (i >= Model.LaborHours.Count)
+                if (!newResponse && i >= Model.LaborHours.Count())
                 {
                     break;
                 }
@@ -55,7 +57,7 @@
             <div><span asp-validation-for="EquipmentHours" class="text-danger"></span></div>
             @for (int i = 0; i < 3; i++)
             {
-                if (i >= Model.EquipmentHours.Count)
+                if (!newResponse && i >= Model.EquipmentHours.Count())
                 {
                     break;
                 }
@@ -73,15 +75,46 @@
                 </div>
             }
 
-            <div class="form-group">
-                <input type="submit" value="Submit" class="btn btn-default" />
-            </div>
+            @if (!newResponse && !Model.FormResponse.Resolved)
+            {
+                <div class="form-group">
+                    <input type="submit" value="Submit" class="btn btn-default" />
+                </div>
+            }
+
         </form>
+
+        @if (!newResponse && Model.FormResponse.Comments != null && Model.FormResponse.Comments.Any())
+        {
+            <h4>Comments</h4>
+            @foreach (var comment in Model.FormResponse.Comments)
+            {
+                <div class="row">
+                    <div class="col-md-2">
+                        <label class="control-label">@comment.Owner.FullName</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="control-label">@comment.Date</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <input class="form-control" readonly="readonly" value="@comment.Content" />
+                    </div>
+                </div>
+                <hr />
+            }
+        }
+
         @if (User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
         {
-            @if (Model != null && Model.FormResponse.FormResponseId != 0)
+            @if (!newResponse && !Model.FormResponse.Resolved)
             {
                 <form asp-action="Resolve" asp-route-id="@Model.FormResponse.FormResponseId">
+                    <div class="form-group">
+                        <label class="control-label">Resolution Information</label>
+                        <input type="text" id="resolution" name="resolution" class="form-control" />
+                    </div>
                     <div class="form-group">
                         <input type="submit" value="Resolve" class="btn btn-primary" />
                     </div>

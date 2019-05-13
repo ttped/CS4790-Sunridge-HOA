@@ -14,8 +14,14 @@ namespace SunridgeHOA.Areas.Owner.Models.ViewModels
 
         public InKindWorkSubmission()
         {
-            LaborHours = new List<InKindWorkHours>();
-            EquipmentHours = new List<InKindWorkHours>();
+            LaborHours = new List<InKindWorkHours>(3);
+            EquipmentHours = new List<InKindWorkHours>(3);
+
+            for (int i = 0; i < 3; i++)
+            {
+                LaborHours.Add(new InKindWorkHours());
+                EquipmentHours.Add(new InKindWorkHours());
+            }
         }
     }
 }

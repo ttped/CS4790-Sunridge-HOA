@@ -83,8 +83,11 @@ namespace SunridgeHOA.Areas.Owner.Controllers
             var roles = await _userManager.GetRolesAsync(user);
             var owner = _context.Owner.Find(user.OwnerId);
             
-            var form = await _context.FormResponse.Include(u => u.Owner).SingleOrDefaultAsync(u => u.FormResponseId == id);
-
+            var form = await _context.FormResponse
+                .Include(u => u.Owner)
+                .Include(u => u.Comments).ThenInclude(u => u.Owner)
+                .SingleOrDefaultAsync(u => u.FormResponseId == id);
+           
             if (!roles.Contains("Admin") && !roles.Contains("SuperAdmin"))
             {
                 if (form.OwnerId != owner.OwnerId)
@@ -92,6 +95,13 @@ namespace SunridgeHOA.Areas.Owner.Controllers
                     return NotFound();
                 }
             }
+
+            //var comments = await _context.Comment
+            //    .Include(u => u.Owner)
+            //    .Where(u => u.FormResponseId == form.FormResponseId)
+            //    .OrderBy(u => u.Date)
+            //    .ToListAsync();
+            //form.Comments = comments;
 
             return View(form);
         }
@@ -147,14 +157,18 @@ namespace SunridgeHOA.Areas.Owner.Controllers
         {
             if (id == null)
             {
-                return View();
+                return View(new InKindWorkSubmission());
             }
 
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var roles = await _userManager.GetRolesAsync(user);
             var owner = _context.Owner.Find(user.OwnerId);
 
-            var form = await _context.FormResponse.Include(u => u.Owner).Include(u => u.InKindWorkHours).SingleOrDefaultAsync(u => u.FormResponseId == id);
+            var form = await _context.FormResponse
+                .Include(u => u.Owner)
+                .Include(u => u.InKindWorkHours)
+                .Include(u => u.Comments).ThenInclude(u => u.Owner)
+                .SingleOrDefaultAsync(u => u.FormResponseId == id);
 
             if (!roles.Contains("Admin") && !roles.Contains("SuperAdmin"))
             {
@@ -255,15 +269,26 @@ namespace SunridgeHOA.Areas.Owner.Controllers
 
         [Authorize(Roles = "SuperAdmin, Admin")]
         [HttpPost]
-        public async Task<IActionResult> Resolve(int id)
+        public async Task<IActionResult> Resolve(int id, string resolution)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var owner = _context.Owner.Find(user.OwnerId);
+
+            var comment = new Comment
+            {
+                OwnerId = owner.OwnerId,
+                Content = resolution,
+                Date = DateTime.Now,
+                FormResponseId = id
+            };
+
+            _context.Add(comment);
 
             var form = await _context.FormResponse.FindAsync(id);
             form.Resolved = true;
             form.ResolveDate = DateTime.Now;
             form.ResolveUser = owner.FullName;
+
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));

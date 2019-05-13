@@ -9,7 +9,7 @@ namespace SunridgeHOA.Models
     {
         public int CommentId { get; set; }
         public int? LotHistoryId { get; set; }
-        public int? FormResponseIdId { get; set; }
+        public int? FormResponseId { get; set; }
         public int OwnerId { get; set; }
 
         public string Content { get; set; }
