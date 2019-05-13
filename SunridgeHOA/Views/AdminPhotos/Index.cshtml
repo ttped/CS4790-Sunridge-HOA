@@ -1,16 +1,13 @@
 ﻿@model IEnumerable<SunridgeHOA.Models.Photo>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Admin Photos";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 
 
 <div class="row col-12">
-    @*<div class="col-2">
-        <partial name="~/Views/Shared/_AdminNavbar.cshtml" />
-    </div>*@
 
     <div id="windowFrame" class="col-10">
         <div>
@@ -27,10 +24,8 @@
                         <th>@Html.DisplayNameFor(m => m.Category)</th>
                         <th>@Html.DisplayNameFor(m => m.Title)</th>
                         <th>@Html.DisplayNameFor(m => m.Owner.FullName)</th>
-                        @*<th>@Html.DisplayNameFor(m => m.OwnerId)</th>*@
                         <th>@Html.DisplayNameFor(m => m.Year)</th>
                         <th id="photoImage">@Html.DisplayNameFor(m => m.Image)</th>
-                        @*<th id="actionsHeader">Actions</th>*@
                         <th></th>
                     </tr>
                 </thead>
@@ -42,7 +37,6 @@
                         <td>@Html.DisplayFor(m => item.Category)</td>
                         <td>@Html.DisplayFor(m => item.Title)</td>
                         <td>@Html.DisplayFor(m => item.Owner.FullName)</td>
-                        @*<td>@Html.DisplayFor(m => item.OwnerId)</td>*@
                         <td>@Html.DisplayFor(m => item.Year)</td>
                         <td id="photoImageAlign"><img src="@Html.DisplayFor(m => item.Image)" style="border-radius:5px;width:100%;" /></td>
                        
