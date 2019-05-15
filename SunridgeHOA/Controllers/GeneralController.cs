@@ -59,14 +59,13 @@ namespace SunridgeHOA.Controllers
 
             foreach (var ownerLot in dashboardViewModel.OwnerLots)
             {
-                ownerLot.Lot = await _context.Lot.Where(x => x.LotId == ownerLot.LotId).FirstAsync();
-                ownerLot.Lot.LotInventories = await _context.LotInventory
-                    .Where(x => x.LotId == 1)
-                    .ToListAsync();
-                foreach (var inventory in ownerLot.Lot.LotInventories)
-                {
-                    inventory.Description = _context.Inventory.Where(x => x.InventoryId == inventory.InventoryId).First().Description;
-                }
+                ownerLot.Lot = await _context.Lot
+                    .Include(u => u.LotInventories).ThenInclude(u => u.Inventory)
+                    .Where(x => x.LotId == ownerLot.LotId).FirstAsync();
+                //foreach (var inventory in ownerLot.Lot.LotInventories)
+                //{
+                //    inventory.Description = _context.Inventory.Where(x => x.InventoryId == inventory.InventoryId).First().Description;
+                //}
                 
                 foreach(var key in dashboardViewModel.KeyHistories)
                 {
