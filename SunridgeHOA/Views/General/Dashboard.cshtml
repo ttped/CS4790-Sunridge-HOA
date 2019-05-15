@@ -222,13 +222,17 @@
                                             {
                                             <tr>
                                                 <td>
-                                                    @key.Key.FullSerial  @*@if (User.IsInRole("Admin"))
-                                                {<a asp-action="Edit" asp-area="Admin" asp-controller="KeyHistory" asp-route-id="@key.KeyHistoryId">Edit</a>}*@
+                                                    @key.Key.FullSerial 
                                                 </td>
                                                 <td>@DateTime.Parse(key.DateIssued.ToString()).ToShortDateString()</td>
-                                                <td>@DateTime.Parse(key.DateReturned.ToString()).ToShortDateString()</td>
                                                 <td>
-                                                    @if (key.Status == "Active")
+                                                    @if (key.DateReturned != null)
+                                                    {
+                                                        @DateTime.Parse(key.DateReturned.ToString()).ToShortDateString()
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (key.Status == "Issued")
                                                     {
                                                         <p class="text-success">@key.Status</p>
                                                     }
