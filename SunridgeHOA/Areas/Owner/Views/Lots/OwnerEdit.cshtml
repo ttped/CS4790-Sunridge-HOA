@@ -1,0 +1,39 @@
+﻿@model SunridgeHOA.Areas.Owner.Models.ViewModels.LotInfo
+@{
+    ViewData["Title"] = "Edit Lot Information";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Edit Lot @ViewBag.LotNumber</h2>
+
+<hr />
+<form asp-action="OwnerEdit">
+    <div class="row">
+        <div class="col-md-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label class="control-label">Tax Id</label>
+                <input asp-for="TaxId" class="form-control" />
+                <span asp-validation-for="TaxId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Street Address</label>
+                <input asp-for="StreetAddress" class="form-control" />
+                <span asp-validation-for="StreetAddress" class="text-danger"></span>
+            </div>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="MyLots">Back to List</a>
+</div>

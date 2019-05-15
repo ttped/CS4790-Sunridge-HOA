@@ -499,7 +499,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         }
 
         // GET: Admin/Lots/Edit/5
-        //[Authorize(Roles = "SuperAdmin, Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -546,7 +546,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //[Authorize(Roles = "SuperAdmin, Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public async Task<IActionResult> Edit(int id, LotEditVM vm)
         {
             if (id != vm.Lot.LotId)
@@ -701,6 +701,77 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             //ViewData["Owner"] = new SelectList(_context.Owner, "OwnerId", "FullName");
             ViewData["OwnerList"] = _context.Owner.ToList();
             return View(vm);
+        }
+
+        public async Task<IActionResult> OwnerEdit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var lot = await _context.Lot
+                .Include(u => u.Address)
+                .Include(u => u.OwnerLots)
+                .SingleOrDefaultAsync(u => u.LotId == id);
+            if (lot == null)
+            {
+                return NotFound();
+            }
+
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+
+            if (!lot.OwnerLots.Select(u => u.OwnerId).Contains(loggedInUser.OwnerId))
+            {
+                return NotFound();
+            }
+
+            ViewData["LotNumber"] = lot.LotNumber;
+            return View(new LotInfo
+            {
+                StreetAddress = lot.Address.StreetAddress,
+                TaxId = lot.TaxId
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> OwnerEdit(int id, LotInfo info)
+        {
+            var lot = await _context.Lot
+                .Include(u => u.Address)
+                .Include(u => u.OwnerLots)
+                .SingleOrDefaultAsync(u => u.LotId == id);
+            if (lot == null)
+            {
+                return NotFound();
+            }
+
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+
+            if (!lot.OwnerLots.Select(u => u.OwnerId).Contains(loggedInUser.OwnerId))
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                var test = 5;
+            }
+
+            lot.TaxId = info.TaxId;
+            lot.Address.StreetAddress = info.StreetAddress;
+
+            var modifiedBy = loggedInUser.FullName;
+            var modifiedTime = DateTime.Now;
+            lot.LastModifiedBy = modifiedBy;
+            lot.LastModifiedDate = modifiedTime;
+            lot.Address.LastModifiedBy = modifiedBy;
+            lot.Address.LastModifiedDate = modifiedTime;
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(MyLots));
         }
 
         // GET: Admin/Lots/Delete/5
