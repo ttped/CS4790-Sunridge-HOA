@@ -168,6 +168,10 @@ namespace SunridgeHOA
                     continue;
                 }
 
+                owner.FirstName = owner.FirstName.Trim();
+                owner.LastName = owner.LastName.Trim();
+                context.SaveChanges();
+
                 var username = await Areas.Admin.Data.OwnerUtility.GenerateUsername(userManager, owner);
                 var defaultPassword = Areas.Admin.Data.OwnerUtility.GenerateDefaultPassword(owner);
 
