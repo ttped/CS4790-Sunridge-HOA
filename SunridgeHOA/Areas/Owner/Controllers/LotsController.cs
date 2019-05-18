@@ -762,6 +762,8 @@ namespace SunridgeHOA.Areas.Admin.Controllers
 
             lot.TaxId = info.TaxId;
             lot.Address.StreetAddress = info.StreetAddress;
+            lot.LastModifiedBy = loggedInUser.FullName;
+            lot.LastModifiedDate = DateTime.Now;
 
             var modifiedBy = loggedInUser.FullName;
             var modifiedTime = DateTime.Now;

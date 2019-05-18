@@ -65,6 +65,8 @@ namespace SunridgeHOA.Areas.Owner.Controllers
             owner.EmergencyContactName = vm.Owner.EmergencyContactName;
             owner.EmergencyContactPhone = vm.Owner.EmergencyContactPhone;
             owner.ReceiveEmails = vm.Owner.ReceiveEmails;
+            owner.LastModifiedBy = vm.Owner.FullName;
+            owner.LastModifiedDate = DateTime.Now;
 
             var addr = await _context.Address.SingleOrDefaultAsync(u => u.Id == vm.Address.Id);
             addr.StreetAddress = vm.Address.StreetAddress;
