@@ -83,136 +83,136 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             return View(owner);
         }
 
-        public async Task<IActionResult> AddDocument(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> AddDocument(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var owner = _context.Owner.Find(id);
-            if (owner == null)
-            {
-                return NotFound();
-            }
+        //    var owner = _context.Owner.Find(id);
+        //    if (owner == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
-            var roles = await _userManager.GetRolesAsync(identityUser);
-            var isAdmin = roles.Contains("Admin") || roles.Contains("SuperAdmin");
-            if (!isAdmin && id != identityUser.OwnerId)
-            {
-                return NotFound();
-            }
+        //    var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+        //    var roles = await _userManager.GetRolesAsync(identityUser);
+        //    var isAdmin = roles.Contains("Admin") || roles.Contains("SuperAdmin");
+        //    if (!isAdmin && id != identityUser.OwnerId)
+        //    {
+        //        return NotFound();
+        //    }
 
-            ViewData["OwnerId"] = owner.OwnerId;
-            ViewData["HistoryTypes"] = new SelectList(_context.HistoryType, "HistoryTypeId", "Description");
+        //    ViewData["OwnerId"] = owner.OwnerId;
+        //    ViewData["HistoryTypes"] = new SelectList(_context.HistoryType, "HistoryTypeId", "Description");
 
-            return View(new DocumentVM
-            {
-                Id = owner.OwnerId
-            });
-        }
+        //    return View(new DocumentVM
+        //    {
+        //        Id = owner.OwnerId
+        //    });
+        //}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddDocument(int id, DocumentVM vm)
-        {
-            if (id != vm.Id)
-            {
-                return NotFound();
-            }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> AddDocument(int id, DocumentVM vm)
+        //{
+        //    if (id != vm.Id)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
-            var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+        //    var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+        //    var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
 
-            var owner = _context.Owner.Find(vm.Id);
+        //    var owner = _context.Owner.Find(vm.Id);
 
-            var files = HttpContext.Request.Form.Files;
-            if (files.Count == 0)
-            {
-                ModelState.AddModelError("Files", "Please upload at least one file");
-            }
+        //    var files = HttpContext.Request.Form.Files;
+        //    if (files.Count == 0)
+        //    {
+        //        ModelState.AddModelError("Files", "Please upload at least one file");
+        //    }
 
-            if (ModelState.IsValid)
-            {
-                var uploadFiles = new List<SunridgeHOA.Models.File>();
-                foreach (var file in files)
-                {
-                    var webRootPath = _hostingEnv.WebRootPath;
-                    var uploads = Path.Combine(webRootPath, SD.OwnerDocsFolder);
-                    var name = Path.GetFileNameWithoutExtension(file.FileName);
-                    var extension = Path.GetExtension(file.FileName);
-                    var dateExt = DateTime.Now.ToString("MMddyyyy");
-                    var newFileName = $"{owner.OwnerId} - {name} {dateExt}{extension}";
+        //    if (ModelState.IsValid)
+        //    {
+        //        var uploadFiles = new List<SunridgeHOA.Models.File>();
+        //        foreach (var file in files)
+        //        {
+        //            var webRootPath = _hostingEnv.WebRootPath;
+        //            var uploads = Path.Combine(webRootPath, SD.OwnerDocsFolder);
+        //            var name = Path.GetFileNameWithoutExtension(file.FileName);
+        //            var extension = Path.GetExtension(file.FileName);
+        //            var dateExt = DateTime.Now.ToString("MMddyyyy");
+        //            var newFileName = $"{owner.OwnerId} - {name} {dateExt}{extension}";
 
-                    using (var filestream = new FileStream(Path.Combine(uploads, newFileName), FileMode.Create))
-                    {
-                        file.CopyTo(filestream);
-                    }
+        //            using (var filestream = new FileStream(Path.Combine(uploads, newFileName), FileMode.Create))
+        //            {
+        //                file.CopyTo(filestream);
+        //            }
 
-                    var uploadFile = new SunridgeHOA.Models.File
-                    {
-                        FileURL = $@"\{SD.OwnerDocsFolder}\{newFileName}",
-                        Date = DateTime.Now,
-                        Description = Path.GetFileName(file.FileName)
-                    };
-                    _context.File.Add(uploadFile);
-                    uploadFiles.Add(uploadFile);
-                    //await _context.SaveChangesAsync();
-                }
+        //            var uploadFile = new SunridgeHOA.Models.File
+        //            {
+        //                FileURL = $@"\{SD.OwnerDocsFolder}\{newFileName}",
+        //                Date = DateTime.Now,
+        //                Description = Path.GetFileName(file.FileName)
+        //            };
+        //            _context.File.Add(uploadFile);
+        //            uploadFiles.Add(uploadFile);
+        //            //await _context.SaveChangesAsync();
+        //        }
 
-                var ownerHistory = new OwnerHistory
-                {
-                    OwnerId = owner.OwnerId,
-                    HistoryTypeId = vm.HistoryType,
-                    Date = DateTime.Now,
-                    Description = vm.Description,
-                    LastModifiedBy = loggedInUser.FullName,
-                    LastModifiedDate = DateTime.Now,
-                    Files = uploadFiles
-                };
-                _context.OwnerHistory.Add(ownerHistory);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(ViewFiles), new { id = id });
-            }
+        //        var ownerHistory = new OwnerHistory
+        //        {
+        //            OwnerId = owner.OwnerId,
+        //            HistoryTypeId = vm.HistoryType,
+        //            Date = DateTime.Now,
+        //            Description = vm.Description,
+        //            LastModifiedBy = loggedInUser.FullName,
+        //            LastModifiedDate = DateTime.Now,
+        //            Files = uploadFiles
+        //        };
+        //        _context.OwnerHistory.Add(ownerHistory);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(ViewFiles), new { id = id });
+        //    }
 
-            ViewData["OwnerId"] = owner.OwnerId;
-            ViewData["HistoryTypes"] = new SelectList(_context.HistoryType, "HistoryTypeId", "Description", vm.HistoryType);
-            return View(vm);
-        }
+        //    ViewData["OwnerId"] = owner.OwnerId;
+        //    ViewData["HistoryTypes"] = new SelectList(_context.HistoryType, "HistoryTypeId", "Description", vm.HistoryType);
+        //    return View(vm);
+        //}
 
-        public async Task<IActionResult> ViewFiles(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> ViewFiles(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var owner = await _context.Owner.SingleOrDefaultAsync(u => u.OwnerId == id);
-            if (owner == null)
-            {
-                return NotFound();
-            }
+        //    var owner = await _context.Owner.SingleOrDefaultAsync(u => u.OwnerId == id);
+        //    if (owner == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
-            var roles = await _userManager.GetRolesAsync(identityUser);
-            var isAdmin = roles.Contains("Admin") || roles.Contains("SuperAdmin");
-            //var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
-            if (!isAdmin && identityUser.OwnerId != id)
-            {
-                return NotFound();
-            }
+        //    var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+        //    var roles = await _userManager.GetRolesAsync(identityUser);
+        //    var isAdmin = roles.Contains("Admin") || roles.Contains("SuperAdmin");
+        //    //var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+        //    if (!isAdmin && identityUser.OwnerId != id)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var files = await _context.OwnerHistory
-                .Include(u => u.Files)
-                .Include(u => u.HistoryType)
-                .Where(u => u.OwnerId == id)
-                .ToListAsync();
+        //    var files = await _context.OwnerHistory
+        //        .Include(u => u.Files)
+        //        .Include(u => u.HistoryType)
+        //        .Where(u => u.OwnerId == id)
+        //        .ToListAsync();
 
-            ViewData["OwnerId"] = owner.OwnerId;
-            ViewData["FullName"] = owner.FullName;
-            return View(files);
-        }
+        //    ViewData["OwnerId"] = owner.OwnerId;
+        //    ViewData["FullName"] = owner.FullName;
+        //    return View(files);
+        //}
 
         public async Task<IActionResult> LoginInfo(int? id)
         {
