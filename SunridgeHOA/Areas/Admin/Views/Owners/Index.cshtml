@@ -1,12 +1,15 @@
 ﻿@model SunridgeHOA.Utility.PaginatedList<SunridgeHOA.Models.Owner>
 
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
 @{
     ViewData["Title"] = "Owners Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 
-<div class="row">    
+<div class="row">
     <div class="ownerContainer">
         <h2>Owners Index</h2>
 
@@ -39,6 +42,9 @@
                         @Html.DisplayNameFor(model => model[0].FullName)
                     </th>
                     <th>
+                        Username
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => model[0].EmergencyContactName)
                     </th>
                     <th>
@@ -53,9 +59,14 @@
             <tbody>
                 @foreach (var item in Model)
                 {
+                    var identityUser = await UserManager.FindByIdAsync(item.ApplicationUserId);
+
                     <tr>
                         <td>
                             @Html.DisplayFor(modelItem => item.FullName)
+                        </td>
+                        <td>
+                            @identityUser.UserName
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.EmergencyContactName)
@@ -71,7 +82,7 @@
                         </td>
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.OwnerId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
-                            <a asp-action="LoginInfo" asp-route-id="@item.OwnerId"><button type="button" class="btn btn-success btn-sm">Login Info</button></a> |
+                            <a asp-action="LoginInfo" asp-route-id="@item.OwnerId"><button type="button" class="btn btn-success btn-sm">Password Reset</button></a> |
                             <a asp-action="Details" asp-route-id="@item.OwnerId"><button type="button" class="btn btn-warning btn-sm">Details</button></a> |
                             <a asp-action="ViewFiles" asp-route-id="@item.OwnerId"><button type="button" class="btn btn-dark btn-sm">Files</button></a> |
                             <a asp-action="Delete" asp-route-id="@item.OwnerId"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
@@ -81,7 +92,7 @@
             </tbody>
         </table>
 
-        @{ 
+        @{
             var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
             var nextDisabled = !Model.HasNextPage ? "disabled" : "";
         }
