@@ -81,7 +81,7 @@ namespace SunridgeHOA.Controllers
         //POST: AdminPhoto Create
         [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePOST([Bind("Image, Title, Category")] Models.Photo photo)
+        public async Task<IActionResult> CreatePOST([Bind("Image, Title, Category, Year")] Models.Photo photo)
         {
             if (photo.Category == "-1")
             {
@@ -92,6 +92,11 @@ namespace SunridgeHOA.Controllers
             if (files.Count == 0)
             {
                 ModelState.AddModelError("Photo.Image", "Please select an image");
+            }
+
+            if (photo.Year < 2000 || photo.Year > DateTime.Now.Year)
+            {
+                ModelState.AddModelError("Photo.Year", $"The year must be between 2000 and {DateTime.Now.Year}");
             }
 
             if (!ModelState.IsValid)
