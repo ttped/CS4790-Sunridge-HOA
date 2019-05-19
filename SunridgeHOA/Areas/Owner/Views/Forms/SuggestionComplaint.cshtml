@@ -1,4 +1,4 @@
-﻿@model  SunridgeHOA.Models.FormResponse
+﻿@model SunridgeHOA.Models.FormResponse
 @{
     ViewData["Title"] = "Suggestions / Complaints";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -20,12 +20,12 @@
             <input type="hidden" asp-for="FormType" value="SC" />
             <div class="form-group">
                 <label class="control-label">Description of incident/problem/improvement:</label>
-                <textarea asp-for="Description" class="form-control" style="resize:none" rows="10"></textarea>
+                <textarea asp-for="Description" class="form-control" rows="10"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label class="control-label">Suggestion on how to correct the problem/make improvement:</label>
-                <textarea asp-for="Suggestion" class="form-control" style="resize:none" rows="10"></textarea>
+                <textarea asp-for="Suggestion" class="form-control" rows="10"></textarea>
                 <span asp-validation-for="Suggestion" class="text-danger"></span>
             </div>
             @if (!Model.Resolved)
@@ -45,13 +45,14 @@
                     <div class="col-md-2">
                         <label class="control-label">@comment.Owner.FullName</label>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         <label class="control-label">@comment.Date</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-8">
-                        <input class="form-control" readonly="readonly" value="@comment.Content"/>
+                        @*<input class="form-control" readonly="readonly" value="@comment.Content"/>*@
+                        <textarea class="form-control" readonly="readonly" rows="6">@comment.Content</textarea>
                     </div>
                 </div>
                 <hr />
@@ -83,4 +84,10 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <style>
+        textarea {
+            resize: none;
+        }
+    </style>
 }
