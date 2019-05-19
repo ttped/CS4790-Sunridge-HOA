@@ -158,7 +158,7 @@ namespace SunridgeHOA
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
 
-            var owners = context.Owner;
+            var owners = context.Owner.ToList();
 
             foreach (var owner in owners)
             {
