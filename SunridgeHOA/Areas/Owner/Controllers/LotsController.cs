@@ -536,7 +536,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 SelectedItems = lotItems
             };
 
-            ViewData["OwnerList"] = _context.Owner.ToList();
+            ViewData["OwnerList"] = _context.Owner.Where(u => u.FullName != "Super Admin").ToList();
             ViewData["Inventory"] = _context.Inventory.ToList();
             return View(vm);
         }
@@ -699,7 +699,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             }
             //ViewData["AddressId"] = new SelectList(_context.Address, "Id", "Id", lot.AddressId);
             //ViewData["Owner"] = new SelectList(_context.Owner, "OwnerId", "FullName");
-            ViewData["OwnerList"] = _context.Owner.ToList();
+            ViewData["OwnerList"] = _context.Owner.Where(u => u.FullName != "Super Admin").ToList();
             return View(vm);
         }
 
@@ -753,11 +753,6 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             if (!lot.OwnerLots.Select(u => u.OwnerId).Contains(loggedInUser.OwnerId))
             {
                 return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                var test = 5;
             }
 
             lot.TaxId = info.TaxId;

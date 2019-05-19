@@ -44,6 +44,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             {
                 owners = _context.Owner
                     .Include(u => u.OwnerLots).ThenInclude(m => m.Lot)
+                    .Where(u => u.FullName != "Super Admin")
                     .Where(u => u.FullName.ToLower().Contains(query.ToLower()))
                     .OrderBy(u => u.LastName);
             }
@@ -52,6 +53,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             {
                 owners = _context.Owner
                     .Include(u => u.OwnerLots).ThenInclude(m => m.Lot)
+                    .Where(u => u.FullName != "Super Admin")
                     .OrderBy(u => u.LastName);
             }
 
