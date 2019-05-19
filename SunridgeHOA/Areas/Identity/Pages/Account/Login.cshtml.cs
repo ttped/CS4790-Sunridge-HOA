@@ -79,7 +79,16 @@ namespace SunridgeHOA.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+
+                    // Default returnUrl value is "/"
+                    if (!String.IsNullOrEmpty(returnUrl) && returnUrl != "/")
+                    {
+                        return LocalRedirect(returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Dashboard", "General", new { area = "" });
+                    }
                 }
                 if (result.RequiresTwoFactor)
                 {
