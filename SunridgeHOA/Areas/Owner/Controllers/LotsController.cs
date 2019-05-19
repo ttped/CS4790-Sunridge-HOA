@@ -771,47 +771,47 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             return RedirectToAction(nameof(MyLots));
         }
 
-        // GET: Admin/Lots/Delete/5
-        [Authorize(Roles = "SuperAdmin, Admin")]
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //// GET: Admin/Lots/Delete/5
+        //[Authorize(Roles = "SuperAdmin, Admin")]
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var lot = await _context.Lot
-                .Include(l => l.Address)
-                .FirstOrDefaultAsync(m => m.LotId == id);
-            if (lot == null)
-            {
-                return NotFound();
-            }
+        //    var lot = await _context.Lot
+        //        .Include(l => l.Address)
+        //        .FirstOrDefaultAsync(m => m.LotId == id);
+        //    if (lot == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(lot);
-        }
+        //    return View(lot);
+        //}
 
-        // POST: Admin/Lots/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "SuperAdmin, Admin")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
-            var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+        //// POST: Admin/Lots/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //[Authorize(Roles = "SuperAdmin, Admin")]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+        //    var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
 
-            var lot = await _context.Lot.Include(u => u.Address).FirstOrDefaultAsync(u => u.LotId == id);
-            lot.LastModifiedBy = loggedInUser.FullName;
-            lot.LastModifiedDate = DateTime.Now;
-            lot.IsArchive = true;
-            lot.Address.LastModifiedBy = loggedInUser.FullName;
-            lot.Address.LastModifiedDate = DateTime.Now;
-            lot.Address.IsArchive = true;
+        //    var lot = await _context.Lot.Include(u => u.Address).FirstOrDefaultAsync(u => u.LotId == id);
+        //    lot.LastModifiedBy = loggedInUser.FullName;
+        //    lot.LastModifiedDate = DateTime.Now;
+        //    lot.IsArchive = true;
+        //    lot.Address.LastModifiedBy = loggedInUser.FullName;
+        //    lot.Address.LastModifiedDate = DateTime.Now;
+        //    lot.Address.IsArchive = true;
 
-            //_context.Lot.Remove(lot);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //    //_context.Lot.Remove(lot);
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool LotExists(int id)
         {
