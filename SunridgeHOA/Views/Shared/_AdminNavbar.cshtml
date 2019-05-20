@@ -15,20 +15,22 @@
 <div id="adminNavBar">
     <nav>
         <ul class="nav flex-column unselectable" id="adminNavBar">
-            <li class="nav-item">
-                <p>General</p>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active fas fa-tachometer-alt" href="~/General/Dashboard"> Dashboard </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link fas fa-home" asp-area="Owner" asp-controller="Lots" asp-action="MyLots"> My Lots</a>
-            </li>
-            @*<li class="nav-item">
+            @if (!User.IsInRole(SD.SuperAdminEndUser))
+            {
+                <li class="nav-item">
+                    <p>General</p>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active fas fa-tachometer-alt" href="~/General/Dashboard"> Dashboard </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fas fa-home" asp-area="Owner" asp-controller="Lots" asp-action="MyLots"> My Lots</a>
+                </li>
+                @*<li class="nav-item">
                 <a class="nav-link fas fa-dollar-sign" href="#"> Billing History</a>
             </li>*@
 
-            @*<li class="nav-item">
+                @*<li class="nav-item">
                 <a class="nav-link fas fa-file-alt dropdown-toggle" data-toggle="collapse" data-target="#accordian">
                     Classifieds
                 </a>
@@ -40,25 +42,26 @@
                 </div>
             </li>*@
 
-            <li class="nav-item">
-                <a class="nav-link fas fa-file-alt" asp-area="Owner" asp-controller="Classifieds" asp-action="Index"> Classifieds</a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link fas fa-file-alt" asp-area="Owner" asp-controller="Classifieds" asp-action="Index"> Classifieds</a>
+                </li>
 
-            <li class="nav-item">
-                <a class="nav-link fas fa-camera" href="~/OwnerPhotos/MyPhotos"> My Photos </a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link fas fa-camera" href="~/OwnerPhotos/MyPhotos"> My Photos </a>
+                </li>
 
-            @*<li class="nav-item">
+                @*<li class="nav-item">
                 <a class="nav-link fas fa-archive" asp-area="Admin" asp-controller="HOADocs" asp-action="Index"> HOA Documents</a>
             </li>*@
 
-            <li class="nav-item">
-                <a class="nav-link fas fa-clipboard-list" asp-area="" asp-controller="Home" asp-action="Forms"> Forms</a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link fas fa-clipboard-list" asp-area="" asp-controller="Home" asp-action="Forms"> Forms</a>
+                </li>
 
-            @*<li class="nav-item">
+                @*<li class="nav-item">
                 <a class="nav-link far fa-newspaper" href="~/NewsItem/Index"> News Items </a>
             </li>*@
+            }
 
             @if (User.IsInRole(SD.SuperAdminEndUser) || User.IsInRole(SD.AdminEndUser))
             {
@@ -69,8 +72,8 @@
                     <a class="nav-link fas fa-users" asp-area="Admin" asp-controller="Owners" asp-action="Index"> Owners</a>
                 </li>
                 @*<li class="nav-item">
-                    <a class="nav-link fas fa-history" asp-area="Admin" asp-controller="Admin" asp-action="OwnerActivity"> Owner Activity</a>
-                </li>*@
+                <a class="nav-link fas fa-history" asp-area="Admin" asp-controller="Admin" asp-action="OwnerActivity"> Owner Activity</a>
+            </li>*@
                 <li class="nav-item">
                     <a class="nav-link fas fa-key" asp-area="Admin" asp-controller="Keys" asp-action="Index"> Keys</a>
                 </li>
@@ -81,8 +84,8 @@
                     <a class="nav-link fas fa-map" asp-area="Owner" asp-controller="Lots" asp-action="Index"> HOA Lots</a>
                 </li>
                 @*<li class="nav-item">
-                    <a class="nav-link fas fa-money-check-alt" asp-area="Admin" asp-controller="Admin" asp-action="Transactions"> Transactions</a>
-                </li>*@
+                <a class="nav-link fas fa-money-check-alt" asp-area="Admin" asp-controller="Admin" asp-action="Transactions"> Transactions</a>
+            </li>*@
                 <li class="nav-item">
                     <a class="nav-link fas fa-clipboard-list" asp-area="Owner" asp-controller="Forms" asp-action="Index"> Reports</a>
                 </li>
