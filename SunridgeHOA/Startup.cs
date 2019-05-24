@@ -97,6 +97,7 @@ namespace SunridgeHOA
             FixPrimaryOwners(serviceProvider).Wait();
             FixAddresses(serviceProvider).Wait();
             CreateInitialIdentityUsers(serviceProvider).Wait();
+            RemoveLotLeadingZeroes(serviceProvider).Wait();
         }
 
         private async Task CreateRoles(IServiceProvider serviceProvider)
@@ -255,6 +256,30 @@ namespace SunridgeHOA
                 };
 
                 lot.Address = addr;
+            }
+
+            await context.SaveChangesAsync();
+        }
+
+        private async Task RemoveLotLeadingZeroes(IServiceProvider serviceProvider)
+        {
+            var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
+
+            var lots = await context.Lot.ToListAsync();
+            foreach (var lot in lots)
+            {
+                var lotParts = lot.LotNumber.Split('-');
+                if (lotParts.Count() < 2)
+                {
+                    continue;
+                }
+
+                var number = lotParts[1];
+                if (number.StartsWith('0'))
+                {
+                    number = number.TrimStart('0');
+                    lot.LotNumber = String.Join('-', lotParts[0], number);
+                }
             }
 
             await context.SaveChangesAsync();

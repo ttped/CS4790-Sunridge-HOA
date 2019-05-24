@@ -58,7 +58,8 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                     .Include(l => l.LotInventories).ThenInclude(l => l.Inventory)
                     .Where(u => u.LotNumber.ToLower().Contains(query.ToLower())) // use contains so searching "H2" picks up all H2** lots
                     //.Where(u => u.LotNumber != "HOA") // exclude generic HOA lot
-                    .OrderBy(u => u.LotNumber);
+                    //.OrderBy(u => u.LotNumber);
+                    .OrderBy(u => u); // Sorts by number in lot number - Lot implements IComparable to achieve this
             }
             // No search string - include all lots
             else
@@ -68,7 +69,8 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                        .Include(l => l.OwnerLots).ThenInclude(u => u.Owner)
                        .Include(l => l.LotInventories).ThenInclude(l => l.Inventory)
                        //.Where(u => u.LotNumber != "HOA")
-                       .OrderBy(u => u.LotNumber);
+                       //.OrderBy(u => u.LotNumber)
+                       .OrderBy(u => u); // Sorts by number in lot number - Lot implements IComparable to achieve this
             }
 
             int pageSize = 25;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SunridgeHOA.Models
 {
-    public class Lot
+    public class Lot : IComparable<Lot>
     {
         public int LotId { get; set; }
         public int AddressId { get; set; }
@@ -31,5 +31,20 @@ namespace SunridgeHOA.Models
         public virtual ICollection<LotHistory> LotHistories { get; set; }
         public virtual ICollection<Transaction> Transactions { get; set; }
 
+        public int CompareTo(Lot lot)
+        {
+            var thisParts = LotNumber.Split('-');
+            var otherParts = lot.LotNumber.Split('-');
+
+            if (thisParts.Count() < 2 || otherParts.Count() < 2)
+            {
+                return LotNumber.CompareTo(lot.LotNumber);
+            }
+
+            var thisNumber = Int32.Parse(thisParts[1]);
+            var otherNumber = Int32.Parse(otherParts[1]);
+
+            return thisNumber.CompareTo(otherNumber);
+        }
     }
 }
