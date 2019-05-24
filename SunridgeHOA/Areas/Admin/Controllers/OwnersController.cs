@@ -625,10 +625,53 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
             var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
 
+            // Hide owner from index pages
             var owner = await _context.Owner.FindAsync(id);
             owner.IsArchive = true;
             owner.LastModifiedBy = loggedInUser.FullName;
             owner.LastModifiedDate = DateTime.Now;
+
+            // Disable user login
+            var ownerLogin = await _userManager.FindByIdAsync(owner.ApplicationUserId);
+            ownerLogin.LockoutEnabled = true;
+            ownerLogin.LockoutEnd = DateTime.MaxValue;
+
+            // Remove owner from existing lots
+            var ownerLots = await _context.OwnerLot
+                .Where(u => u.OwnerId == owner.OwnerId)
+                .Where(u => !u.IsArchive)
+                .ToListAsync();
+            foreach (var rel in ownerLots)
+            {
+                rel.IsArchive = true;
+                rel.LastModifiedBy = loggedInUser.FullName;
+                rel.LastModifiedDate = DateTime.Now;
+            }
+
+            // Need to make sure that if the lot has other owners, they are listed as primary
+            var lotList = ownerLots.Select(u => u.LotId).ToHashSet();
+            var lots = await _context.Lot.Include(u => u.OwnerLots).Where(u => lotList.Contains(u.LotId)).ToListAsync();
+            foreach (var lot in lots)
+            {
+                var primary = lot.OwnerLots.Where(u => u.IsPrimary);
+
+                // If the lot has owners, and none of them are listed as a primary
+                if (lot.OwnerLots.Any() && !primary.Any())
+                {
+                    // Only one owner on the lot, therefore they are primary
+                    if (lot.OwnerLots.Count == 1)
+                    {
+                        lot.OwnerLots.ToList()[0].IsPrimary = true;
+                    }
+                    // More than one owner on the lot, just assume the first entry is primary
+                    else
+                    {
+                        lot.OwnerLots.ToList()[0].IsPrimary = true;
+                    }
+                }
+            }
+
+            await _userManager.UpdateAsync(ownerLogin);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
