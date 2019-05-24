@@ -41,37 +41,36 @@ namespace SunridgeHOA.Areas.Owner.Controllers
         }
 
         // GET: Classifieds
+        [Authorize(Roles = "SuperAdmin,Admin")]
         public async Task<ActionResult> Index()
         {
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
             var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
 
-            var userRole = _context.UserRoles.Where(x => x.UserId == identityUser.Id);
-
-            
             var vmList = new List<ClassifiedListingViewModel>();
-            foreach (var item in userRole)
+
+            var adminItems = _context.ClassifiedListing.ToList();
+            foreach (var listing in adminItems)
             {
-                var role = _context.Roles.Find(item.RoleId).Name;
-                if (role == "Admin" || role == "SuperAdmin")
+                var vm = new ClassifiedListingViewModel()
                 {
-                    var adminItems = _context.ClassifiedListing.ToList();
-                    foreach (var listing in adminItems)
-                    {
-                        var vm = new ClassifiedListingViewModel()
-                        {
-                            ClassifiedListing = listing,
-                            ClassifiedCategory = _context.ClassifiedCategory.ToList(),
-                            ClassifiedImages = _context.ClassifiedImage.ToList(),
-                            Owner = _context.Owner.ToList()
-                        };
-                        vmList.Add(vm);
-                    }
-                    //var getAll = _context.ClassifiedListing.ToListAsync();
-                    //return View(await getAll);
-                    return View(vmList);
-                }
+                    ClassifiedListing = listing,
+                    ClassifiedCategory = _context.ClassifiedCategory.ToList(),
+                    ClassifiedImages = _context.ClassifiedImage.ToList(),
+                    Owner = _context.Owner.ToList()
+                };
+                vmList.Add(vm);
             }
+
+            return View(vmList);
+        }
+
+        public async Task<ActionResult> MyClassifieds()
+        {
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+
+            var vmList = new List<ClassifiedListingViewModel>();
 
             var ownerItems = _context.ClassifiedListing.Where(x => x.OwnerId == loggedInUser.OwnerId).ToList();
             foreach (var listing in ownerItems)
@@ -86,10 +85,6 @@ namespace SunridgeHOA.Areas.Owner.Controllers
                 vmList.Add(vm);
             }
             return View(vmList);
-
-            //return View(await items);
-            //return View(classifiedListingViewModel);
-
         }
 
         // GET: Classifieds/Details/5
