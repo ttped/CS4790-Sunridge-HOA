@@ -41,11 +41,18 @@ namespace SunridgeHOA.Areas.Owner.Controllers
         }
 
         // GET: Classifieds
-        [Authorize(Roles = "SuperAdmin,Admin")]
+        //[Authorize(Roles = "SuperAdmin,Admin")]
         public async Task<ActionResult> Index()
         {
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
             var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+
+            // Need to redirect if user is not in an admin role
+            var roles = await _userManager.GetRolesAsync(identityUser);
+            if (!roles.Contains("Admin") && !roles.Contains("SuperAdmin"))
+            {
+                return RedirectToAction(nameof(MyClassifieds));
+            }
 
             var vmList = new List<ClassifiedListingViewModel>();
 
@@ -101,72 +108,16 @@ namespace SunridgeHOA.Areas.Owner.Controllers
             {
                 return NotFound();
             }
+
+            // Redirect to specific action for service details
+            if (item.ClassifiedCategoryId == 3)
+            {
+                return RedirectToAction(nameof(ServiceDetails), new { id });
+            }
+
             item.Images = await _context.ClassifiedImage.Where(x => x.ClassifiedListingId == item.ClassifiedListingId).ToListAsync();
 
             return View(item);
-        }
-
-        public IActionResult AddService()
-        {
-            return View();
-        }
-
-        [HttpPost, ActionName("AddService")]
-        public async Task<IActionResult> AddServicePOST()
-        {
-            var files = HttpContext.Request.Form.Files;
-            if (files == null || files.Count == 0)
-            {
-                ModelState.AddModelError("Files", "Please upload one file");
-            }
-
-            if (ModelState.IsValid)
-            {
-                var identityUser = await _userManager.GetUserAsync(HttpContext.User);
-                var loggedInUser = await _context.Owner.FindAsync(identityUser.OwnerId);
-
-                var service = new ClassifiedListing
-                {
-                    ClassifiedCategoryId = 3, // Manually set to "Other"
-                    ItemName = "Service",
-                    Description = "-------------------------",
-                    Price = 0,
-                    LastModifiedBy = loggedInUser.FullName,
-                    LastModifiedDate = DateTime.Now,
-                    ListingDate = DateTime.Now,
-                    Owner = loggedInUser,
-                    OwnerId = loggedInUser.OwnerId
-                };
-
-                _context.ClassifiedListing.Add(service);
-                await _context.SaveChangesAsync();
-
-                //image uploading
-                string webRootPath = _hostingEnvironment.WebRootPath;
-
-                var uploads = Path.Combine(webRootPath, @"img\ClassifiedsImages");
-
-                var file = files[0];
-                var extension = Path.GetExtension(file.FileName);
-                using (var filestream = new FileStream(Path.Combine(uploads, service.ClassifiedListingId  + extension), FileMode.Create))
-                {
-                    file.CopyTo(filestream); // moves to server and renames
-                }
-                var image = new ClassifiedImage()
-                {
-                    ClassifiedListingId = service.ClassifiedListingId,
-                    IsMainImage = (file == files.First()),
-                    ImageExtension = extension,
-                    ImageURL = @"\" + @"img\ClassifiedsImages" + @"\" + service.ClassifiedListingId + extension
-                };
-
-                _context.Add(image);
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction(nameof(Index));
-            }
-
-            return View();
         }
 
         // GET: Classifieds/Create
@@ -253,12 +204,19 @@ namespace SunridgeHOA.Areas.Owner.Controllers
                 return NotFound();
             }
 
-            var item = await _context.ClassifiedListing.FindAsync(id);
-            
+            var item = await _context.ClassifiedListing.SingleOrDefaultAsync(u => u.ClassifiedListingId == id);
+
             if (item == null)
             {
                 return NotFound();
             }
+
+            // Item is a service
+            if (item.ClassifiedCategoryId == 3)
+            {
+                return RedirectToAction(nameof(EditService), new { id });
+            }
+
             item.Images = await _context.ClassifiedImage.Where(x => x.ClassifiedListingId == item.ClassifiedListingId).ToListAsync();
             classifiedListingViewModel.ClassifiedListing = item;
 
@@ -328,6 +286,163 @@ namespace SunridgeHOA.Areas.Owner.Controllers
 
             ViewData["Category"] = new SelectList(_context.ClassifiedCategory, "ClassifiedCategoryId", "Description", item.ClassifiedCategoryId);
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> ServiceDetails(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var listing = await _context.ClassifiedListing
+                .Include(u => u.Images)
+                .Include(u => u.Owner)
+                .SingleOrDefaultAsync(u => u.ClassifiedListingId == id);
+
+            return View(listing);
+        }
+
+        public IActionResult AddService()
+        {
+            return View();
+        }
+
+        [HttpPost, ActionName("AddService")]
+        public async Task<IActionResult> AddServicePOST(string description)
+        {
+            if (String.IsNullOrEmpty(description))
+            {
+                ModelState.AddModelError("Description", "Please enter a description");
+            }
+
+            var files = HttpContext.Request.Form.Files;
+            if (files == null || files.Count == 0)
+            {
+                ModelState.AddModelError("Files", "Please upload one file");
+            }
+
+            if (ModelState.IsValid)
+            {
+                var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+                var loggedInUser = await _context.Owner.FindAsync(identityUser.OwnerId);
+
+                var service = new ClassifiedListing
+                {
+                    ClassifiedCategoryId = 3, // Manually set to "Other"
+                    ItemName = "Service",
+                    Description = description,
+                    Price = 0,
+                    LastModifiedBy = loggedInUser.FullName,
+                    LastModifiedDate = DateTime.Now,
+                    ListingDate = DateTime.Now,
+                    Owner = loggedInUser,
+                    OwnerId = loggedInUser.OwnerId
+                };
+
+                _context.ClassifiedListing.Add(service);
+                await _context.SaveChangesAsync();
+
+                //image uploading
+                string webRootPath = _hostingEnvironment.WebRootPath;
+
+                var uploads = Path.Combine(webRootPath, @"img\ClassifiedsImages");
+
+                var file = files[0];
+                var extension = Path.GetExtension(file.FileName);
+                using (var filestream = new FileStream(Path.Combine(uploads, service.ClassifiedListingId + extension), FileMode.Create))
+                {
+                    file.CopyTo(filestream); // moves to server and renames
+                }
+                var image = new ClassifiedImage()
+                {
+                    ClassifiedListingId = service.ClassifiedListingId,
+                    IsMainImage = (file == files.First()),
+                    ImageExtension = extension,
+                    ImageURL = @"\" + @"img\ClassifiedsImages" + @"\" + service.ClassifiedListingId + extension
+                };
+
+                _context.Add(image);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View();
+        }
+
+        public async Task<IActionResult> EditService(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var item = await _context.ClassifiedListing
+                .Include(u => u.Images)
+                .Include(u => u.Owner)
+                .SingleOrDefaultAsync(u => u.ClassifiedListingId == id);
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return View(item);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditService(int id, string description)
+        {
+            if (String.IsNullOrEmpty(description))
+            {
+                ModelState.AddModelError("Description", "Please enter a description");
+            }
+
+            var files = HttpContext.Request.Form.Files;
+
+            var service = await _context.ClassifiedListing
+                    .Include(u => u.Images)
+                    .SingleOrDefaultAsync(u => u.ClassifiedListingId == id);
+
+            if (ModelState.IsValid)
+            {
+                var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+                var loggedInUser = await _context.Owner.FindAsync(identityUser.OwnerId);
+                
+                service.Description = description;
+
+                if (files != null && files.Count > 0)
+                {
+                    var oldImage = service.Images[0];
+
+                    string webRootPath = _hostingEnvironment.WebRootPath;
+
+                    var uploads = Path.Combine(webRootPath, @"img\ClassifiedsImages");
+
+                    var file = files[0];
+                    var extension = Path.GetExtension(file.FileName);
+
+                    if (System.IO.File.Exists(Path.Combine(webRootPath, oldImage.ImageURL.Substring(1))))
+                    {
+                        System.IO.File.Delete(Path.Combine(webRootPath, oldImage.ImageURL.Substring(1)));
+                    }
+
+                    using (var filestream = new FileStream(Path.Combine(uploads, service.ClassifiedListingId + extension), FileMode.Create))
+                    {
+                        file.CopyTo(filestream); // moves to server and renames
+                    }
+
+                    oldImage.ImageExtension = extension;
+                    oldImage.ImageURL = @"\" + @"img\ClassifiedsImages" + @"\" + service.ClassifiedListingId + extension;
+                }
+                
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(service);
         }
 
         // GET: Classifieds/Delete/5

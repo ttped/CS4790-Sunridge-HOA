@@ -33,7 +33,7 @@
                         Category
                     </th>
                     <th>
-                        Image Count
+                        Description
                     </th>
                     <th></th>
                 </tr>
@@ -47,7 +47,15 @@
                         @Html.DisplayFor(modelItem => item.ClassifiedListing.ItemName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ClassifiedListing.Price)
+                        @if (item.ClassifiedListing.ItemName == "Service")
+                        {
+                            @:---
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => item.ClassifiedListing.Price)
+                        }
+
                     </td>
                     <td>
                         @item.ClassifiedListing.ListingDate.ToString("MM/dd/yyyy")
@@ -58,8 +66,15 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.ClassifiedListing.ClassifiedCategory.Description)
                     </td>
-                    <td >
-                        @item.ClassifiedImages.Where(u => u.ClassifiedListingId == item.ClassifiedListing.ClassifiedListingId).Count()
+                    <td>
+                        @{
+                            var maxLength = 50;
+                            var itemDescription = item.ClassifiedListing.Description;
+                            var description = itemDescription.Length < maxLength
+                                ? itemDescription
+                                : itemDescription.Substring(100) + "...";
+                        }
+                        @itemDescription
                     </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.ClassifiedListing.ClassifiedListingId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |

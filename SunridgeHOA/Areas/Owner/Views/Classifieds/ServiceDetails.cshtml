@@ -1,0 +1,46 @@
+﻿@model SunridgeHOA.Models.ClassifiedListing
+@{
+    ViewData["Title"] = "Service Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row col-12">
+
+    <div id="ownerContainer" class="col-10">
+        <h2>Service Details</h2>
+
+        <div>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ListingDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ListingDate)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Owner)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Owner.FullName)
+                </dd>
+                <dt>
+                    Current image
+                </dt>
+                <dd>
+                    <img src="@Model.Images[0].ImageURL" style="max-width:300px;" />
+                </dd>
+            </dl>
+        </div>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.ClassifiedListingId">Edit</a> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+</div>
