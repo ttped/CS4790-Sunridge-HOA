@@ -57,8 +57,6 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                     .Include(l => l.OwnerLots).ThenInclude(u => u.Owner)
                     .Include(l => l.LotInventories).ThenInclude(l => l.Inventory)
                     .Where(u => u.LotNumber.ToLower().Contains(query.ToLower())) // use contains so searching "H2" picks up all H2** lots
-                    //.Where(u => u.LotNumber != "HOA") // exclude generic HOA lot
-                    //.OrderBy(u => u.LotNumber);
                     .OrderBy(u => u); // Sorts by number in lot number - Lot implements IComparable to achieve this
             }
             // No search string - include all lots
@@ -68,8 +66,6 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                        .Include(l => l.Address)
                        .Include(l => l.OwnerLots).ThenInclude(u => u.Owner)
                        .Include(l => l.LotInventories).ThenInclude(l => l.Inventory)
-                       //.Where(u => u.LotNumber != "HOA")
-                       //.OrderBy(u => u.LotNumber)
                        .OrderBy(u => u); // Sorts by number in lot number - Lot implements IComparable to achieve this
             }
 
@@ -238,8 +234,120 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             return View(null);
         }
 
+        //[Authorize(Roles = "SuperAdmin, Admin")]
+        //public async Task<IActionResult> AddDocument(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var lot = _context.Lot.Find(id);
+        //    if (lot == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+        //    var roles = await _userManager.GetRolesAsync(identityUser);
+        //    var isAdmin = roles.Contains("Admin") || roles.Contains("SuperAdmin");
+
+        //    if (lot.LotNumber == "HOA" && !isAdmin)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    //var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+        //    var ownerLots = _context.OwnerLot
+        //        .Where(u => u.LotId == id)
+        //        .Where(u => u.OwnerId == identityUser.OwnerId);
+        //    if (!isAdmin && !ownerLots.Any())
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    ViewData["LotId"] = lot.LotId;
+        //    //ViewData["HistoryTypes"] = new SelectList(_context.HistoryType, "HistoryTypeId", "Description");
+
+        //    return View(new DocumentVM
+        //    {
+        //        Id = lot.LotId
+        //    });
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //[Authorize(Roles = "SuperAdmin, Admin")]
+        //public async Task<IActionResult> AddDocument(int id, DocumentVM vm)
+        //{
+        //    if (id != vm.Id)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+        //    var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+
+        //    var lot = _context.Lot.Find(vm.Id);
+
+        //    var files = HttpContext.Request.Form.Files;
+        //    if (files.Count == 0)
+        //    {
+        //        ModelState.AddModelError("Files", "Please upload at least one file");
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        var uploadFiles = new List<SunridgeHOA.Models.File>();
+        //        foreach (var file in files)
+        //        {
+        //            var webRootPath = _hostingEnv.WebRootPath;
+        //            var folder = SD.LotDocsFolder;
+        //            var uploads = Path.Combine(webRootPath, folder);
+        //            var name = Path.GetFileNameWithoutExtension(file.FileName);
+        //            var extension = Path.GetExtension(file.FileName);
+        //            var dateExt = DateTime.Now.ToString("MMddyyyy");
+        //            var newFileName = $"{lot.LotNumber} - {name} {dateExt}{extension}";
+
+        //            using (var filestream = new FileStream(Path.Combine(uploads, newFileName), FileMode.Create))
+        //            {
+        //                file.CopyTo(filestream);
+        //            }
+
+        //            var uploadFile = new SunridgeHOA.Models.File
+        //            {
+        //                FileURL = $@"\{folder}\{newFileName}",
+        //                //Date = DateTime.Now,
+        //                Description = Path.GetFileName(file.FileName)
+        //            };
+        //            _context.File.Add(uploadFile);
+        //            uploadFiles.Add(uploadFile);
+        //            //await _context.SaveChangesAsync();
+        //        }
+
+        //        var lotHistory = new LotHistory
+        //        {
+        //            LotId = lot.LotId,
+        //            //HistoryTypeId = vm.HistoryType,
+        //            //Date = DateTime.Now,
+        //            //Description = vm.Description,
+        //            PrivacyLevel = vm.AdminOnly ? "Admin" : "Owner",
+        //            LastModifiedBy = loggedInUser.FullName,
+        //            LastModifiedDate = DateTime.Now,
+        //            Files = uploadFiles
+        //        };
+        //        _context.LotHistory.Add(lotHistory);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(ViewFiles), new { id = id });
+        //    }
+
+        //    ViewData["LotId"] = lot.LotId;
+        //    //ViewData["HistoryTypes"] = new SelectList(_context.HistoryType, "HistoryTypeId", "Description", vm.HistoryType);
+        //    return View(vm);
+        //}
+
         [Authorize(Roles = "SuperAdmin, Admin")]
-        public async Task<IActionResult> AddDocument(int? id)
+        public async Task<IActionResult> AddDocuments(int? id)
         {
             if (id == null)
             {
@@ -256,11 +364,6 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             var roles = await _userManager.GetRolesAsync(identityUser);
             var isAdmin = roles.Contains("Admin") || roles.Contains("SuperAdmin");
 
-            if (lot.LotNumber == "HOA" && !isAdmin)
-            {
-                return NotFound();
-            }
-
             //var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
             var ownerLots = _context.OwnerLot
                 .Where(u => u.LotId == id)
@@ -271,83 +374,8 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             }
 
             ViewData["LotId"] = lot.LotId;
-            ViewData["HistoryTypes"] = new SelectList(_context.HistoryType, "HistoryTypeId", "Description");
 
-            return View(new DocumentVM
-            {
-                Id = lot.LotId
-            });
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "SuperAdmin, Admin")]
-        public async Task<IActionResult> AddDocument(int id, DocumentVM vm)
-        {
-            if (id != vm.Id)
-            {
-                return NotFound();
-            }
-
-            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
-            var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
-
-            var lot = _context.Lot.Find(vm.Id);
-
-            var files = HttpContext.Request.Form.Files;
-            if (files.Count == 0)
-            {
-                ModelState.AddModelError("Files", "Please upload at least one file");
-            }
-
-            if (ModelState.IsValid)
-            {
-                var uploadFiles = new List<SunridgeHOA.Models.File>();
-                foreach (var file in files)
-                {
-                    var webRootPath = _hostingEnv.WebRootPath;
-                    var folder = SD.LotDocsFolder;
-                    var uploads = Path.Combine(webRootPath, folder);
-                    var name = Path.GetFileNameWithoutExtension(file.FileName);
-                    var extension = Path.GetExtension(file.FileName);
-                    var dateExt = DateTime.Now.ToString("MMddyyyy");
-                    var newFileName = $"{lot.LotNumber} - {name} {dateExt}{extension}";
-
-                    using (var filestream = new FileStream(Path.Combine(uploads, newFileName), FileMode.Create))
-                    {
-                        file.CopyTo(filestream);
-                    }
-
-                    var uploadFile = new SunridgeHOA.Models.File
-                    {
-                        FileURL = $@"\{folder}\{newFileName}",
-                        Date = DateTime.Now,
-                        Description = Path.GetFileName(file.FileName)
-                    };
-                    _context.File.Add(uploadFile);
-                    uploadFiles.Add(uploadFile);
-                    //await _context.SaveChangesAsync();
-                }
-
-                var lotHistory = new LotHistory
-                {
-                    LotId = lot.LotId,
-                    HistoryTypeId = vm.HistoryType,
-                    Date = DateTime.Now,
-                    Description = vm.Description,
-                    PrivacyLevel = vm.AdminOnly ? "Admin" : "Owner",
-                    LastModifiedBy = loggedInUser.FullName,
-                    LastModifiedDate = DateTime.Now,
-                    Files = uploadFiles
-                };
-                _context.LotHistory.Add(lotHistory);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(ViewFiles), new { id = id });
-            }
-
-            ViewData["LotId"] = lot.LotId;
-            ViewData["HistoryTypes"] = new SelectList(_context.HistoryType, "HistoryTypeId", "Description", vm.HistoryType);
-            return View(vm);
+            return View();
         }
 
         public async Task<IActionResult> ViewFiles(int? id)
@@ -361,10 +389,6 @@ namespace SunridgeHOA.Areas.Admin.Controllers
             if (lot == null)
             {
                 return NotFound();
-            }
-            else if (lot.LotNumber == "HOA")
-            {
-                return RedirectToAction("Index", "HOADocs", new { area = "Admin" });
             }
 
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
@@ -381,7 +405,6 @@ namespace SunridgeHOA.Areas.Admin.Controllers
 
             var filesQuery = _context.LotHistory
                 .Include(u => u.Files)
-                .Include(u => u.HistoryType)
                 .Where(u => u.LotId == id);
             if (!isAdmin)
             {

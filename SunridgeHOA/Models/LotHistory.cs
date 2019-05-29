@@ -9,10 +9,7 @@ namespace SunridgeHOA.Models
     {
         public int LotHistoryId { get; set; }
         public int LotId { get; set; }
-        public int HistoryTypeId { get; set; }
 
-        public DateTime Date { get; set; }
-        public string Description { get; set; }
         public string PrivacyLevel { get; set; }
         public bool IsArchive { get; set; }
         public string LastModifiedBy { get; set; }
@@ -20,7 +17,6 @@ namespace SunridgeHOA.Models
 
         //Navigation Properties
         public virtual Lot Lot { get; set; }
-        public virtual HistoryType HistoryType { get; set; }
         public virtual ICollection<File> Files { get; set; }
         public ICollection<Comment> Comments { get; set; }
 
