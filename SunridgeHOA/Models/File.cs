@@ -8,23 +8,14 @@ namespace SunridgeHOA.Models
     public class File : DbItem
     {
         public int FileId { get; set; }
-        public int? LotHistoryId { get; set; }
-        //public int? FormHistoryId { get; set; }
-        //public int ClassifiedListingId { get; set; }
+        public int LotHistoryId { get; set; }
 
-        //int or bool?
-        //public int IsMainImage{ get; set; }
         public string FileURL { get; set; }
-        //public string ImageContentType { get; set; }
-        //public string FileStream { get; set; }
-        public string Type { get; set; }
-        public string Description { get; set; }
-        public DateTime Date { get; set; }
 
+        public string Name { get; set; }
+        public string Description { get; set; }
 
         //Nav properties
         public LotHistory LotHistory { get; set; }
-        //public FormResponse FormResponse { get; set; }
-        public ClassifiedListing ClassifiedListing { get; set; }
     }
 }

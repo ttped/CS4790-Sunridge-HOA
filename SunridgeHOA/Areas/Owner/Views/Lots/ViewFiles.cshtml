@@ -20,8 +20,8 @@
 
 @foreach (var hist in Model)
 {
-    <h4>@hist.Description</h4>
-    <label class="control-label">Uploaded on @hist.Date.ToString("MM/dd/yyyy") by @hist.LastModifiedBy</label>
+    @*<h4>@hist.Description</h4>
+    <label class="control-label">Uploaded on @hist.Date.ToString("MM/dd/yyyy") by @hist.LastModifiedBy</label>*@
     <div>
         @foreach (var file in hist.Files)
         {
