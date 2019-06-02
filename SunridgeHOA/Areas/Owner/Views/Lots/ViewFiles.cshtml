@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "View Lot Files";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    var isAdmin = User.IsInRole("SuperAdmin") || User.IsInRole("Admin");
 }
 
 <h2>Files for Lot @ViewBag.LotNumber</h2>
@@ -9,30 +11,54 @@
 <div class="row">
     <div class="col-md-2">
         <p>
-            @if (User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
+            @if (isAdmin)
             {
-                <a asp-action="AddDocument" asp-route-id="@ViewBag.LotId" class="btn btn-primary">Upload new Document</a>
+                <a asp-action="AddDocuments" asp-route-id="@ViewBag.LotId" class="btn btn-primary">Upload new Documents</a>
             }
             <a asp-action="Index" class="d-block">Back to List</a>
         </p>
     </div>
 </div>
 
-@foreach (var hist in Model)
-{
-    @*<h4>@hist.Description</h4>
-    <label class="control-label">Uploaded on @hist.Date.ToString("MM/dd/yyyy") by @hist.LastModifiedBy</label>*@
-    <div>
-        @foreach (var file in hist.Files)
-        {
-            <div>
-                <a href="@file.FileURL" target="_blank">@file.Description</a>
-            </div>
-        }
-    </div>
-}
-
 @if (!Model.Any())
 {
     <p>There are currently no documents uploaded for this lot.</p>
+}
+else
+{
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>File</th>
+            @if (isAdmin)
+            {
+                <th></th>
+            }
+        </tr>
+        @foreach (var hist in Model)
+        {
+            // Assuming that each LotHistory only has one file
+            var file = hist.Files.First();
+            var filename = file.FileURL.Split('\\').Last();
+            <tr>
+                <td>@file.Name</td>
+                <td>@file.Description</td>
+                <td>
+                    <a href="@file.FileURL" target="_blank">@filename</a>
+                </td>
+                @if (isAdmin)
+                {
+                    <td>
+                        <a asp-action="EditFile" class="btn btn-info btn-sm" 
+                           asp-route-lotId="@hist.LotId"
+                           asp-route-lotHistoryId="@hist.LotHistoryId">Edit</a>
+                        <a asp-action="DeleteFile" class="btn btn-danger btn-sm"
+                           asp-route-lotId="@hist.LotId"
+                           asp-route-lotHistoryId="@hist.LotHistoryId">Delete</a>
+                    </td>
+                }
+            </tr>
+        }
+    </table>
 }

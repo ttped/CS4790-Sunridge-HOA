@@ -1,0 +1,38 @@
+﻿@model File
+@{
+    ViewData["Title"] = "Delete File";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Delete File "@Model.Name"?</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <dl>
+            <dt>
+                Name
+            </dt>
+            <dd>
+                @Model.Name
+            </dd>
+            <dt>
+                Description
+            </dt>
+            <dd>
+                @Model.Description
+            </dd>
+            <dt>
+                File
+            </dt>
+            <dd>
+                @{ var filename = Model.FileURL.Split('\\').Last(); }
+                <a href="@Model.FileURL" target="_blank">@filename</a>
+            </dd>
+        </dl>
+        <form asp-action="DeleteFile">
+            <input type="hidden" asp-for="FileId" />
+            <input type="submit" class="btn btn-danger" value="Delete" />
+            <a asp-action="ViewFiles" asp-route-id="@ViewBag.LotId">Back to List</a>
+        </form>
+    </div>
+</div>

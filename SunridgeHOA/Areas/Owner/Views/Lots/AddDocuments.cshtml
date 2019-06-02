@@ -1,0 +1,130 @@
+﻿@model DocumentsVM
+@{
+    ViewData["Title"] = "Add Documents";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Add Documents for Lot @ViewBag.LotNumber</h2>
+
+<form asp-action="AddDocuments" enctype="multipart/form-data">
+    <div asp-validation-summary="All"></div>
+    <input type="hidden" name="LotId" value="@ViewBag.LotId" />
+    <table id="tblFiles" class="table" cellpadding="0" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>File</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr id="row0">
+                <td><input type="text" id="txtName" class="form-control" name="Files[0].Name" /></td>
+                <td><input type="text" id="txtDescription" class="form-control" name="Files[0].Description" /></td>
+                <td><input type="file" id="fileUpload" class="form-control" name="UploadedFiles[0]" /></td>
+                <td><input type="button" class="btn btn-danger" value="Remove" onclick="Remove(this)" /></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr><td><input type="button" id="btnAdd" class="btn btn-success" value="+" /></td></tr>
+        </tfoot>
+    </table>
+    <br />
+    <input type="submit" id="btnSave" class="btn btn-primary" value="Save All" />
+</form>
+
+@section Scripts {
+    @*<script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>*@
+    <script type="text/javascript">
+        var rowCount = 0;
+
+        $("#btnAdd").on("click", function () {
+            rowCount++;
+
+            //Get the reference of the Table's TBODY element.
+            var tBody = $("#tblFiles > TBODY")[0];
+
+            //Add Row.
+            var row = tBody.insertRow(-1);
+            row.id = 'row' + rowCount;
+
+            // Add cells one by one with the new count
+            var cell = $(row.insertCell(-1));
+            cell.append('<input type="text" id="txtName" class="form-control" name="Files[' + rowCount + '].Name" />')
+
+            cell = $(row.insertCell(-1));
+            cell.append('<input type="text" id="txtDescription" class="form-control" name="Files[' + rowCount + '].Description" />')
+
+            cell = $(row.insertCell(-1));
+            cell.append('<input type="file" id="fileUpload" class="form-control" name="UploadedFiles[' + rowCount + ']"/>')
+
+            //Add Button cell.
+            cell = $(row.insertCell(-1));
+            var btnRemove = $("<input />");
+            btnRemove.attr("type", "button");
+            btnRemove.attr("onclick", "Remove(this);");
+            btnRemove.val("Remove");
+            btnRemove.addClass('btn');
+            btnRemove.addClass('btn-danger')
+            cell.append(btnRemove);
+        });
+
+        function Remove(button) {
+            //Determine the reference of the Row using the Button.
+            var row = $(button).closest("TR");
+            var name = $("#txtName", row).eq(0).val();
+            if (confirm("Do you want to delete: " + name + '?')) {
+                //Get the reference of the Table.
+                var table = $("#tblFiles")[0];
+
+                //Delete the Table row using it's Index.
+                table.deleteRow(row[0].rowIndex);
+
+                var rows = $('tbody', table).children();
+
+                var tempCount = -1;
+                $.each(rows, function (index, value) {
+                    tempCount++;
+                    var row = $(value);
+                    
+                    if (row.attr('id') == 'row' + tempCount) {
+                        // Acts like continue
+                        return;
+                    }
+
+                    row.attr('id', 'row' + tempCount);
+                    var name = $('#txtName', row);
+                    name.attr('name', 'Files[' + tempCount + '].Name');
+
+                    var desc = $('#txtDescription', row);
+                    desc.attr('name', 'Files[' + tempCount + '].Description');
+                });
+            }
+        };
+
+        //$("body").on("click", "#btnSave", function () {
+        //    //Loop through the Table rows and build a JSON array.
+        //    var customers = new Array();
+        //    $("#tblCustomers TBODY TR").each(function () {
+        //        var row = $(this);
+        //        var customer = {};
+        //        customer.Name = row.find("TD").eq(0).html();
+        //        customer.Country = row.find("TD").eq(1).html();
+        //        customers.push(customer);
+        //    });
+
+        //    //Send the JSON array to Controller using AJAX.
+        //    $.ajax({
+        //        type: "POST",
+        //        url: "/Home/InsertCustomers",
+        //        data: JSON.stringify(customers),
+        //        contentType: "application/json; charset=utf-8",
+        //        dataType: "json",
+        //        success: function (r) {
+        //            alert(r + " record(s) inserted.");
+        //        }
+        //    });
+        //});
+    </script>
+}

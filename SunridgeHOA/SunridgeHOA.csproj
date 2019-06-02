@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\docs\HOA\**" />
+    <Compile Remove="wwwroot\docs\Owners\**" />
+    <Content Remove="wwwroot\docs\HOA\**" />
+    <Content Remove="wwwroot\docs\Owners\**" />
+    <EmbeddedResource Remove="wwwroot\docs\HOA\**" />
+    <EmbeddedResource Remove="wwwroot\docs\Owners\**" />
+    <None Remove="wwwroot\docs\HOA\**" />
+    <None Remove="wwwroot\docs\Owners\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Migrations\20190315011533_AddApplicationUser.cs" />
     <Compile Remove="Migrations\20190315011533_AddApplicationUser.Designer.cs" />
     <Compile Remove="Migrations\20190324070222__AddPhotoNewsItem.cs" />
@@ -33,10 +44,6 @@
     <Folder Include="Areas\Identity\Services\" />
 
     <Folder Include="wwwroot\docs\Lots\" />
-
-    <Folder Include="wwwroot\docs\HOA\" />
-
-    <Folder Include="wwwroot\docs\Owners\" />
 
     <Folder Include="wwwroot\images\events\" />
     <Folder Include="wwwroot\images\PhotoGallery\" />

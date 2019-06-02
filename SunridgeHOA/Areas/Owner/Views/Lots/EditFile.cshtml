@@ -1,0 +1,42 @@
+﻿@model File
+@{
+    ViewData["Title"] = "Edit File";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Edit "@Model.Name"</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="EditFile" enctype="multipart/form-data">
+            <input type="hidden" asp-for="FileId" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">File</label>
+                @{ var filename = Model.FileURL.Split('\\').Last(); }
+                <br /><label>Current: <a href="@Model.FileURL" target="_blank">@filename</a></label>
+                <input type="file" name="file" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Save" />
+            </div>
+        </form>
+        <div>
+            <a asp-action="ViewFiles" asp-route-id="@ViewBag.LotId">Back to List</a>
+        </div>
+    </div>
+
+    
+</div>
+
+
+

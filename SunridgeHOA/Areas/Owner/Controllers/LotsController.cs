@@ -373,9 +373,271 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            ViewData["LotNumber"] = lot.LotNumber;
             ViewData["LotId"] = lot.LotId;
 
             return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "SuperAdmin, Admin")]
+        public async Task<IActionResult> AddDocuments(int lotId, DocumentsVM vm)
+        {
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+
+            var lot = await _context.Lot.FindAsync(lotId);
+
+            var uploadedFiles = HttpContext.Request.Form.Files;
+
+            if (uploadedFiles.Count == 0)
+            {
+                ModelState.AddModelError("Files", "Please upload at least one file");
+            }
+
+            // Assume that every row has a file
+            // There is not a method currently to make sure a name/description matches a file, and vice versa
+            if (uploadedFiles.Count != vm.Files.Count)
+            {
+                ModelState.AddModelError("Files", "Please make sure every row has an uploaded file");
+            }
+
+            var submittedRows = new List<SunridgeHOA.Models.File>();
+            foreach (var file in vm.Files)
+            {
+                var hasName = !String.IsNullOrEmpty(file.Name);
+                var hasDesc = !String.IsNullOrEmpty(file.Description);
+
+                // This was a blank row, can ignore
+                if (!hasName && !hasDesc)
+                {
+                    continue;
+                }
+
+                if (String.IsNullOrEmpty(file.Name) || String.IsNullOrEmpty(file.Description))
+                {
+                    ModelState.AddModelError("Files", "Please make sure every file has a name and description");
+                    break;
+                }
+
+                // Add the file row to the array, so we can safely ignore empty rows
+                submittedRows.Add(file);
+            }
+
+            if (ModelState.IsValid)
+            {
+                //foreach (var file in submittedRows)
+                for (var i = 0; i < submittedRows.Count; i++)
+                {
+                    var fileDesc = submittedRows[i];
+                    var file = uploadedFiles[i];
+
+                    var webRootPath = _hostingEnv.WebRootPath;
+                    var folder = SD.LotDocsFolder;
+                    var uploads = Path.Combine(webRootPath, folder);
+                    var name = Path.GetFileNameWithoutExtension(file.FileName);
+                    var extension = Path.GetExtension(file.FileName);
+                    //var dateExt = DateTime.Now.ToString("MMddyyyy");
+                    var newFileName = $"{lot.LotNumber} - {name}{extension}";
+
+                    // Add (#) to the end of the file if there are files with the same name
+                    int copyCount = 0;
+                    while (System.IO.File.Exists(Path.Combine(uploads, newFileName)))
+                    {
+                        copyCount++;
+                        newFileName = $"{lot.LotNumber} - {name} ({copyCount}){extension}";
+                    }
+
+                    using (var filestream = new FileStream(Path.Combine(uploads, newFileName), FileMode.Create))
+                    {
+                        file.CopyTo(filestream);
+                    }
+
+                    var uploadFile = new SunridgeHOA.Models.File
+                    {
+                        FileURL = $@"\{folder}\{newFileName}",
+                        Name = fileDesc.Name,
+                        Description = fileDesc.Description,
+                        LastModifiedBy = loggedInUser.FullName,
+                        LastModifiedDate = DateTime.Now
+                    };
+                    _context.File.Add(uploadFile);
+
+                    var lotHistory = new LotHistory
+                    {
+                        LotId = lotId,
+                        PrivacyLevel = "Owner",
+                        LastModifiedBy = loggedInUser.FullName,
+                        LastModifiedDate = DateTime.Now,
+                        Files = new List<SunridgeHOA.Models.File> { uploadFile }
+                    };
+                    _context.LotHistory.Add(lotHistory);
+                }
+
+                
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(ViewFiles), new { id = lotId });
+            }
+
+            ViewData["LotId"] = lotId;
+            return View();
+        }
+
+        [Authorize(Roles = "SuperAdmin, Admin")]
+        public async Task<IActionResult> EditFile(int? lotId, int? lotHistoryId)
+        {
+            if (lotId == null || lotHistoryId == null)
+            {
+                return NotFound();
+            }
+
+            var lotHistory = await _context.LotHistory
+                .Include(u => u.Files)
+                .SingleOrDefaultAsync(u => u.LotHistoryId == lotHistoryId);
+
+            if (lotHistory == null || lotHistory.LotId != lotId)
+            {
+                return NotFound();
+            }
+
+            ViewData["LotId"] = lotId;
+            return View(lotHistory.Files.First());
+        }
+
+        [Authorize(Roles = "SuperAdmin, Admin")]
+        [HttpPost]
+        public async Task<IActionResult> EditFile(SunridgeHOA.Models.File updateFile)
+        {
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+
+            var file = await _context.File
+                .Include(u => u.LotHistory).ThenInclude(u => u.Lot)
+                .SingleOrDefaultAsync(u => u.FileId == updateFile.FileId);
+
+            if (file == null)
+            {
+                return NotFound();
+            }
+
+            var hasName = !String.IsNullOrEmpty(updateFile.Name);
+            var hasDesc = !String.IsNullOrEmpty(updateFile.Description);
+            if (!hasName)
+            {
+                ModelState.AddModelError("Name", "Please enter a value for the Name field");
+            }
+
+            if (!hasDesc)
+            {
+                ModelState.AddModelError("Description", "Please enter a value for the Description field");
+            }
+
+            if (ModelState.IsValid)
+            {
+                file.Name = updateFile.Name;
+                file.Description = updateFile.Description;
+                file.LastModifiedDate = DateTime.Now;
+                file.LastModifiedBy = loggedInUser.FullName;
+
+                file.LotHistory.LastModifiedDate = DateTime.Now;
+                file.LotHistory.LastModifiedBy = loggedInUser.FullName;
+
+                var uploadedFiles = HttpContext.Request.Form.Files;
+                if (uploadedFiles.Any())
+                {
+                    var uploadedFile = uploadedFiles[0];
+                    var lot = file.LotHistory.Lot;
+
+                    var webRootPath = _hostingEnv.WebRootPath;
+                    var folder = SD.LotDocsFolder;
+                    var uploads = Path.Combine(webRootPath, folder);
+                    var name = Path.GetFileNameWithoutExtension(uploadedFile.FileName);
+                    var extension = Path.GetExtension(uploadedFile.FileName);
+                    //var dateExt = DateTime.Now.ToString("MMddyyyy");
+                    var newFileName = $"{lot.LotNumber} - {name}{extension}";
+
+                    // Need substring to exclude '\' character because it breaks Path.Combine
+                    var existingFile = Path.Combine(webRootPath, file.FileURL.Substring(1));
+                    if (System.IO.File.Exists(existingFile))
+                    {
+                        System.IO.File.Delete(existingFile);
+                    }
+
+                    // Add (#) to the end of the file if there are files with the same name
+                    int copyCount = 0;
+                    while (System.IO.File.Exists(Path.Combine(uploads, newFileName)))
+                    {
+                        copyCount++;
+                        newFileName = $"{lot.LotNumber} - {name} ({copyCount}){extension}";
+                    }
+
+                    using (var filestream = new FileStream(Path.Combine(uploads, newFileName), FileMode.Create))
+                    {
+                        uploadedFile.CopyTo(filestream);
+                    }
+
+                    file.FileURL = $@"\{folder}\{newFileName}";
+                }
+
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(ViewFiles), new { id = file.LotHistory.Lot.LotId });
+            }
+
+            ViewData["LotId"] = file.LotHistory.Lot.LotId;
+            return View(file);
+        }
+
+        [Authorize(Roles = "SuperAdmin, Admin")]
+        public async Task<IActionResult> DeleteFile(int? lotId, int? lotHistoryId)
+        {
+            if (lotId == null || lotHistoryId == null)
+            {
+                return NotFound();
+            }
+
+            var lotHistory = await _context.LotHistory
+                .Include(u => u.Files)
+                .SingleOrDefaultAsync(u => u.LotHistoryId == lotHistoryId);
+
+            if (lotHistory == null || lotHistory.LotId != lotId)
+            {
+                return NotFound();
+            }
+
+            ViewData["LotId"] = lotId;
+            return View(lotHistory.Files.First());
+        }
+
+        [Authorize(Roles = "SuperAdmin, Admin")]
+        [HttpPost, ActionName("DeleteFile")]
+        public async Task<IActionResult> DeleteFileConfirmed(int fileId)
+        {
+            var file = await _context.File
+                .Include(u => u.LotHistory)
+                .SingleOrDefaultAsync(u => u.FileId == fileId);
+
+            if (file == null)
+            {
+                return NotFound();
+            }
+
+            var lot = file.LotHistory.LotId;
+
+            var webRootPath = _hostingEnv.WebRootPath;
+
+            // Need substring to exclude '\' character because it breaks Path.Combine
+            var existingFile = Path.Combine(webRootPath, file.FileURL.Substring(1));
+            if (System.IO.File.Exists(existingFile))
+            {
+                System.IO.File.Delete(existingFile);
+            }
+
+            _context.Remove(file);
+            _context.Remove(file.LotHistory);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(ViewFiles), new { id = lot });
         }
 
         public async Task<IActionResult> ViewFiles(int? id)
@@ -411,7 +673,7 @@ namespace SunridgeHOA.Areas.Admin.Controllers
                 filesQuery = filesQuery.Where(u => u.PrivacyLevel != "Admin");
             }
 
-            var files = await filesQuery.ToListAsync();
+            var files = (await filesQuery.ToListAsync()).OrderBy(u => u.Files.First().Name).ToList();
 
             ViewData["LotId"] = lot.LotId;
             ViewData["LotNumber"] = lot.LotNumber;
