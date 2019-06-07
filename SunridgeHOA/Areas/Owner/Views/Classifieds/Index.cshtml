@@ -72,9 +72,9 @@
                             var itemDescription = item.ClassifiedListing.Description;
                             var description = itemDescription.Length < maxLength
                                 ? itemDescription
-                                : itemDescription.Substring(100) + "...";
+                                : itemDescription.Substring(0, maxLength) + "...";
                         }
-                        @itemDescription
+                        @description
                     </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.ClassifiedListing.ClassifiedListingId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
