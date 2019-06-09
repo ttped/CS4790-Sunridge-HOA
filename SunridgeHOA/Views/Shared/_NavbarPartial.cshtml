@@ -111,10 +111,25 @@
                     Dashboard Menu
                 </a>
                 <div class="dropdown-menu" aria-labelledby="smallerscreenmenu">
-                    <a class="dropdown-item" href="#">Dashboard</a>
-                    <a class="dropdown-item" href="#">Profile</a>
-                    <a class="dropdown-item" href="#">Tasks</a>
-                    <a class="dropdown-item" href="#">Etc ...</a>
+                    <a class="dropdown-item" href="~/General/Dashboard">Dashboard</a>
+                    <a class="dropdown-item" asp-area="Owner" asp-controller="Lots" asp-action="MyLots">My Lots</a>
+                    <a class="dropdown-item" asp-area="Owner" asp-controller="Classifieds" asp-action="MyClassifieds">My Classifieds</a>
+                    <a class="dropdown-item" href="~/OwnerPhotos/MyPhotos">My Photos</a>
+                    <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Forms">Forms</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" asp-area="Admin" asp-controller="Owners" asp-action="Index">Owners</a>
+                    <a class="dropdown-item" asp-area="Admin" asp-controller="Keys" asp-action="Index">Keys</a>
+                    <a class="dropdown-item" asp-area="Admin" asp-controller="KeyHistory" asp-action="Index">Key History</a>
+                    <a class="dropdown-item" asp-area="Owner" asp-controller="Lots" asp-action="Index">HOA Lots</a>
+                    <a class="dropdown-item" asp-area="Owner" asp-controller="Forms" asp-action="Index">Reports</a>
+                    <a class="dropdown-item" asp-area="Admin" asp-controller="CommonAreaAssets" asp-action="Index">Common Area Assets</a>
+                    <a class="dropdown-item" asp-area="Owner" asp-controller="Classifieds" asp-action="Index">Classifieds</a>
+                    <a class="dropdown-item" href="~/AdminPhotos/Index">Photos</a>
+                    <a class="dropdown-item" asp-area="Admin" asp-controller="Inventories" asp-action="Index">Inventory Items</a>
+                    <a class="dropdown-item" asp-area="Admin" asp-controller="Banner" asp-action="Index">Banner Items</a>
+                    <a class="dropdown-item" href="~/NewsItem/Index">News Items</a>
+                    <a class="dropdown-item" asp-area="Admin" asp-controller="ScheduledEvents" asp-action="Index">Scheduled Events</a>
+
                 </div>
             </li><!-- Smaller devices menu END -->
 
