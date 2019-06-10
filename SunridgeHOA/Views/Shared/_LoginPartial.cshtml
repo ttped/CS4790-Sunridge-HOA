@@ -11,7 +11,7 @@
     <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <span class="small">Hello @owner.FullName!</span>
+                <span class="small d-none d-md-inline d-lg-inline">Hello @owner.FullName!</span>
                 <a asp-area="" asp-controller="General" asp-action="Dashboard" title="Manage" class="btn btn-link navbar-btn navbar-link">Dashboard</a>
             </li>
             <li>

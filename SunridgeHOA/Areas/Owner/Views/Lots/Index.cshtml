@@ -31,71 +31,74 @@
             </form>
         </div>
 
-        <table>
-            <thead id="headTr">
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model[0].LotNumber)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model[0].Address.StreetAddress)
-                    </th>
-                    <th>
-                        Owner(s)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model[0].TaxId)
-                    </th>
-                    <th>
-                        Lot Inventory
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+        <div class="table-responsive">
+            <table class="table">
+                <thead id="headTr">
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LotNumber)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Address.StreetAddress)
-                        </td>
-                        <td>
-                            @{
-                                var primary = item.OwnerLots.SingleOrDefault(u => u.IsPrimary);
-                                var primaryName = primary != null ? primary.Owner.FullName : String.Empty;
-                                var secondaries = item.OwnerLots.Where(u => !u.IsPrimary).Select(u => u.Owner);
-                            }
-                            <span style="font-weight:bold;">@primaryName</span>
-                            <br />
-                            @foreach (var owner in secondaries)
-                            {
-                                @owner.FullName
-                                <br />
-                            }
-                        </td>
-                        <td>
-                            @{ var taxLink = $"http://www3.co.weber.ut.us/psearch/tax_summary.php?id={item.TaxId}"; }
-                            <a href="@taxLink" target="_blank">@Html.DisplayFor(modelItem => item.TaxId)</a>
-                        </td>
-                        <td>
-                            @foreach (var inv in item.LotInventories)
-                            {
-                                @Html.DisplayFor(modelItem => inv.Inventory.Description)
-                                <br />
-                            }
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.LotId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
-                            <a asp-action="ViewFiles" asp-route-id="@item.LotId"><button type="button" class="btn btn-dark btn-sm">Files</button></a>
-                        </td>
-
+                        <th>
+                            @Html.DisplayNameFor(model => model[0].LotNumber)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model[0].Address.StreetAddress)
+                        </th>
+                        <th>
+                            Owner(s)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model[0].TaxId)
+                        </th>
+                        <th>
+                            Lot Inventory
+                        </th>
+                        <th></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LotNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address.StreetAddress)
+                            </td>
+                            <td>
+                                @{
+                                    var primary = item.OwnerLots.SingleOrDefault(u => u.IsPrimary);
+                                    var primaryName = primary != null ? primary.Owner.FullName : String.Empty;
+                                    var secondaries = item.OwnerLots.Where(u => !u.IsPrimary).Select(u => u.Owner);
+                                }
+                                <span style="font-weight:bold;">@primaryName</span>
+                                <br />
+                                @foreach (var owner in secondaries)
+                                {
+                                    @owner.FullName
+                                    <br />
+                                }
+                            </td>
+                            <td>
+                                @{ var taxLink = $"http://www3.co.weber.ut.us/psearch/tax_summary.php?id={item.TaxId}"; }
+                                <a href="@taxLink" target="_blank">@Html.DisplayFor(modelItem => item.TaxId)</a>
+                            </td>
+                            <td>
+                                @foreach (var inv in item.LotInventories)
+                                {
+                                    @Html.DisplayFor(modelItem => inv.Inventory.Description)
+                                    <br />
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.LotId" class="btn btn-info btn-sm">Edit</a>
+                                <a asp-action="ViewFiles" asp-route-id="@item.LotId" class="btn btn-dark btn-sm">Files</a>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        
 
         @{
             var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
