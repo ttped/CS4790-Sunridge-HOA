@@ -1,326 +1,151 @@
 ﻿@using SunridgeHOA.Utility;
-@*
-    <link rel="Stylesheet" href="~/css/adminnavbar.css?version=51" type="text/css" />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-*@
 
-@*<link rel="Stylesheet" href="~/css/Admin/transactions.css" type="text/css" />
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-<link rel="Stylesheet" href="~/css/Admin/adminnavbar.css?version=51" type="text/css" />
-<link rel="Stylesheet" href="~/css/Admin/window.css" type="text/css" />
-<link rel="Stylesheet" href="~/css/Admin/table.css" type="text/css" />
-<link rel="Stylesheet" href="~/css/Admin/search-bar.css" type="text/css" />
-<link rel="Stylesheet" href="~/css/Admin/content.css" type="text/css" />*@
-<!--<div id="adminNavBar">
-    <nav>
-        <ul class="nav flex-column unselectable" id="adminNavBar">
-            @if (!User.IsInRole(SD.SuperAdminEndUser))
-            {
-                <li class="nav-item">
-                    <p>General</p>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active fas fa-tachometer-alt" href="~/General/Dashboard"> Dashboard </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fas fa-home" asp-area="Owner" asp-controller="Lots" asp-action="MyLots"> My Lots</a>
-                </li>
-                @*<li class="nav-item">
-                <a class="nav-link fas fa-dollar-sign" href="#"> Billing History</a>
-            </li>*@
-
-                @*<li class="nav-item">
-                <a class="nav-link fas fa-file-alt dropdown-toggle" data-toggle="collapse" data-target="#accordian">
-                    Classifieds
-                </a>
-                <div id="accordian" class="collapse">
-                    <ul>
-                        <li class="nav-item"><a id="accordian" class="nav-link far fa-circle" href="#">&nbsp;View&nbsp;Ads</a></li>
-                        <li class="nav-item"><a id="accordian" class="nav-link fas fa-circle" asp-area="Owner" asp-controller="Classifieds" asp-action="Index">&nbsp;Post&nbsp;a&nbsp;New&nbsp;Ad</a></li>
-                    </ul>
-                </div>
-            </li>*@
-
-                <li class="nav-item">
-                    <a class="nav-link fas fa-file-alt" asp-area="Owner" asp-controller="Classifieds" asp-action="MyClassifieds"> My Classifieds</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link fas fa-camera" href="~/OwnerPhotos/MyPhotos"> My Photos </a>
-                </li>
-
-                @*<li class="nav-item">
-                <a class="nav-link fas fa-archive" asp-area="Admin" asp-controller="HOADocs" asp-action="Index"> HOA Documents</a>
-            </li>*@
-
-                <li class="nav-item">
-                    <a class="nav-link fas fa-clipboard-list" asp-area="" asp-controller="Home" asp-action="Forms"> Forms</a>
-                </li>
-
-                @*<li class="nav-item">
-                <a class="nav-link far fa-newspaper" href="~/NewsItem/Index"> News Items </a>
-            </li>*@
-            }
-
-            @if (User.IsInRole(SD.SuperAdminEndUser) || User.IsInRole(SD.AdminEndUser))
-            {
-                <li class="nav-item" style="margin-top:10px;">
-                    <p>Admin</p>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fas fa-users" asp-area="Admin" asp-controller="Owners" asp-action="Index"> Owners</a>
-                </li>
-                @*<li class="nav-item">
-                <a class="nav-link fas fa-history" asp-area="Admin" asp-controller="Admin" asp-action="OwnerActivity"> Owner Activity</a>
-            </li>*@
-                <li class="nav-item">
-                    <a class="nav-link fas fa-key" asp-area="Admin" asp-controller="Keys" asp-action="Index"> Keys</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fas fa-key" asp-area="Admin" asp-controller="KeyHistory" asp-action="Index"> Key History</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fas fa-map" asp-area="Owner" asp-controller="Lots" asp-action="Index"> HOA Lots</a>
-                </li>
-                @*<li class="nav-item">
-                <a class="nav-link fas fa-money-check-alt" asp-area="Admin" asp-controller="Admin" asp-action="Transactions"> Transactions</a>
-            </li>*@
-                <li class="nav-item">
-                    <a class="nav-link fas fa-clipboard-list" asp-area="Owner" asp-controller="Forms" asp-action="Index"> Reports</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fas fa-wrench" asp-area="Admin" asp-controller="CommonAreaAssets" asp-action="Index"> Common Area Assets</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fas fa-burn" asp-area="Admin" asp-controller="Inventories" asp-action="Index"> Inventory Items</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fas fa-flag" asp-area="Admin" asp-controller="Banner" asp-action="Index"> Banner Items</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fas fa-file-alt" asp-area="Owner" asp-controller="Classifieds" asp-action="Index"> Classifieds</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fas fa-camera" href="~/AdminPhotos/Index"> Photos </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fas fa-newspaper" href="~/NewsItem/Index"> <b>News Items</b> </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fas fa-calendar-alt" asp-area="Admin" asp-controller="ScheduledEvents" asp-action="Index"> Events</a>
-                </li>
-            }
-        </ul>
-    </nav>
-</div>-->
 <!-- Sidebar -->
 <div id="sidebar-container" class="sidebar-expanded d-none d-md-block">
     <!-- d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu' -->
     <!-- Bootstrap List Group -->
     <ul class="list-group">
-        <!-- Separator with title -->
-        <li class="list-group-item sidebar-separator-title d d-flex align-items-center menu-collapsed">
-            <small>General</small>
-        </li>
-        <!-- /END Separator -->
-        <!-- Menu with submenu -->
-        @*<a href="#submenu1" data-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action flex-column align-items-start">
-            <div class="d-flex w-100 justify-content-start align-items-center">
-                <span class="fa fa-dashboard fa-fw mr-3"></span>
-                <span class="menu-collapsed">Dashboard</span>
-                <span class="submenu-icon ml-auto"></span>
-            </div>
-        </a>
-        <!-- Submenu content -->
-        <div id='submenu1' class="collapse sidebar-submenu">
-            <a href="#" class="list-group-item list-group-item-action text-white">
-                <span class="menu-collapsed">Charts</span>
+        @if (!User.IsInRole(SD.SuperAdminEndUser))
+        {
+            <!-- Separator with title -->
+            <li class="list-group-item sidebar-separator-title d d-flex align-items-center menu-collapsed">
+                <small>General</small>
+            </li>
+            <!-- /END Separator -->
+
+            <a href="~/General/Dashboard" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-tachometer-alt fa-fw mr-3"></span>
+                    <span class="menu-collapsed">Dashboard</span>
+                </div>
             </a>
-            <a href="#" class="list-group-item list-group-item-action text-white">
-                <span class="menu-collapsed">Reports</span>
+
+            <a asp-area="Owner" asp-controller="Lots" asp-action="MyLots" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-home fa-fw mr-3"></span>
+                    <span class="menu-collapsed">My Lots</span>
+                </div>
             </a>
-            <a href="#" class="list-group-item list-group-item-action text-white">
-                <span class="menu-collapsed">Tables</span>
+
+            <a asp-area="Owner" asp-controller="Classifieds" asp-action="MyClassifieds" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-dollar-sign fa-fw mr-3"></span>
+                    <span class="menu-collapsed">My Classifieds</span>
+                </div>
             </a>
-        </div>
 
-        <a href="#submenu2" data-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action flex-column align-items-start">
-            <div class="d-flex w-100 justify-content-start align-items-center">
-                <span class="fa fa-user fa-fw mr-3"></span>
-                <span class="menu-collapsed">Profile</span>
-                <span class="submenu-icon ml-auto"></span>
-            </div>
-        </a>
-        <!-- Submenu content -->
-        <div id='submenu2' class="collapse sidebar-submenu">
-            <a href="#" class="list-group-item list-group-item-action text-white">
-                <span class="menu-collapsed">Settings</span>
+            <a href="~/OwnerPhotos/MyPhotos" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-camera fa-fw mr-3"></span>
+                    <span class="menu-collapsed">My Photos</span>
+                </div>
             </a>
-            <a href="#" class="list-group-item list-group-item-action text-white">
-                <span class="menu-collapsed">Password</span>
+
+            <a asp-area="" asp-controller="Home" asp-action="Forms" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-clipboard-list fa-fw mr-3"></span>
+                    <span class="menu-collapsed">Forms</span>
+                </div>
             </a>
-        </div>*@
-
-        <a href="~/General/Dashboard" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-start align-items-center">
-                <span class="fa fa-tachometer-alt fa-fw mr-3"></span>
-                <span class="menu-collapsed">Dashboard</span>
-            </div>
-        </a>
-
-        <a asp-area="Owner" asp-controller="Lots" asp-action="MyLots" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-start align-items-center">
-                <span class="fa fa-home fa-fw mr-3"></span>
-                <span class="menu-collapsed">My Lots</span>
-            </div>
-        </a>
-
-        <a asp-area="Owner" asp-controller="Classifieds" asp-action="MyClassifieds" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-start align-items-center">
-                <span class="fa fa-dollar-sign fa-fw mr-3"></span>
-                <span class="menu-collapsed">My Classifieds</span>
-            </div>
-        </a>
-
-        <a href="~/OwnerPhotos/MyPhotos" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-start align-items-center">
-                <span class="fa fa-camera fa-fw mr-3"></span>
-                <span class="menu-collapsed">My Photos</span>
-            </div>
-        </a>
-
-        <a asp-area="" asp-controller="Home" asp-action="Forms" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-start align-items-center">
-                <span class="fa fa-clipboard-list fa-fw mr-3"></span>
-                <span class="menu-collapsed">Forms</span>
-            </div>
-        </a>
+        }
 
 
-
-
-        <!-- Separator with title -->
-        <li class="list-group-item sidebar-separator-title d-flex align-items-center menu-collapsed">
-            <small>Admin</small>
-        </li>
-        <!-- /END Separator -->
-        <a asp-area="Admin" asp-controller="Owners" asp-action="Index" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-start align-items-center">
-                <span class="fa fa-users fa-fw mr-3"></span>
-                <span class="menu-collapsed">Owners</span>
-            </div>
-        </a>
-
-        <a asp-area="Admin" asp-controller="Keys" asp-action="Index" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-start align-items-center">
-                <span class="fa fa-key fa-fw mr-3"></span>
-                <span class="menu-collapsed">Keys</span>
-            </div>
-        </a>
-
-        <a asp-area="Admin" asp-controller="KeyHistory" asp-action="Index" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-start align-items-center">
-                <span class="fa fa-key fa-fw mr-3"></span>
-                <span class="menu-collapsed">Key History</span>
-            </div>
-        </a>
-
-        <a asp-area="Owner" asp-controller="Lots" asp-action="Index" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-start align-items-center">
-                <span class="fa fa-map fa-fw mr-3"></span>
-                <span class="menu-collapsed">HOA Lots</span>
-            </div>
-        </a>
-
-        <a asp-area="Owner" asp-controller="Forms" asp-action="Index" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-start align-items-center">
-                <span class="fa fa-clipboard-list fa-fw mr-3"></span>
-                <span class="menu-collapsed">Reports</span>
-            </div>
-        </a>
-
-        <a asp-area="Admin" asp-controller="CommonAreaAssets" asp-action="Index" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-start align-items-center">
-                <span class="fa fa-wrench fa-fw mr-3"></span>
-                <span class="menu-collapsed">Common Area Assets</span>
-            </div>
-        </a>
-
-        @*<a asp-area="Admin" asp-controller="Inventories" asp-action="Index" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-start align-items-center">
-                <span class="fa fa-burn fa-fw mr-3"></span>
-                <span class="menu-collapsed">Inventory Items</span>
-            </div>
-        </a>*@
-
-        @*<a asp-area="Admin" asp-controller="Banner" asp-action="Index" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-start align-items-center">
-                <span class="fa fa-flag fa-fw mr-3"></span>
-                <span class="menu-collapsed">Banner Items</span>
-            </div>
-        </a>*@
-
-        <a asp-area="Owner" asp-controller="Classifieds" asp-action="Index" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-start align-items-center">
-                <span class="fa fa-dollar-sign fa-fw mr-3"></span>
-                <span class="menu-collapsed">Classifieds</span>
-            </div>
-        </a>
-
-        <a href="~/AdminPhotos/Index" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-start align-items-center">
-                <span class="fa fa-camera fa-fw mr-3"></span>
-                <span class="menu-collapsed">Photos</span>
-            </div>
-        </a>
-
-        @*<a href="~/NewsItem/Index" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-start align-items-center">
-                <span class="fa fa-newspaper fa-fw mr-3"></span>
-                <span class="menu-collapsed">News Items</span>
-            </div>
-        </a>*@
-
-        @*<a asp-area="Admin" asp-controller="ScheduledEvents" asp-action="Index" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-start align-items-center">
-                <span class="fa fa-calendar-alt fa-fw mr-3"></span>
-                <span class="menu-collapsed">Events</span>
-            </div>
-        </a>*@
-
-        <a href="#submenu1" data-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action flex-column align-items-start">
-            <div class="d-flex w-100 justify-content-start align-items-center">
-                <span class="fa fa-globe fa-fw mr-3"></span>
-                <span class="menu-collapsed">Site Admin</span>
-                <span class="fa fa-caret-down ml-auto"></span>
-            </div>
-        </a>
-        <!-- Submenu content -->
-        <div id='submenu1' class="collapse sidebar-submenu">
-            <a asp-area="Admin" asp-controller="Inventories" asp-action="Index" class="list-group-item list-group-item-action text-white">
-                <span class="menu-collapsed">Inventory Items</span>
+        @if (User.IsInRole(SD.SuperAdminEndUser) || User.IsInRole(SD.AdminEndUser))
+        {
+            <!-- Separator with title -->
+            <li class="list-group-item sidebar-separator-title d-flex align-items-center menu-collapsed">
+                <small>Admin</small>
+            </li>
+            <!-- /END Separator -->
+            <a asp-area="Admin" asp-controller="Owners" asp-action="Index" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-users fa-fw mr-3"></span>
+                    <span class="menu-collapsed">Owners</span>
+                </div>
             </a>
-            <a asp-area="Admin" asp-controller="Banner" asp-action="Index" class="list-group-item list-group-item-action text-white">
-                <span class="menu-collapsed">Banner Items</span>
+
+            <a asp-area="Admin" asp-controller="Keys" asp-action="Index" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-key fa-fw mr-3"></span>
+                    <span class="menu-collapsed">Keys</span>
+                </div>
             </a>
-            <a href="~/NewsItem/Index" class="list-group-item list-group-item-action text-white">
-                <span class="menu-collapsed">News Items</span>
+
+            <a asp-area="Admin" asp-controller="KeyHistory" asp-action="Index" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-key fa-fw mr-3"></span>
+                    <span class="menu-collapsed">Key History</span>
+                </div>
             </a>
-            <a asp-area="Admin" asp-controller="ScheduledEvents" asp-action="Index" class="list-group-item list-group-item-action text-white">
-                <span class="menu-collapsed">Events</span>
+
+            <a asp-area="Owner" asp-controller="Lots" asp-action="Index" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-map fa-fw mr-3"></span>
+                    <span class="menu-collapsed">HOA Lots</span>
+                </div>
             </a>
-        </div>
+
+            <a asp-area="Owner" asp-controller="Forms" asp-action="Index" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-clipboard-list fa-fw mr-3"></span>
+                    <span class="menu-collapsed">Reports</span>
+                </div>
+            </a>
+
+            <a asp-area="Admin" asp-controller="CommonAreaAssets" asp-action="Index" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-wrench fa-fw mr-3"></span>
+                    <span class="menu-collapsed">Common Area Assets</span>
+                </div>
+            </a>
+
+            <a asp-area="Owner" asp-controller="Classifieds" asp-action="Index" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-dollar-sign fa-fw mr-3"></span>
+                    <span class="menu-collapsed">Classifieds</span>
+                </div>
+            </a>
+
+            <a href="~/AdminPhotos/Index" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-camera fa-fw mr-3"></span>
+                    <span class="menu-collapsed">Photos</span>
+                </div>
+            </a>
+
+            <a href="#submenu1" data-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-globe fa-fw mr-3"></span>
+                    <span class="menu-collapsed">Site Admin</span>
+                    <span class="fa fa-caret-down ml-auto"></span>
+                </div>
+            </a>
+            <!-- Submenu content -->
+            <div id='submenu1' class="collapse sidebar-submenu">
+                <a asp-area="Admin" asp-controller="Inventories" asp-action="Index" class="list-group-item list-group-item-action text-white">
+                    <span class="menu-collapsed">Inventory Items</span>
+                </a>
+                <a asp-area="Admin" asp-controller="Banner" asp-action="Index" class="list-group-item list-group-item-action text-white">
+                    <span class="menu-collapsed">Banner Items</span>
+                </a>
+                <a href="~/NewsItem/Index" class="list-group-item list-group-item-action text-white">
+                    <span class="menu-collapsed">News Items</span>
+                </a>
+                <a asp-area="Admin" asp-controller="ScheduledEvents" asp-action="Index" class="list-group-item list-group-item-action text-white">
+                    <span class="menu-collapsed">Events</span>
+                </a>
+            </div>
+        }
 
         <!-- Separator without title -->
         <li class="list-group-item sidebar-separator menu-collapsed"></li>
         <!-- /END Separator -->
         @*<a href="#" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-start align-items-center">
-                <span class="fa fa-question fa-fw mr-3"></span>
-                <span class="menu-collapsed">Help</span>
-            </div>
-        </a>*@
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-question fa-fw mr-3"></span>
+                    <span class="menu-collapsed">Help</span>
+                </div>
+            </a>*@
         <a href="#" data-toggle="sidebar-collapse" class="list-group-item list-group-item-action d-flex align-items-center">
             <div class="d-flex w-100 justify-content-start align-items-center">
                 <span id="collapse-icon" class="fa fa-2x mr-3"></span>

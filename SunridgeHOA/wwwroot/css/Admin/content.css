@@ -12,12 +12,12 @@ table, td, th {
 }
 
 
-.ownerContainer {
+/*.ownerContainer {
     width: 100%;
     border: 0px;
     margin-left: 10px;
     margin-right: 10px;
-}
+}*/
 
 
 #headTr {
@@ -66,9 +66,19 @@ h2{
     margin-left: 10px;
 }
 
-#divSpace {
-    width:5px;
+th.shrink-responsive {
+    font-size: 1em;
 }
+
+@media (max-width: 992px) {
+    th.shrink-responsive {
+        font-size: .9em;
+    }
+}
+
+/*#divSpace {
+    width:5px;
+}*/
 
 /*#bannerHead {
     width:15%;
