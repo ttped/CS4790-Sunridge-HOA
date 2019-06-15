@@ -5,107 +5,103 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<h2>HOA Lots Index</h2>
 
-<div class="row">
-    <div class="ownerContainer">
-        <h2>HOA Lots Index</h2>
-
-        <p id="createAlign">
-            <a asp-action="Create"><button type="button" class="btn btn-primary btn-sm">Create New HOA Lots</button></a>
-        </p>
-
-        <div id="searchalignBylot">
-            <form asp-area="Owner" asp-controller="Lots" asp-action="Index" class="form-inline">
-                <div>
-                    <div class="row">
-                        <div>
-                            <b>Search by Lot #: </b><input type="text" name="Query" />
-                        </div>
-                        <div id="divSpace"></div>
-                        <div>
-                            <input type="submit" value="Search" id="search" class="btn btn-secondary btn-sm" />
-                            <a asp-action="Index">Show Full List</a>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <div class="table-responsive">
-            <table class="table">
-                <thead id="headTr">
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model[0].LotNumber)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model[0].Address.StreetAddress)
-                        </th>
-                        <th>
-                            Owner(s)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model[0].TaxId)
-                        </th>
-                        <th>
-                            Lot Inventory
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.LotNumber)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Address.StreetAddress)
-                            </td>
-                            <td>
-                                @{
-                                    var primary = item.OwnerLots.SingleOrDefault(u => u.IsPrimary);
-                                    var primaryName = primary != null ? primary.Owner.FullName : String.Empty;
-                                    var secondaries = item.OwnerLots.Where(u => !u.IsPrimary).Select(u => u.Owner);
-                                }
-                                <span style="font-weight:bold;">@primaryName</span>
-                                <br />
-                                @foreach (var owner in secondaries)
-                                {
-                                    @owner.FullName
-                                    <br />
-                                }
-                            </td>
-                            <td>
-                                @{ var taxLink = $"http://www3.co.weber.ut.us/psearch/tax_summary.php?id={item.TaxId}"; }
-                                <a href="@taxLink" target="_blank">@Html.DisplayFor(modelItem => item.TaxId)</a>
-                            </td>
-                            <td>
-                                @foreach (var inv in item.LotInventories)
-                                {
-                                    @Html.DisplayFor(modelItem => inv.Inventory.Description)
-                                    <br />
-                                }
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.LotId" class="btn btn-info btn-sm">Edit</a>
-                                <a asp-action="ViewFiles" asp-route-id="@item.LotId" class="btn btn-dark btn-sm">Files</a>
-                            </td>
-
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-        
-
-        @{
-            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-        }
-
-        <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-query="@ViewBag.CurrentQuery" class="btn btn-default @prevDisabled">Previous</a>
-        <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-query="@ViewBag.CurrentQuery" class="btn btn-default @nextDisabled">Next</a>
+<div class="row justify-content-between">
+    <div class="col-lg-4 offset-lg-8 col-md-6 offset-md-6">
+        <form asp-action="Index" class="form">
+            <div class="input-group">
+                <input type="text" class="form-control" name="Query" placeholder="Search by lot number" />
+                <div class="input-group-append"><input type="submit" value="Search" id="search" class="btn btn-secondary" /></div>
+            </div>
+            <div class="mt-2">
+                <a asp-action="Index" class="ml-2">Show Full List</a>
+            </div>
+        </form>
     </div>
 </div>
+
+<div class="table-responsive-sm">
+    <table class="table table-responsive-sm table-hover">
+        <thead id="headTr">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].LotNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].Address.StreetAddress)
+                </th>
+                <th>
+                    Owner(s)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].TaxId)
+                </th>
+                <th>
+                    Lot Inventory
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LotNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address.StreetAddress)
+                    </td>
+                    <td>
+                        @{
+                            var primary = item.OwnerLots.SingleOrDefault(u => u.IsPrimary);
+                            var primaryName = primary != null ? primary.Owner.FullName : String.Empty;
+                            var secondaries = item.OwnerLots.Where(u => !u.IsPrimary).Select(u => u.Owner);
+                        }
+                        <span style="font-weight:bold;">@primaryName</span>
+                        <br />
+                        @foreach (var owner in secondaries)
+                        {
+                            @owner.FullName
+                            <br />
+                        }
+                    </td>
+                    <td>
+                        @{ var taxLink = $"http://www3.co.weber.ut.us/psearch/tax_summary.php?id={item.TaxId}"; }
+                        <a href="@taxLink" target="_blank">@Html.DisplayFor(modelItem => item.TaxId)</a>
+                    </td>
+                    <td>
+                        @foreach (var inv in item.LotInventories)
+                        {
+                            @Html.DisplayFor(modelItem => inv.Inventory.Description)
+                            <br />
+                        }
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <a asp-action="Edit" asp-route-id="@item.LotId" class="btn btn-info btn-sm">
+                                <span class="d-none d-lg-block">Edit</span>
+                                <i class="fas fa-edit d-lg-none"></i>
+                            </a>
+                            <a asp-action="ViewFiles" asp-route-id="@item.LotId" class="btn btn-dark btn-sm">
+                                <span class="d-none d-lg-block">Files</span>
+                                <i class="fas fa-file-alt d-lg-none"></i>
+                            </a>
+                        </div>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+        
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-query="@ViewBag.CurrentQuery" class="btn btn-default @prevDisabled">Previous</a>
+<a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-query="@ViewBag.CurrentQuery" class="btn btn-default @nextDisabled">Next</a>

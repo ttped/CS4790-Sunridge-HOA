@@ -5,43 +5,46 @@
     ViewData["Title"] = "Classifieds Index";
 }
 
+<h2>Classifieds Index</h2>
+
 <div class="row">
-    <div class="ownerContainer">
-        <h2>Classifieds Index</h2>
-
-        <p id="createAlign">
-            <a asp-action="Create"><button type="button" class="btn btn-primary btn-sm">Post New Classified</button></a>
-            <a asp-action="AddService"><button type="button" class="btn btn-primary btn-sm">Post New Service</button></a>
+    <div class="col-lg-3 col-md-6">
+        <p id="btn-group">
+            <a asp-action="Create" class="btn btn-primary btn-sm btn-block">Post New Classified</a>
+            <a asp-action="AddService" class="btn btn-primary btn-sm btn-block">Post New Service</a>
         </p>
+    </div>
+</div>
 
-        <table>
-            <thead>
-                <tr id="headTr">
-                    <th>
-                        Title
-                    </th>
-                    <th>
-                        Price
-                    </th>
-                    <th>
-                        Listing Date
-                    </th>
-                    <th>
-                        Owner
-                    </th>
-                    <th>
-                        Category
-                    </th>
-                    <th>
-                        Description
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
+<div class="table-responsive-sm">
+    <table class="table table-responsive-sm table-hover">
+        <thead>
+            <tr id="headTr">
+                <th>
+                    Title
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Listing Date
+                </th>
+                <th>
+                    Owner
+                </th>
+                <th>
+                    Category
+                </th>
+                <th>
+                    Description
+                </th>
+                <th></th>
+            </tr>
+        </thead>
 
-            <tbody>
-                @foreach (var item in Model.Where(x=>x.ClassifiedListing.IsArchive == false))
-                {
+        <tbody>
+            @foreach (var item in Model.Where(x => x.ClassifiedListing.IsArchive == false))
+            {
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.ClassifiedListing.ItemName)
@@ -77,20 +80,23 @@
                         @description
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.ClassifiedListing.ClassifiedListingId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
-                        <a asp-action="Details" asp-route-id="@item.ClassifiedListing.ClassifiedListingId"><button type="button" class="btn btn-warning btn-sm">Details</button></a> |
-                        <a asp-action="Delete" asp-route-id="@item.ClassifiedListing.ClassifiedListingId"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
+                        <div class="btn-group">
+                            <a asp-action="Edit" asp-route-id="@item.ClassifiedListing.ClassifiedListingId" class="btn btn-info btn-sm">
+                                <span class="d-none d-lg-block">Edit</span>
+                                <i class="fas fa-edit d-lg-none"></i>
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.ClassifiedListing.ClassifiedListingId" class="btn btn-warning btn-sm">
+                                <span class="d-none d-lg-block">Details</span>
+                                <i class="fas fa-info d-lg-none"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.ClassifiedListing.ClassifiedListingId" class="btn btn-danger btn-sm">
+                                <span class="d-none d-lg-block">Delete</span>
+                                <i class="fas fa-trash d-lg-none"></i>
+                            </a>
+                        </div>
                     </td>
                 </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+            }
+        </tbody>
+    </table>
 </div>
-
-
-
-
-
-
-

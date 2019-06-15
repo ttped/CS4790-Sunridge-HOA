@@ -4,51 +4,55 @@
     ViewData["Title"] = "Banner Items";
 }
 
-<div class="row">
-    <div id="windowFrame" class="">
-        <div>
-            <h2>Banner Item Index</h2>
-            <p id="createAlign">
-                <a asp-action="Create"><button type="button" class="btn btn-primary btn-sm">Create New Banner Item</button></a>
-            </p>
-            <table>
-                <thead id="headTr">
-                    <tr>
-                        <th id="bannerHead">
-                            Head
-                        </th>
-                        <th id="bannerBody">
-                            Body
-                        </th>
-                        @*<th id="bannerImage">
-                            Image
-                        </th>*@
-                        <th></th>
-                    </tr>
-                </thead>
+<h2>Banner Item Index</h2>
 
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                    <tr>
-                        <td style="width: 25%">
-                            @Html.DisplayFor(modelItem => item.Header)
-                        </td>
-                        <td style="width: 50%;">
-                            @Html.DisplayFor(modelItem => item.Body)
-                        </td>
-                        @*<td>
-                            <img class="col-10 img-responsive" src="../../..@Html.DisplayFor(modelItem => item.Image)" style="border-radius:5px;" />
-                        </td>*@                      
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
-                            <a asp-action="Details" asp-route-id="@item.Id"><button type="button" class="btn btn-warning btn-sm">Details</button></a> |
-                            <a asp-action="Delete" asp-route-id="@item.Id"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
-                        </td>
-                    </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+<div class="row">
+    <div class="col-lg-3 col-md-6">
+        <a asp-action="Create" class="btn btn-primary btn-sm">Create New Banner Item</a>
     </div>
+</div>
+<div class="table-responsive-sm">
+    <table class="table table-responsive-sm table-hover">
+        <thead>
+            <tr>
+                <th id="bannerHead">
+                    Head
+                </th>
+                <th id="bannerBody">
+                    Body
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="width: 25%">
+                        @Html.DisplayFor(modelItem => item.Header)
+                    </td>
+                    <td style="width: 50%">
+                        @Html.DisplayFor(modelItem => item.Body)
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info btn-sm">
+                                <span class="d-none d-lg-block">Edit</span>
+                                <i class="fas fa-edit d-lg-none"></i>
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-warning btn-sm">
+                                <span class="d-none d-lg-block">Details</span>
+                                <i class="fas fa-info d-lg-none"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                                <span class="d-none d-lg-block">Delete</span>
+                                <i class="fas fa-trash d-lg-none"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

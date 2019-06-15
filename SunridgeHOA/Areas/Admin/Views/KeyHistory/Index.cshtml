@@ -4,60 +4,53 @@
     ViewData["Title"] = "Key Assignment Index";
 }
 
-<div class="row col-12">
-    <div id="windowFrame" class="col-10">
-        <h2>Key Assignment Index</h2>
+<h2>Key Assignment Index</h2>
 
-        <p id="createAlign">
-            <a asp-action="Create"><button type="button" class="btn btn-primary btn-sm">Create New History</button></a>
-        </p>
+<div class="row justify-content-between">
+    <div class="col-lg-3 col-md-6">
+        <a asp-action="Create" class="btn btn-primary btn-sm">Create New History</a>
+    </div>
+    <div class="col-lg-4 col-md-6">
+        <form asp-action="Index" method="get" class="form">
+            <div class="input-group">
+                <input type="text" class="form-control" name="SearchString" placeholder="Search for history" />
+                <div class="input-group-append"><input type="submit" value="Search" id="search" class="btn btn-secondary" /></div>
+            </div>
+            <div class="mt-2">
+                <a asp-action="Index" class="ml-2">Show Full List</a>
+            </div>
+        </form>
+    </div>
+</div>
 
-        <div id="searchalign">
-            <form asp-action="Index" method="get" class="form-inline">
-                <div>
-                    <div class="row">
-                        <div>
-                            <b>Search : </b><input type="text" name="SearchString" />
-                        </div>
-                        <div id="divSpace"></div>
-                        <div>
-                            <input type="submit" value="Search" id="search" class="btn btn-secondary btn-sm" />
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-
-        <table>
-            <thead>
-                <tr id="headTr">
-                    <th>
-                        Key
-                    </th>
-                    <th>
-                        Lot
-                    </th>
-                    <th>
-                        Status
-                    </th>
-                    <th>
-                        Issued
-                    </th>
-                    <th>
-                        Returned
-                    </th>
-                    <th>
-                        Paid Amount
-                    </th>
-
-
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+<div class="table-responsive-sm">
+    <table class="table table-sm table-hover">
+        <thead>
+            <tr id="headTr">
+                <th>
+                    Key
+                </th>
+                <th>
+                    Lot
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Issued
+                </th>
+                <th>
+                    Returned
+                </th>
+                <th>
+                    Paid Amount
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.Key.SerialNumber)
@@ -68,10 +61,10 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Status)
                     </td>
-                    <td>
+                    <td style="white-space: nowrap">
                         @Html.DisplayFor(modelItem => item.DateIssued)
                     </td>
-                    <td>
+                    <td style="white-space: nowrap">
                         @Html.DisplayFor(modelItem => item.DateReturned)
                     </td>
                     <td>
@@ -79,13 +72,23 @@
                     </td>
 
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.KeyHistoryId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
-                        <a asp-action="Details" asp-route-id="@item.KeyHistoryId"><button type="button" class="btn btn-warning btn-sm">Details</button></a> |
-                        <a asp-action="Delete" asp-route-id="@item.KeyHistoryId"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
+                        <div class="btn-group">
+                            <a asp-action="Edit" asp-route-id="@item.KeyHistoryId" class="btn btn-info btn-sm">
+                                <span class="d-none d-lg-block">Edit</span>
+                                <i class="fas fa-edit d-lg-none"></i>
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.KeyHistoryId" class="btn btn-warning btn-sm">
+                                <span class="d-none d-lg-block">Details</span>
+                                <i class="fas fa-info d-lg-none"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.KeyHistoryId" class="btn btn-danger btn-sm">
+                                <span class="d-none d-lg-block">Delete</span>
+                                <i class="fas fa-trash d-lg-none"></i>
+                            </a>
+                        </div>
                     </td>
                 </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+            }
+        </tbody>
+    </table>
 </div>

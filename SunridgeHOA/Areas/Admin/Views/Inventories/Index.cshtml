@@ -5,41 +5,48 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-
+<h2>Lot Inventory Items Index</h2>
 
 <div class="row">
-    <div class="ownerContainer">
-        <h2>Lot Inventory Items Index</h2>
-
-        <p id="createAlign">
-            <a asp-action="Create"><button type="button" class="btn btn-primary btn-sm">Create New Inventory Items</button></a>
-        </p>
-
-        <table>
-            <thead id="headTr">
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.InventoryId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
-                            <a asp-action="Details" asp-route-id="@item.InventoryId"><button type="button" class="btn btn-warning btn-sm">Details</button></a> |
-                            <a asp-action="Delete" asp-route-id="@item.InventoryId"><button type="button" class="btn btn-danger btn-sm">Delete</button></a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+    <div class="col-lg-3 col-md-6">
+        <a asp-action="Create" class="btn btn-primary btn-sm">Create New Inventory Items</a>
     </div>
 </div>
+
+<table class="table table-sm table-hover">
+    <thead id="headTr">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <a asp-action="Edit" asp-route-id="@item.InventoryId" class="btn btn-info btn-sm">
+                            <span class="d-none d-lg-block">Edit</span>
+                            <i class="fas fa-edit d-lg-none"></i>
+                        </a>
+                        <a asp-action="Details" asp-route-id="@item.InventoryId" class="btn btn-warning btn-sm">
+                            <span class="d-none d-lg-block">Details</span>
+                            <i class="fas fa-info d-lg-none"></i>
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@item.InventoryId" class="btn btn-danger btn-sm">
+                            <span class="d-none d-lg-block">Delete</span>
+                            <i class="fas fa-trash d-lg-none"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

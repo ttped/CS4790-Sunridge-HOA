@@ -5,33 +5,33 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="row">
-    <div class="ownerContainer">
-        <h2>My Lots</h2>
-        <table>
-            <thead id="headTr">
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Lot.LotNumber)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Address.StreetAddress)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Owners)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Lot.TaxId)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.InventoryItems)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+<h2>My Lots</h2>
+
+<div class="table-responsive-sm">
+    <table class="table table-responsive-sm table-hover">
+        <thead id="headTr">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Lot.LotNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Address.StreetAddress)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Owners)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Lot.TaxId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.InventoryItems)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.Lot.LotNumber)
@@ -58,15 +58,23 @@
                             @Html.DisplayFor(modelItem => inv.Description)
                             <br />
                         }
-                    </td>                    
+                    </td>
                     <td>
-                        <a asp-action="OwnerEdit" asp-route-id="@item.Lot.LotId"><button type="button" class="btn btn-info btn-sm">Edit</button></a> |
-                        <a asp-action="EditLotItems" asp-route-id="@item.Lot.LotId"><button type="button" class="btn btn-warning btn-sm">Edit Lot Items</button></a> |
-                        <a asp-action="ViewFiles" asp-route-id="@item.Lot.LotId"><button type="button" class="btn btn-dark btn-sm">Files</button></a>
+                        <a asp-action="Edit" asp-route-id="@item.Lot.LotId" class="btn btn-info btn-sm">
+                            <span class="d-none d-lg-block">Edit</span>
+                            <i class="fas fa-edit d-lg-none"></i>
+                        </a>
+                        <a asp-action="EditLotItems" asp-route-id="@item.Lot.LotId" class="btn btn-warning btn-sm">
+                            <span class="d-none d-lg-block">Edit Lot Items</span>
+                            <i class="fas fa-wrench d-lg-none"></i>
+                        </a>
+                        <a asp-action="ViewFiles" asp-route-id="@item.Lot.LotId" class="btn btn-dark btn-sm">
+                            <span class="d-none d-lg-block">Files</span>
+                            <i class="fas fa-file-alt d-lg-none"></i>
+                        </a>
                     </td>
                 </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+            }
+        </tbody>
+    </table>
 </div>
