@@ -50,12 +50,20 @@ else
                 @if (isAdmin)
                 {
                     <td>
-                        <a asp-action="EditFile" class="btn btn-info btn-sm" 
-                           asp-route-lotId="@hist.LotId"
-                           asp-route-lotHistoryId="@hist.LotHistoryId">Edit</a>
-                        <a asp-action="DeleteFile" class="btn btn-danger btn-sm"
-                           asp-route-lotId="@hist.LotId"
-                           asp-route-lotHistoryId="@hist.LotHistoryId">Delete</a>
+                        <div class="btn-group">
+                            <a asp-action="EditFile" class="btn btn-info btn-sm"
+                               asp-route-lotId="@hist.LotId"
+                               asp-route-lotHistoryId="@hist.LotHistoryId">
+                                <span class="d-none d-lg-block">Edit</span>
+                                <i class="fas fa-edit d-lg-none"></i>
+                            </a>
+                            <a asp-action="DeleteFile" class="btn btn-danger btn-sm"
+                               asp-route-lotId="@hist.LotId"
+                               asp-route-lotHistoryId="@hist.LotHistoryId">
+                                <span class="d-none d-lg-block">Delete</span>
+                                <i class="fas fa-trash d-lg-none"></i>
+                            </a>
+                        </div>
                     </td>
                 }
             </tr>

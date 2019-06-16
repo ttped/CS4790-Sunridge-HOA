@@ -26,7 +26,7 @@
             </div>
             <div class="form-group">
                 <label class="control-label">Describe Equipment used (make, model of chainsaw, weed eater, two-wheel drive/four-wheel drive truck, ATV, tractor, dozer, dump truck, total hours, etc.):</label>
-                <textarea asp-for="FormResponse.Suggestion" class="form-control rows="10"></textarea>
+                <textarea asp-for="FormResponse.Suggestion" class="form-control" rows="10"></textarea>
                 <span asp-validation-for="FormResponse.Suggestion" class="text-danger"></span>
             </div>
 
@@ -38,15 +38,15 @@
                 {
                     break;
                 }
-                <div class="row form-group">
-                    <div class="col-md-5">
+                <div class="row">
+                    <div class="col-md-5 form-group">
                         <label class="control-label">Activity:</label>
-                        @Html.TextBoxFor(model => model.LaborHours[i].Description)
+                        @Html.TextBoxFor(model => model.LaborHours[i].Description, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.LaborHours[i].Description)
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-5 form-group">
                         <label class="control-label">Hours:</label>
-                        @Html.TextBoxFor(model => model.LaborHours[i].Hours)
+                        @Html.TextBoxFor(model => model.LaborHours[i].Hours, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.LaborHours[i].Hours)
                     </div>
                 </div>
@@ -64,21 +64,22 @@
                 <div class="row form-group">
                     <div class="col-md-5">
                         <label class="control-label">Equipment:</label>
-                        @Html.TextBoxFor(model => model.EquipmentHours[i].Description)
+                        @Html.TextBoxFor(model => model.EquipmentHours[i].Description, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.EquipmentHours[i].Description)
                     </div>
                     <div class="col-md-5">
                         <label class="control-label">Hours:</label>
-                        @Html.TextBoxFor(model => model.EquipmentHours[i].Hours)
+                        @Html.TextBoxFor(model => model.EquipmentHours[i].Hours, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.EquipmentHours[i].Hours)
                     </div>
                 </div>
             }
 
-            @if (!newResponse && !Model.FormResponse.Resolved)
+            @*@if (!newResponse && !Model.FormResponse.Resolved)*@
+            @if (newResponse)
             {
                 <div class="form-group">
-                    <input type="submit" value="Submit" class="btn btn-default" />
+                    <input type="submit" value="Submit" class="btn btn-primary" />
                 </div>
             }
 

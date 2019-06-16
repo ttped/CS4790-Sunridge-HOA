@@ -3,62 +3,64 @@
 @{
     ViewData["Title"] = "Delete Classified";
 }
-<div class="row col-12">
-    <div id="ownerContainer" class="col-10">
-        <h2>Delete Classified?</h2>
 
-        <div>
-            <hr />
-            <dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayNameFor(model => model.ItemName)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.ItemName)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.Price)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Price)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.Description)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Description)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.ListingDate)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.ListingDate)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.Phone)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Phone)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.Email)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Email)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.Owner)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Owner.EmergencyContactName)
-                </dd>
-            </dl>
+<h2>Delete Classified?</h2>
+<hr />
 
-            <form asp-action="Delete">
-                <input type="hidden" asp-for="ClassifiedListingId" />
-                <input type="submit" value="Delete" class="btn btn-default" /> |
-                <a asp-action="Index">Back to List</a>
-            </form>
-        </div>
+<div class="row">
+    <div class="col-md-12">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.ItemName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ItemName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Price)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ListingDate)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ListingDate)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Phone)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Phone)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Owner)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Owner.EmergencyContactName)
+            </dd>
+        </dl>
     </div>
+</div>
+<div class="form-group">
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ClassifiedListingId" />
+        <input type="submit" value="Delete" class="btn btn-danger" />
+    </form>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
 </div>

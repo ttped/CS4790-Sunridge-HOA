@@ -5,34 +5,39 @@
 }
 
 <h2>Add Documents for Lot @ViewBag.LotNumber</h2>
+<hr />
 
 <form asp-action="AddDocuments" enctype="multipart/form-data">
     <div asp-validation-summary="All"></div>
     <input type="hidden" name="LotId" value="@ViewBag.LotId" />
-    <table id="tblFiles" class="table" cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>File</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr id="row0">
-                <td><input type="text" id="txtName" class="form-control" name="Files[0].Name" /></td>
-                <td><input type="text" id="txtDescription" class="form-control" name="Files[0].Description" /></td>
-                <td><input type="file" id="fileUpload" class="form-control" name="UploadedFiles[0]" /></td>
-                <td><input type="button" class="btn btn-danger" value="Remove" onclick="Remove(this)" /></td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr><td><input type="button" id="btnAdd" class="btn btn-success" value="+" /></td></tr>
-        </tfoot>
-    </table>
-    <br />
-    <input type="submit" id="btnSave" class="btn btn-primary" value="Save All" />
+    <div class="table-responsive-lg">
+        <table id="tblFiles" class="table table-sm" cellpadding="0" cellspacing="0">
+            <thead>
+                <tr>
+                    <th style="min-width: 200px;">Name</th>
+                    <th style="min-width: 300px;">Description</th>
+                    <th style="min-width: 200px;">File</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="row0">
+                    <td><input type="text" id="txtName" class="form-control" name="Files[0].Name" /></td>
+                    <td><input type="text" id="txtDescription" class="form-control" name="Files[0].Description" /></td>
+                    <td><input type="file" id="fileUpload" class="form-control" name="UploadedFiles[0]" /></td>
+                    <td><input type="button" class="btn btn-danger" value="Remove" onclick="Remove(this)" /></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr><td><input type="button" id="btnAdd" class="btn btn-success" value="+" /></td></tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="form-group"><input type="submit" id="btnSave" class="btn btn-primary" value="Save All" /></div>
 </form>
+<div>
+    <a asp-action="ViewFiles" asp-route-id="@ViewBag.LotId">Back to List</a>
+</div>
 
 @section Scripts {
     @*<script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>*@

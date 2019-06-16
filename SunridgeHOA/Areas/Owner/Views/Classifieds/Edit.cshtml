@@ -1,69 +1,62 @@
 ﻿@model SunridgeHOA.Models.ViewModels.ClassifiedListingViewModel
-@using SunridgeHOA.Extensions
 
 @{
     ViewData["Title"] = "Edit Classified";
 }
-<div class="row col-12">
 
-    <div id="ownerContainer" class="col-10">
-        <h2>Edit Classified</h2>
+<h2>Edit @Model.ClassifiedListing.ItemName</h2>
+<hr />
 
-        <hr />
-        <div class="row">
-            <div class="col-md-6">
-                <form asp-action="Edit" method="post" enctype="multipart/form-data">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="ClassifiedListing.ClassifiedListingId" />
-                    <div class="form-group">
-                        <label asp-for="ClassifiedListing.ClassifiedCategory.Description" class="control-label"></label>
-                        <select class="select form-control" asp-for="ClassifiedListing.ClassifiedCategoryId" asp-items="ViewBag.Category"></select>
-                        <span asp-validation-for="ClassifiedListing.ClassifiedCategoryId" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="ClassifiedListing.ItemName" class="control-label"></label>
-                        <input asp-for="ClassifiedListing.ItemName" class="form-control" />
-                        <span asp-validation-for="ClassifiedListing.ItemName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="ClassifiedListing.Price" class="control-label"></label>
-                        <input asp-for="ClassifiedListing.Price" class="form-control" />
-                        <span asp-validation-for="ClassifiedListing.Price" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="ClassifiedListing.Description" class="control-label"></label>
-                        <textarea asp-for="ClassifiedListing.Description" class="form-control" style="overflow:auto; height:200px;"></textarea>
-                        <span asp-validation-for="ClassifiedListing.Description" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="ClassifiedListing.ListingDate" class="control-label"></label>
-                        <p>@Html.DisplayFor(u => u.ClassifiedListing.ListingDate)</p>
-                        <span asp-validation-for="ClassifiedListing.ListingDate" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="ClassifiedListing.Phone" class="control-label"></label>
-                        <input asp-for="ClassifiedListing.Phone" class="form-control" />
-                        <span asp-validation-for="ClassifiedListing.Phone" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="ClassifiedListing.Email" class="control-label"></label>
-                        <input asp-for="ClassifiedListing.Email" class="form-control" />
-                        <span asp-validation-for="ClassifiedListing.Email" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label>Upload images</label>
-                        <input type="file" name="files" class="form-control" multiple />
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-default" />
-                    </div>
-                </form>
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ClassifiedListing.ClassifiedListingId" />
+            <div class="form-group">
+                <label asp-for="ClassifiedListing.ClassifiedCategory.Description" class="control-label"></label>
+                <select class="select form-control" asp-for="ClassifiedListing.ClassifiedCategoryId" asp-items="ViewBag.Category"></select>
+                <span asp-validation-for="ClassifiedListing.ClassifiedCategoryId" class="text-danger"></span>
             </div>
-        </div>
-
-        <div>
-            <a asp-action="Index">Back to List</a>
-        </div>
+            <div class="form-group">
+                <label asp-for="ClassifiedListing.ItemName" class="control-label"></label>
+                <input asp-for="ClassifiedListing.ItemName" class="form-control" />
+                <span asp-validation-for="ClassifiedListing.ItemName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClassifiedListing.Price" class="control-label"></label>
+                <input asp-for="ClassifiedListing.Price" class="form-control" />
+                <span asp-validation-for="ClassifiedListing.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClassifiedListing.Description" class="control-label"></label>
+                <textarea asp-for="ClassifiedListing.Description" class="form-control" style="overflow:auto; height:200px;"></textarea>
+                <span asp-validation-for="ClassifiedListing.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClassifiedListing.ListingDate" class="control-label"></label>
+                <p>@Html.DisplayFor(u => u.ClassifiedListing.ListingDate)</p>
+                <span asp-validation-for="ClassifiedListing.ListingDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClassifiedListing.Phone" class="control-label"></label>
+                <input asp-for="ClassifiedListing.Phone" class="form-control" />
+                <span asp-validation-for="ClassifiedListing.Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClassifiedListing.Email" class="control-label"></label>
+                <input asp-for="ClassifiedListing.Email" class="form-control" />
+                <span asp-validation-for="ClassifiedListing.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Upload images</label>
+                <input type="file" name="files" class="form-control" multiple />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
 </div>
-
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

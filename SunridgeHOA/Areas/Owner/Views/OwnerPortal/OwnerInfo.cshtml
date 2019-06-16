@@ -11,7 +11,7 @@
     <input type="hidden" asp-for="Address.Id" />
     <div class="row">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <h5>Personal Information</h5>
             <div class="form-group">
                 <label asp-for="Owner.FirstName" class="control-label"></label>
@@ -35,7 +35,7 @@
                 <span asp-validation-for="Owner.Birthday" class="text-danger"></span>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <h5>Contact Information</h5>
             <div class="form-group">
                 <label asp-for="Owner.Email" class="control-label"></label>
@@ -90,10 +90,10 @@
         </div>
     </div>
     <div class="form-group">
-        <input type="submit" value="Save" class="btn btn-default" />
-        <a asp-area="Identity" asp-page="/Account/Manage/ChangePassword" class="btn btn-default">Change my password</a>
-    </div>
-    <div class="row">
-        <a asp-area="" asp-controller="General" asp-action="Dashboard">Back to Dashboard</a>
+        <input type="submit" value="Save" class="btn btn-primary" />
+        <a asp-area="Identity" asp-page="/Account/Manage/ChangePassword" class="btn btn-warning">Change my password</a>
     </div>
 </form>
+<div>
+    <a asp-area="" asp-controller="General" asp-action="Dashboard">Back to Dashboard</a>
+</div>
