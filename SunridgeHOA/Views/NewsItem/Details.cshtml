@@ -4,58 +4,29 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<link rel="Stylesheet" href="~/css/Admin/transactions.css" type="text/css" />
-<link rel="Stylesheet" href="~/css/Admin/adminnavbar.css?version=51" type="text/css" />
-<link rel="Stylesheet" href="~/css/Admin/window.css" type="text/css" />
-<link rel="Stylesheet" href="~/css/Admin/table.css" type="text/css" />
-<link rel="Stylesheet" href="~/css/Admin/search-bar.css" type="text/css" />
+<h2>"@Model.Header" Details</h2>
+<hr />
 
-<div class="row col-12">
-    <div id="windowFrame" class="col-10">
-        <div class="col-12">
-            <div class="row">
-                <div id="titleDiv" class="col-12">
-                    <p id="title">"@Model.Header" Details</p>
-                </div>
-            </div>
-            <hr />
-
-            <div class="p-4 border rounded">
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="Header"></label>
-                    </div>
-                    <div class="col-5">
-                        <input asp-for="Header" readonly class="form-control" />
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="Content"></label>
-                    </div>
-                    <div class="col-5">
-                        <textarea asp-for="Content" readonly class="form-control"></textarea>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="Year"></label>
-                    </div>
-                    <div class="col-5">
-                        <input asp-for="Year" readonly class="form-control" asp-items="ViewBag.Year" />
-                    </div>
-                </div>
-                <div class="col-1">
-                </div>
-                <div class="col-3">
-                    <a href="@Model.FilePath" width="100%" style="border-radius: 5px; border:1px solid #bbb9b9;">@Model.FileName</a>
-                </div>
-                <br />
-                <div class="form-group">
-                    <a asp-action="Edit" asp-route-id="@Model.NewsItemId" class="btn btn-primary">Edit</a>
-                    <a asp-action="Index" class="btn btn-success">Back to List</a>
-                </div>
-            </div>
+<div class="row">
+    <div class="col-md-8">
+        <div class="form-group">
+            <label asp-for="Header"></label>
+            <input asp-for="Header" readonly class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Content"></label>
+            <textarea asp-for="Content" readonly class="form-control" rows="20"></textarea>
+        </div>
+        <div class="form-group">
+            <label asp-for="Year"></label>
+            <input asp-for="Year" readonly class="form-control" asp-items="ViewBag.Year" />
+        </div>
+        <div class="form-group">
+            <a href="@Model.FilePath">@Model.FileName</a>
+        </div>
+        <div class="form-group">
+            <a asp-action="Edit" asp-route-id="@Model.NewsItemId">Edit</a> |
+            <a asp-action="Index">Back to List</a>
         </div>
     </div>
 </div>

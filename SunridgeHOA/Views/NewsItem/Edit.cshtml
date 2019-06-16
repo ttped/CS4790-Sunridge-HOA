@@ -4,74 +4,43 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<link rel="Stylesheet" href="~/css/Admin/transactions.css" type="text/css" />
-<link rel="Stylesheet" href="~/css/Admin/adminnavbar.css?version=51" type="text/css" />
-<link rel="Stylesheet" href="~/css/Admin/window.css" type="text/css" />
-<link rel="Stylesheet" href="~/css/Admin/table.css" type="text/css" />
-<link rel="Stylesheet" href="~/css/Admin/search-bar.css" type="text/css" />
+<h2>Edit "@Model.Header"</h2>
+<hr />
 
-<div class="row col-12">
-    <div id="windowFrame" class="col-10">
-        <div class="col-12">
-            <div class="row">
-                <div id="titleDiv" class="col-12">
-                    <p id="title">Edit "@Model.Header"</p>
-                </div>
+<div class="row">
+    <div class="col-md-8">
+        <form method="post" asp-action="Edit" enctype="multipart/form-data">
+            <input type="hidden" asp-for="NewsItemId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Header"></label>
+                <input asp-for="Header" class="form-control" />
+                <span asp-validation-for="Header" class="text-danger"></span>
             </div>
-            <hr />
-            <form method="post" asp-action="Edit" enctype="multipart/form-data">
-                <div class="p-4 border rounded">
-                    <input type="hidden" asp-for="NewsItemId" />
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                    <div class="form-group row">
-                        <div class="col-2">
-                            <label asp-for="Header"></label>
-                        </div>
-                        <div class="col-5">
-                            <input asp-for="Header" class="form-control" />
-                        </div>
-                        <span asp-validation-for="Header" class="text-danger"></span>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-2">
-                            <label asp-for="Content"></label>
-                        </div>
-                        <div class="col-5">
-                            <textarea asp-for="Content" class="form-control" rows="20"></textarea>
-                        </div>
-                        <span asp-validation-for="Content" class="text-danger"></span>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-2">
-                            <label asp-for="Year"></label>
-                        </div>
-                        <div class="col-5">
-                            <select asp-for="Year" class="form-control" asp-items="ViewBag.Year"></select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-2">
-                            <label asp-for="FilePath"></label>
-                        </div>
-                        <div class="col-5">
-                            <input type="file" name="files" class="form-control" />
-                        </div>
-                        <span asp-validation-for="FilePath" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-1">
-                    </div>
-                    <div class="col-3">
-                        <a href="@Model.FilePath" style="border-radius: 5px; border:1px solid #bbb9b9; width:100%">@Model.FileName</a>
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <input type="submit" class="btn btn-primary" value="Save" />
-                        <a asp-action="Index" class="btn btn-success">Back to List</a>
-                    </div>
-                </div>
-            </form>
-        </div>
+            <div class="form-group">
+                <label asp-for="Content"></label>
+                <textarea asp-for="Content" class="form-control" rows="20"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Year"></label>
+                <select asp-for="Year" class="form-control" asp-items="ViewBag.Year"></select>
+            </div>
+            <div class="form-group">
+                <label>Upload File</label>
+                <input type="file" name="files" class="form-control" />
+                <span asp-validation-for="FilePath" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <a href="@Model.FilePath">@Model.FileName</a>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Save" />
+            </div>
+        </form>
     </div>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
 </div>
