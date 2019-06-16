@@ -12,7 +12,7 @@
     <div class="row">
 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <h5>Owner Information</h5>
             <label class="font-weight-bold">Primary Owner (Required)</label>
             <div><span asp-validation-for="PrimaryOwner" class="text-danger"></span></div>
@@ -21,7 +21,7 @@
                     <label class="control-label">First Name</label>
                 </div>
                 <div class="col-md-8">
-                    @Html.TextBoxFor(model => model.PrimaryOwner.FirstName)
+                    @Html.TextBoxFor(model => model.PrimaryOwner.FirstName, new { @class = "form-control" })
                 </div>
                 @Html.ValidationMessageFor(model => model.PrimaryOwner.FirstName)
             </div>
@@ -30,7 +30,7 @@
                     <label class="control-label">Last Name</label>
                 </div>
                 <div class="col-md-8">
-                    @Html.TextBoxFor(model => model.PrimaryOwner.LastName)
+                    @Html.TextBoxFor(model => model.PrimaryOwner.LastName, new { @class = "form-control" })
                 </div>
                 @Html.ValidationMessageFor(model => model.PrimaryOwner.LastName)
             </div>
@@ -39,7 +39,7 @@
                     <label class="control-label">Email</label>
                 </div>
                 <div class="col-md-8">
-                    @Html.TextBoxFor(model => model.PrimaryOwner.Email)
+                    @Html.TextBoxFor(model => model.PrimaryOwner.Email, new { @class = "form-control" })
                 </div>
                 @Html.ValidationMessageFor(model => model.PrimaryOwner.Email)
             </div>
@@ -56,7 +56,7 @@
                         <label class="control-label">First Name</label>
                     </div>
                     <div class="col-md-8">
-                        @Html.TextBoxFor(model => model.OwnerList[i].FirstName)
+                        @Html.TextBoxFor(model => model.OwnerList[i].FirstName, new { @class = "form-control" })
                     </div>
                     @Html.ValidationMessageFor(model => model.OwnerList[i].FirstName)
                 </div>
@@ -65,7 +65,7 @@
                         <label class="control-label">Last Name</label>
                     </div>
                     <div class="col-md-8">
-                        @Html.TextBoxFor(model => model.OwnerList[i].LastName)
+                        @Html.TextBoxFor(model => model.OwnerList[i].LastName, new { @class = "form-control" })
                     </div>
                     @Html.ValidationMessageFor(model => model.OwnerList[i].LastName)
                 </div>
@@ -74,7 +74,7 @@
                         <label class="control-label">Email</label>
                     </div>
                     <div class="col-md-8">
-                        @Html.TextBoxFor(model => model.OwnerList[i].Email)
+                        @Html.TextBoxFor(model => model.OwnerList[i].Email, new { @class = "form-control" })
                     </div>
                     @Html.ValidationMessageFor(model => model.OwnerList[i].Email)
                 </div>
@@ -84,7 +84,7 @@
                 </div>
             }
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <h5>Address Information</h5>
             <div class="form-group">
                 <label asp-for="Address.StreetAddress" class="control-label"></label>
@@ -112,7 +112,7 @@
                 <span asp-validation-for="Address.State" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label class="control-label">Add user immediately to a lot?</label>
+                <label class="control-label">Add users immediately to a lot?</label>
                 <select asp-for="LotId" asp-items="ViewBag.LotsSelect" class="form-control">
                     <option value="-1" selected hidden>--None--</option>
                 </select>
@@ -121,9 +121,9 @@
         </div>
     </div>
     <div class="form-group">
-        <input type="submit" value="Create" class="btn btn-default" />
+        <input type="submit" value="Create" class="btn btn-primary" />
     </div>
-    <div class="row">
+    <div>
         <a asp-action="Index">Back to List</a>
     </div>
 </form>

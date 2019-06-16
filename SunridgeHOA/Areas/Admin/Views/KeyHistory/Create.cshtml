@@ -3,42 +3,39 @@
 @{
     ViewData["Title"] = "Create Key Assignment";
 }
-<div class="row col-12">
-    <div id="windowFrame" class="col-10">
-        <h2>Create Key Assignment</h2>
-        <hr />
-        <div class="row">
-            <div class="col-md-4">
-                <form asp-action="Create">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="KeyHistory.KeyId" class="control-label">Key Serial Number</label>
-                        <select asp-for="KeyHistory.KeyId" class="form-control" asp-items="Model.Key.keyIdToSelectListItem(Model.KeyHistory.KeyHistoryId)"></select>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="KeyHistory.LotId" class="control-label">Lot</label>
-                        <select asp-for="KeyHistory.LotId" class="form-control" asp-items="@ViewBag.LotsSelect"></select>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="KeyHistory.DateIssued" class="control-label"></label>
-                        <input asp-for="KeyHistory.DateIssued" class="form-control" />
-                        <span asp-validation-for="KeyHistory.DateIssued" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="KeyHistory.PaidAmount" class="control-label"></label>
-                        <input asp-for="KeyHistory.PaidAmount" class="form-control" />
-                        <span asp-validation-for="KeyHistory.PaidAmount" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-default" />
-                    </div>
-                </form>
-            </div>
-        </div>
 
-        <div>
-            <a asp-action="Index">Back to List</a>
-        </div>
+<h2>Create Key Assignment</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="KeyHistory.KeyId" class="control-label">Key Serial Number</label>
+                <select asp-for="KeyHistory.KeyId" class="form-control" asp-items="Model.Key.keyIdToSelectListItem(Model.KeyHistory.KeyHistoryId)"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="KeyHistory.LotId" class="control-label">Lot</label>
+                <select asp-for="KeyHistory.LotId" class="form-control" asp-items="@ViewBag.LotsSelect"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="KeyHistory.DateIssued" class="control-label"></label>
+                <input asp-for="KeyHistory.DateIssued" class="form-control" />
+                <span asp-validation-for="KeyHistory.DateIssued" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="KeyHistory.PaidAmount" class="control-label"></label>
+                <input asp-for="KeyHistory.PaidAmount" class="form-control" />
+                <span asp-validation-for="KeyHistory.PaidAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
 </div>
 
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

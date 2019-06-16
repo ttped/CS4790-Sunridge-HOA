@@ -33,7 +33,7 @@
 
     <form asp-action="Delete">
         <input type="hidden" asp-for="MaintenanceId" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <input type="submit" value="Delete" class="btn btn-danger" />
         <a asp-action="MaintenanceRecords" asp-controller="CommonAreaAssets" asp-route-id="@Model.CommonAreaAssetId">Back to List</a>
     </form>
 </div>

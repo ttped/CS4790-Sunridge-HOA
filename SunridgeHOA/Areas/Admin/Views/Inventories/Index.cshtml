@@ -9,7 +9,7 @@
 
 <div class="row">
     <div class="col-lg-3 col-md-6">
-        <a asp-action="Create" class="btn btn-primary btn-sm">Create New Inventory Items</a>
+        <a asp-action="Create" class="btn btn-primary btn-sm">Create New Inventory Item</a>
     </div>
 </div>
 
@@ -35,10 +35,6 @@
                         <a asp-action="Edit" asp-route-id="@item.InventoryId" class="btn btn-info btn-sm">
                             <span class="d-none d-lg-block">Edit</span>
                             <i class="fas fa-edit d-lg-none"></i>
-                        </a>
-                        <a asp-action="Details" asp-route-id="@item.InventoryId" class="btn btn-warning btn-sm">
-                            <span class="d-none d-lg-block">Details</span>
-                            <i class="fas fa-info d-lg-none"></i>
                         </a>
                         <a asp-action="Delete" asp-route-id="@item.InventoryId" class="btn btn-danger btn-sm">
                             <span class="d-none d-lg-block">Delete</span>

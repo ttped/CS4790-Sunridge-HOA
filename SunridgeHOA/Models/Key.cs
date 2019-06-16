@@ -12,6 +12,7 @@ namespace SunridgeHOA.Models
 
         [Required]
         [StringLength(10, MinimumLength = 1)]
+        [Display(Name = "Serial Number")]
         public string SerialNumber { get; set; }
 
         [Required]

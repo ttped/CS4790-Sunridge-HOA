@@ -3,27 +3,28 @@
 @{
     ViewData["Title"] = "Delete Key";
 }
-<div class="row col-12">
-    <div id="windowFrame" class="col-10">
-        <h2>Delete Key @Model.FullSerial</h2>
 
-        <h3>Are you sure you want to delete this?</h3>
-        <div>
-            <hr />
-            <dl class="dl-horizontal">
-                <dt>
-                    Serial Number
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.FullSerial)
-                </dd>
-            </dl>
+<h3>Are you sure you want to delete this?</h3>
+<hr />
 
-            <form asp-action="Delete">
-                <input type="hidden" asp-for="KeyId" />
-                <input type="submit" value="Delete" class="btn btn-default" /> |
-                <a asp-action="Index">Back to List</a>
-            </form>
-        </div>
+<div class="row">
+    <div class="col-md-6">
+        <dl class="dl-horizontal">
+            <dt>
+                Serial Number
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.FullSerial)
+            </dd>
+        </dl>
     </div>
+</div>
+<div class="form-group">
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="KeyId" />
+        <input type="submit" value="Delete" class="btn btn-danger" />
+    </form>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
 </div>

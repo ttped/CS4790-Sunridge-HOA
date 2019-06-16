@@ -50,7 +50,16 @@
                         @Html.DisplayFor(modelItem => item.End)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.IsFullDay)
+                        @*@Html.DisplayFor(modelItem => item.IsFullDay)*@
+                        @if (item.IsFullDay)
+                        {
+                            <i class="fas fa-check"></i>
+                        }
+                        else
+                        {
+                            <span>-</span>
+                        }
+
                     </td>
                     <td>
                         <div class="btn-group">
@@ -58,10 +67,10 @@
                                 <span class="d-none d-lg-block">Edit</span>
                                 <i class="fas fa-edit d-lg-none"></i>
                             </a>
-                            <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-warning btn-sm">
+                            @*<a asp-action="Details" asp-route-id="@item.ID" class="btn btn-warning btn-sm">
                                 <span class="d-none d-lg-block">Details</span>
                                 <i class="fas fa-info d-lg-none"></i>
-                            </a>
+                            </a>*@
                             <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger btn-sm">
                                 <span class="d-none d-lg-block">Delete</span>
                                 <i class="fas fa-trash d-lg-none"></i>

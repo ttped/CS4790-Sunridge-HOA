@@ -30,12 +30,13 @@
             @Html.DisplayFor(model => model.Cost)
         </dd>
     </dl>
-
+</div>
+<div class="form-group">
     <form asp-action="Delete">
         <input type="hidden" asp-for="MaintenanceId" />
-        <input type="submit" value="DeleteMaintenance" class="btn btn-default" /> |
-        <a asp-controller="CommonAreaAssets" asp-action="MaintenanceRecords" asp-route-id="@Model.CommonAreaAssetId">Back to List</a>
+        <input type="submit" value="Delete Maintenance" class="btn btn-danger" />
     </form>
 </div>
-
-
+<div>
+    <a asp-controller="CommonAreaAssets" asp-action="MaintenanceRecords" asp-route-id="@Model.CommonAreaAssetId">Back to List</a>
+</div>

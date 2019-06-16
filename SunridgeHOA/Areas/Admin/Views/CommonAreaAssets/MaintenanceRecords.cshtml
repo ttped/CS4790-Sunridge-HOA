@@ -5,45 +5,55 @@
 }
 
 <h2>Maintenance Records for @Model.CommonAreaAsset.AssetName</h2>
-<p>
-    <a asp-action="CreateMaintenance" asp-route-id="@Model.CommonAreaAsset.CommonAreaAssetId">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Maintenances.FirstOrDefault().DateCompleted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Maintenances.FirstOrDefault().Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Maintenances.FirstOrDefault().Cost)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Maintenances)
-        {
+<div class="row">
+    <div class="col-lg-3 col-md-6">
+        <a asp-action="CreateMaintenance" asp-route-id="@Model.CommonAreaAsset.CommonAreaAssetId">Create New</a>
+    </div>
+</div>
+<div class="table-responsive-sm">
+    <table class="table table-sm table-hover">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DateCompleted)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Cost)
-                </td>
-                <td>
-                    <a asp-action="EditMaintenance" asp-route-id="@item.MaintenanceId">Edit</a> |
-                    <a asp-controller="Maintenance" asp-action="Delete" asp-route-id="@item.MaintenanceId">Delete</a>
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Maintenances.FirstOrDefault().DateCompleted)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Maintenances.FirstOrDefault().Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Maintenances.FirstOrDefault().Cost)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Maintenances)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateCompleted)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cost)
+                    </td>
+                    <td>
+                        <a asp-action="EditMaintenance" asp-route-id="@item.MaintenanceId" class="btn btn-info btn-sm">
+                            <span class="d-none d-lg-block">Edit</span>
+                            <i class="fas fa-edit d-lg-none"></i>
+                        </a>
+                        <a asp-controller="Maintenance" asp-action="Delete" asp-route-id="@item.MaintenanceId" class="btn btn-danger btn-sm">
+                            <span class="d-none d-lg-block">Delete</span>
+                            <i class="fas fa-trash d-lg-none"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 <div>
     <a asp-action="Index">Back to Common Area Assets</a>

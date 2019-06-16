@@ -13,7 +13,7 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Owner.OwnerId" />
         <input type="hidden" asp-for="Address.Id" />
-        <div class="col-md-4">
+        <div class="col-md-6">
             <h5>Personal Information</h5>
             <div class="form-group">
                 <label asp-for="Owner.FirstName" class="control-label"></label>
@@ -48,7 +48,7 @@
                 </label>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <h5>Contact Information</h5>
             <div class="form-group">
                 <label asp-for="Owner.Email" class="control-label"></label>
@@ -98,9 +98,9 @@
         </div>
     </div>
     <div class="form-group">
-        <input type="submit" value="Save" class="btn btn-default" />
+        <input type="submit" value="Save" class="btn btn-primary" />
     </div>
-    <div class="row">
+    <div>
         <a asp-action="Index">Back to List</a>
     </div>
 </form>
