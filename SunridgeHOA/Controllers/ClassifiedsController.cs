@@ -62,12 +62,39 @@ namespace SunridgeHOA.Controllers
             //}
             //return View(classifieds);
 
+            var otherCategory = await _context.ClassifiedCategory
+                .SingleAsync(u => u.Description == "Other");
             var classifieds = await _context.ClassifiedListing
                 .Include(u => u.Images)
                 .Include(u => u.ClassifiedCategory)
-                .Where(u => u.ClassifiedCategoryId == 3)
+                .Where(u => u.ClassifiedCategoryId == otherCategory.ClassifiedCategoryId)
                 .Where(u => u.Images.Any())
+                .Where(u => !u.IsArchive)
                 .Select(u => u.Images[0].ImageURL)
+                .ToListAsync();
+            return View(classifieds);
+        }
+
+        public async Task<IActionResult> ATVs()
+        {
+            var atvCategory = await _context.ClassifiedCategory
+                .SingleAsync(u => u.Description == "ATVs");
+            var classifieds = await _context.ClassifiedListing
+                .Include(u => u.Images)
+                .Where(u => u.ClassifiedCategoryId == atvCategory.ClassifiedCategoryId)
+                .Where(u => !u.IsArchive)
+                .ToListAsync();
+            return View(classifieds);
+        }
+
+        public async Task<IActionResult> Trailers()
+        {
+            var trailerCategory = await _context.ClassifiedCategory
+                .SingleAsync(u => u.Description == "Trailers");
+            var classifieds = await _context.ClassifiedListing
+                .Include(u => u.Images)
+                .Where(u => u.ClassifiedCategoryId == trailerCategory.ClassifiedCategoryId)
+                .Where(u => !u.IsArchive)
                 .ToListAsync();
             return View(classifieds);
         }
