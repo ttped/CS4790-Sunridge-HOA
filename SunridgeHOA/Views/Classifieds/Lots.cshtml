@@ -18,8 +18,9 @@
 <!-- Testimonials -->
 <section class="testimonials text-center">
 
-    @foreach (var item in Model.Where(x => x.IsArchive == false && x.ClassifiedCategory.Description=="Lots").Select((value, index) => new { value, index }))
+    @for (var index = 0; index < Model.Count; index++)
     {
+        var item = Model[index];
         <div class="container mb-5">
             <hr>
             <div class="container container-fluid bg-light p-5">
@@ -27,10 +28,10 @@
                     <div class="col-sm-6">
                         <div id="box" class="container">
                             <!--Carousel Wrapper-->
-                            <div id="carousel-thumb @item.index" class="carousel slide carousel-fade carousel-thumbnails" data-ride="carousel" data-interval="0">
+                            <div id="carousel-thumb @index" class="carousel slide carousel-fade carousel-thumbnails" data-ride="carousel" data-interval="0">
                                 <!--Slides-->
                                 <div class="carousel-inner" role="listbox">
-                                    @foreach (var image in item.value.Images.Where(x => x.ClassifiedListingId == item.value.ClassifiedListingId))
+                                    @foreach (var image in item.Images)
                                     {
                                         if (image.IsMainImage)
                                         {
@@ -49,29 +50,29 @@
                                 </div>
                                 <!--/.Slides-->
                                 <!--Controls-->
-                                <a class="carousel-control-prev" href="#carousel-thumb @item.index" role="button" data-slide="prev">
+                                <a class="carousel-control-prev" href="#carousel-thumb @index" role="button" data-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="sr-only">Previous</span>
                                 </a>
-                                <a class="carousel-control-next" href="#carousel-thumb @item.index" role="button" data-slide="next">
+                                <a class="carousel-control-next" href="#carousel-thumb @index" role="button" data-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="sr-only">Next</span>
                                 </a>
                                 <!--/.Controls-->
                                 <ol id="thumbnailBar" class="carousel-indicators list-inline visible-sm-block hidden-xs-block visible-md-block visible-lg-block">
-                                    @foreach (var image in item.value.Images.Where(x => x.ClassifiedListingId == item.value.ClassifiedListingId).Select((value, index) => new { value, index }))
+                                    @for (var imgIndex = 0; imgIndex < item.Images.Count; imgIndex++)
                                     {
-
-                                        if (image.value.IsMainImage)
+                                        var image = item.Images[imgIndex];
+                                        if (image.IsMainImage)
                                         {
-                                            <li data-target="#carousel-thumb @item.index" data-slide-to="@image.index" class="active list-inline-item">
-                                                <img id="thumbnail" class="img-fluid" src="@image.value.ImageURL">
+                                            <li data-target="#carousel-thumb @imgIndex" data-slide-to="@imgIndex" class="active list-inline-item">
+                                                <img id="thumbnail" class="img-fluid" src="@image.ImageURL">
                                             </li>
                                         }
                                         else
                                         {
-                                            <li data-target="#carousel-thumb @item.index" data-slide-to="@image.index" class="list-inline-item">
-                                                <img id="thumbnail" class="img-fluid" src="@image.value.ImageURL">
+                                            <li data-target="#carousel-thumb @imgIndex" data-slide-to="@imgIndex" class="list-inline-item">
+                                                <img id="thumbnail" class="img-fluid" src="@image.ImageURL">
                                             </li>
                                         }
 
@@ -82,15 +83,15 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <h1>@item.value.ItemName - $@item.value.Price</h1>
-                        <p>@item.value.Description</p>
-                        @if (!String.IsNullOrEmpty(item.value.Email))
+                        <h1>@item.ItemName - $@item.Price</h1>
+                        <p>@item.Description</p>
+                        @if (!String.IsNullOrEmpty(item.Email))
                         {
-                            <h4>Email: <a href="mailto:@item.value.Email">@item.value.Email</a></h4>
+                            <h4>Email: <a href="mailto:@item.Email">@item.Email</a></h4>
                         }
-                        @if (!String.IsNullOrEmpty(item.value.Phone))
+                        @if (!String.IsNullOrEmpty(item.Phone))
                         {
-                            <h4>Phone: @item.value.Phone</h4>
+                            <h4>Phone: @item.Phone</h4>
                         }
                     </div>
                 </div>

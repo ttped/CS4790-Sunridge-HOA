@@ -21,52 +21,30 @@ namespace SunridgeHOA.Controllers
 
 
 
-        public async  Task<IActionResult> Lots()
+        public async Task<IActionResult> Lots()
         {
-            var classifieds = new List<ClassifiedListing>();
-            var items = await _context.ClassifiedListing.ToListAsync();
-            var lotCategory = await _context.ClassifiedCategory.Where(x => x.Description == "Lots").ToListAsync();
-            //lotCategory = await lotCategory.Where(x => x.Description == "Lots").ToListAsync();
-            foreach (var item in items)
-            {
-                item.Images = await _context.ClassifiedImage.Where(x => x.ClassifiedListingId == item.ClassifiedListingId).ToListAsync();
-                item.ClassifiedCategory = await _context.ClassifiedCategory.Where(x => x.ClassifiedCategoryId == item.ClassifiedCategoryId).FirstAsync();
-                classifieds.Add(item);
-            }
+            var lotCategory = _context.ClassifiedCategory
+                .Single(u => u.Description == "Lots")
+                .ClassifiedCategoryId;
+            var classifieds = await GetClassifiedsByCategory(lotCategory);
             return View(classifieds);
         }
 
         public async Task<IActionResult> Cabins()
         {
-            //var classifiedsVM = new List<ClassifiedListingPageViewModel>();
-            var classifieds = new List<ClassifiedListing>();
-            var items = await _context.ClassifiedListing.ToListAsync();
-            foreach(var item in items)
-            {
-                item.Images = await _context.ClassifiedImage.Where(x => x.ClassifiedListingId == item.ClassifiedListingId).ToListAsync();
-                item.ClassifiedCategory = await _context.ClassifiedCategory.Where(x => x.ClassifiedCategoryId == item.ClassifiedCategoryId).FirstAsync() ;
-                classifieds.Add(item);
-            }
+            var cabinCategory = _context.ClassifiedCategory
+                .Single(u => u.Description == "Cabins")
+                .ClassifiedCategoryId;
+            var classifieds = await GetClassifiedsByCategory(cabinCategory);
             return View(classifieds);
         }
 
         public async Task<IActionResult> Other()
         {
-            //var classifieds = new List<ClassifiedListing>();
-            //var items = await _context.ClassifiedListing.ToListAsync();
-            //foreach (var item in items)
-            //{
-            //    item.Images = await _context.ClassifiedImage.Where(x => x.ClassifiedListingId == item.ClassifiedListingId).ToListAsync();
-            //    item.ClassifiedCategory = await _context.ClassifiedCategory.Where(x => x.ClassifiedCategoryId == item.ClassifiedCategoryId).FirstAsync();
-            //    classifieds.Add(item);
-            //}
-            //return View(classifieds);
-
             var otherCategory = await _context.ClassifiedCategory
                 .SingleAsync(u => u.Description == "Other");
             var classifieds = await _context.ClassifiedListing
                 .Include(u => u.Images)
-                .Include(u => u.ClassifiedCategory)
                 .Where(u => u.ClassifiedCategoryId == otherCategory.ClassifiedCategoryId)
                 .Where(u => u.Images.Any())
                 .Where(u => !u.IsArchive)
@@ -77,26 +55,30 @@ namespace SunridgeHOA.Controllers
 
         public async Task<IActionResult> ATVs()
         {
-            var atvCategory = await _context.ClassifiedCategory
-                .SingleAsync(u => u.Description == "ATVs");
-            var classifieds = await _context.ClassifiedListing
-                .Include(u => u.Images)
-                .Where(u => u.ClassifiedCategoryId == atvCategory.ClassifiedCategoryId)
-                .Where(u => !u.IsArchive)
-                .ToListAsync();
+            var atvCategory = _context.ClassifiedCategory
+                .Single(u => u.Description == "ATVs")
+                .ClassifiedCategoryId;
+            var classifieds = await GetClassifiedsByCategory(atvCategory);
             return View(classifieds);
         }
 
         public async Task<IActionResult> Trailers()
         {
-            var trailerCategory = await _context.ClassifiedCategory
-                .SingleAsync(u => u.Description == "Trailers");
+            var trailerCategory = _context.ClassifiedCategory
+                .Single(u => u.Description == "Trailers")
+                .ClassifiedCategoryId;
+            var classifieds = await GetClassifiedsByCategory(trailerCategory);
+            return View(classifieds);
+        }
+
+        private async Task<List<ClassifiedListing>> GetClassifiedsByCategory(int category)
+        {
             var classifieds = await _context.ClassifiedListing
                 .Include(u => u.Images)
-                .Where(u => u.ClassifiedCategoryId == trailerCategory.ClassifiedCategoryId)
+                .Where(u => u.ClassifiedCategoryId == category)
                 .Where(u => !u.IsArchive)
                 .ToListAsync();
-            return View(classifieds);
+            return classifieds;
         }
     }
 }
