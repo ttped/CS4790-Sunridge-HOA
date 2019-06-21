@@ -62,13 +62,13 @@
                                         var image = item.Images[imgIndex];
                                         if (image.IsMainImage)
                                         {
-                                            <li data-target="#carousel-thumb @imgIndex" data-slide-to="@imgIndex" class="active list-inline-item">
+                                            <li data-target="#carousel-thumb @index" data-slide-to="@imgIndex" class="active list-inline-item">
                                                 <img id="thumbnail" class="img-fluid" src="@image.ImageURL">
                                             </li>
                                         }
                                         else
                                         {
-                                            <li data-target="#carousel-thumb @imgIndex" data-slide-to="@imgIndex" class="list-inline-item">
+                                            <li data-target="#carousel-thumb @index" data-slide-to="@imgIndex" class="list-inline-item">
                                                 <img id="thumbnail" class="img-fluid" src="@image.ImageURL">
                                             </li>
                                         }
