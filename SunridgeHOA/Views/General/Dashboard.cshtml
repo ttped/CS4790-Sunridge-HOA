@@ -1,8 +1,8 @@
 ﻿@model SunridgeHOA.Models.ViewModels.DashboardViewModel
-@using SunridgeHOA.Extensions
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+@*@using SunridgeHOA.Extensions
+@using Microsoft.AspNetCore.Identity*@
+@*@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager*@
 @{
     ViewData["Title"] = "Dashboard";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -13,13 +13,6 @@
 
 
 <div id="windowFrame" >
-
-    @*<div class="row">
-        <div id="titleDiv" class="col-12">
-            <h5 id="title">Dashboard</h5>
-        </div>
-    </div>*@
-
     <div class="row">
         <div class="col-lg-6 col-sm-12">
             <div class="p-4 border rounded">
@@ -148,22 +141,25 @@
                         <th>Inventory</th>
                         <th></th>
                     </tr>
-                    @foreach (var lot in Model.OwnerLots.Where(x => x.OwnerId == ViewData.Model.Owner.OwnerId))
+                    @foreach (var lot in Model.Lots)
                     {
                         <tr>
                             <td style="white-space:nowrap;">
-                                @lot.Lot.LotNumber   @*@if (User.IsInRole("Admin")){<a asp-action="Edit" asp-area="Owner" asp-controller="Lots" asp-route-id="@lot.LotId">Edit</a>}*@
+                                @lot.LotNumber   @*@if (User.IsInRole("Admin")){<a asp-action="Edit" asp-area="Owner" asp-controller="Lots" asp-route-id="@lot.LotId">Edit</a>}*@
                             </td>
                             <td>
-                                @{ var taxLink = $"http://www3.co.weber.ut.us/psearch/tax_summary.php?id={lot.Lot.TaxId}"; }
-                                <a href="@taxLink" target="_blank">@Html.DisplayFor(modelItem => lot.Lot.TaxId)</a>
+                                @{ var taxLink = $"http://www3.co.weber.ut.us/psearch/tax_summary.php?id={lot.TaxId}"; }
+                                <a href="@taxLink" target="_blank">@Html.DisplayFor(modelItem => lot.TaxId)</a>
                             </td>
                             <td>
-                                @{ var items = String.Join("\n", lot.Lot.LotInventories.Select(u => u.Inventory.Description).ToList()); }
-                                @items
+                                @if (lot.LotInventories != null)
+                                {
+                                    var items = String.Join("\n", lot.LotInventories?.Select(u => u.Inventory.Description).ToList());
+                                    @items
+                                }
                             </td>
                             <td>
-                                <a asp-area="Owner" asp-controller="Lots" asp-action="EditLotItems" asp-route-id="@lot.Lot.LotId"><button type="button" class="btn btn-warning btn-sm">Edit Lot Items</button></a>
+                                <a asp-area="Owner" asp-controller="Lots" asp-action="EditLotItems" asp-route-id="@lot.LotId" class="btn btn-warning btn-sm">Edit Lot Items</a>
                             </td>
                         </tr>
                     }

@@ -33,7 +33,7 @@ namespace SunridgeHOA.Controllers
         public async Task<IActionResult> Dashboard()
         {
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
-            var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+            var loggedInUser = await _context.Owner.Include(u => u.Address).SingleOrDefaultAsync(u => u.OwnerId == identityUser.OwnerId);
 
             // Redirect to the password change page if the user is still using the default password
             var defaultPassword = Areas.Admin.Data.OwnerUtility.GenerateDefaultPassword(loggedInUser);
@@ -44,39 +44,27 @@ namespace SunridgeHOA.Controllers
 
             var myLots = await _context.OwnerLot
                 .Include(u => u.Lot)
+                    .ThenInclude(u => u.LotInventories)
                 .Where(u => u.OwnerId == loggedInUser.OwnerId)
                 .Where(u => !u.IsArchive)
-                .Select(u => u.Lot.LotId)
+                .Select(u => u.Lot)
+                .ToListAsync();
+
+            var myLotIds = myLots.Select(u => u.LotId).ToList();
+
+            var myKeys = await _context.KeyHistory
+                .Include(u => u.Key)
+                .Where(u => myLotIds.Contains(u.LotId))
                 .ToListAsync();
 
             var dashboardViewModel = new DashboardViewModel()
             {
-                Owner = await _context.Owner.Where(x => x.OwnerId == loggedInUser.OwnerId).FirstAsync(),
-                OwnerLots = await _context.OwnerLot.Where(x => x.OwnerId == loggedInUser.OwnerId).ToListAsync(),
-                KeyHistories = await _context.KeyHistory.Where(x => myLots.Contains(x.LotId)).ToListAsync()
+                Owner = loggedInUser,
+                Lots = myLots,
+                KeyHistories = myKeys
             };
-            dashboardViewModel.Owner.Address = _context.Address.Where(x => x.Id == dashboardViewModel.Owner.AddressId).First();
-
-            foreach (var ownerLot in dashboardViewModel.OwnerLots)
-            {
-                ownerLot.Lot = await _context.Lot
-                    .Include(u => u.LotInventories).ThenInclude(u => u.Inventory)
-                    .Where(x => x.LotId == ownerLot.LotId).FirstAsync();
-                //foreach (var inventory in ownerLot.Lot.LotInventories)
-                //{
-                //    inventory.Description = _context.Inventory.Where(x => x.InventoryId == inventory.InventoryId).First().Description;
-                //}
-                
-                foreach(var key in dashboardViewModel.KeyHistories)
-                {
-                    key.Key = _context.Key.Where(x => x.KeyId == key.KeyId).ToList().First();
-                }
-                dashboardViewModel.lotInventories = await _context.LotInventory.Where(x => x.LotId == ownerLot.LotId).ToListAsync();
-            }
 
             return View(dashboardViewModel);
         }
-
-        
     }
 }
