@@ -1,8 +1,6 @@
-﻿@model List<SunridgeHOA.Models.ViewModels.ClassifiedListingViewModel>
-@using SunridgeHOA.Models.ViewModels
-@using SunridgeHOA.Extensions
+﻿@model List<ClassifiedListing>
 @{
-    ViewData["Title"] = "Classifieds Index";
+    ViewData["Title"] = "Classifieds";
 }
 
 <h2>Classifieds Index</h2>
@@ -43,36 +41,36 @@
         </thead>
 
         <tbody>
-            @foreach (var item in Model.Where(x => x.ClassifiedListing.IsArchive == false))
+            @foreach (var item in Model)
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ClassifiedListing.ItemName)
+                        @Html.DisplayFor(modelItem => item.ItemName)
                     </td>
                     <td>
-                        @if (item.ClassifiedListing.ItemName == "Service")
+                        @if (item.ItemName == "Service")
                         {
                             @:---
                         }
                         else
                         {
-                            @Html.DisplayFor(modelItem => item.ClassifiedListing.Price)
+                            @Html.DisplayFor(modelItem => item.Price)
                         }
 
                     </td>
                     <td>
-                        @item.ClassifiedListing.ListingDate.ToString("MM/dd/yyyy")
+                        @item.ListingDate.ToString("MM/dd/yyyy")
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ClassifiedListing.Owner.FullName)
+                        @Html.DisplayFor(modelItem => item.Owner.FullName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ClassifiedListing.ClassifiedCategory.Description)
+                        @Html.DisplayFor(modelItem => item.ClassifiedCategory.Description)
                     </td>
                     <td>
                         @{
                             var maxLength = 50;
-                            var itemDescription = item.ClassifiedListing.Description;
+                            var itemDescription = item.Description;
                             var description = itemDescription.Length < maxLength
                                 ? itemDescription
                                 : itemDescription.Substring(0, maxLength) + "...";
@@ -81,15 +79,15 @@
                     </td>
                     <td>
                         <div class="btn-group">
-                            <a asp-action="Edit" asp-route-id="@item.ClassifiedListing.ClassifiedListingId" class="btn btn-info btn-sm">
+                            <a asp-action="Edit" asp-route-id="@item.ClassifiedListingId" class="btn btn-info btn-sm">
                                 <span class="d-none d-lg-block">Edit</span>
                                 <i class="fas fa-edit d-lg-none"></i>
                             </a>
-                            <a asp-action="Details" asp-route-id="@item.ClassifiedListing.ClassifiedListingId" class="btn btn-warning btn-sm">
+                            <a asp-action="Details" asp-route-id="@item.ClassifiedListingId" class="btn btn-warning btn-sm">
                                 <span class="d-none d-lg-block">Details</span>
                                 <i class="fas fa-info d-lg-none"></i>
                             </a>
-                            <a asp-action="Delete" asp-route-id="@item.ClassifiedListing.ClassifiedListingId" class="btn btn-danger btn-sm">
+                            <a asp-action="Delete" asp-route-id="@item.ClassifiedListingId" class="btn btn-danger btn-sm">
                                 <span class="d-none d-lg-block">Delete</span>
                                 <i class="fas fa-trash d-lg-none"></i>
                             </a>

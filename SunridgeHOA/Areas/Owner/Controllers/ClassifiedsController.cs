@@ -23,26 +23,14 @@ namespace SunridgeHOA.Areas.Owner.Controllers
         private readonly HostingEnvironment _hostingEnvironment;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        [BindProperty]
-        public ClassifiedListingViewModel classifiedListingViewModel { get; set; }
-
         public ClassifiedsController(ApplicationDbContext context, HostingEnvironment hostingEnvironment, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _hostingEnvironment = hostingEnvironment;
             _userManager = userManager;
-            classifiedListingViewModel = new ClassifiedListingViewModel()
-            {
-                ClassifiedListing = new SunridgeHOA.Models.ClassifiedListing(),
-                ClassifiedCategory = _context.ClassifiedCategory.ToList(),
-                ClassifiedImages = _context.ClassifiedImage.Where(x => x.ClassifiedListingId == classifiedListingViewModel.ClassifiedListing.ClassifiedListingId),
-                Owner = _context.Owner.ToList()
-            };
         }
 
-        // GET: Classifieds
-        //[Authorize(Roles = "SuperAdmin,Admin")]
-        public async Task<ActionResult> Index()
+        public async Task<IActionResult> Index()
         {
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
             var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
@@ -54,22 +42,13 @@ namespace SunridgeHOA.Areas.Owner.Controllers
                 return RedirectToAction(nameof(MyClassifieds));
             }
 
-            var vmList = new List<ClassifiedListingViewModel>();
+            var classifieds = await _context.ClassifiedListing
+                .Include(u => u.ClassifiedCategory)
+                .Include(u => u.Owner)
+                .Where(u => !u.IsArchive)
+                .ToListAsync();
 
-            var adminItems = _context.ClassifiedListing.ToList();
-            foreach (var listing in adminItems)
-            {
-                var vm = new ClassifiedListingViewModel()
-                {
-                    ClassifiedListing = listing,
-                    ClassifiedCategory = _context.ClassifiedCategory.ToList(),
-                    ClassifiedImages = _context.ClassifiedImage.ToList(),
-                    Owner = _context.Owner.ToList()
-                };
-                vmList.Add(vm);
-            }
-
-            return View(vmList);
+            return View(classifieds);
         }
 
         public async Task<ActionResult> MyClassifieds()
@@ -77,21 +56,14 @@ namespace SunridgeHOA.Areas.Owner.Controllers
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
             var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
 
-            var vmList = new List<ClassifiedListingViewModel>();
+            var classifieds = await _context.ClassifiedListing
+                .Include(u => u.ClassifiedCategory)
+                .Include(u => u.Owner)
+                .Where(u => !u.IsArchive)
+                .Where(u => u.OwnerId == loggedInUser.OwnerId)
+                .ToListAsync();
 
-            var ownerItems = _context.ClassifiedListing.Where(x => x.OwnerId == loggedInUser.OwnerId).ToList();
-            foreach (var listing in ownerItems)
-            {
-                var vm = new ClassifiedListingViewModel()
-                {
-                    ClassifiedListing = listing,
-                    ClassifiedCategory = _context.ClassifiedCategory.ToList(),
-                    ClassifiedImages = _context.ClassifiedImage.ToList(),
-                    Owner = _context.Owner.ToList()
-                };
-                vmList.Add(vm);
-            }
-            return View(vmList);
+            return View(classifieds);
         }
 
         // GET: Classifieds/Details/5
@@ -103,7 +75,10 @@ namespace SunridgeHOA.Areas.Owner.Controllers
 
             }
 
-            var item = await _context.ClassifiedListing.Include(u => u.ClassifiedCategory).SingleOrDefaultAsync(m => m.ClassifiedListingId == id);
+            var item = await _context.ClassifiedListing
+                .Include(u => u.ClassifiedCategory)
+                .Include(u => u.Images)
+                .SingleOrDefaultAsync(m => m.ClassifiedListingId == id);
             if (item == null)
             {
                 return NotFound();
@@ -115,47 +90,38 @@ namespace SunridgeHOA.Areas.Owner.Controllers
                 return RedirectToAction(nameof(ServiceDetails), new { id });
             }
 
-            item.Images = await _context.ClassifiedImage.Where(x => x.ClassifiedListingId == item.ClassifiedListingId).ToListAsync();
-
             return View(item);
         }
 
-        // GET: Classifieds/Create
-        public ActionResult Create()
+        
+
+        public IActionResult Create()
         {
             ViewData["Category"] = new SelectList(_context.ClassifiedCategory.Where(u => u.Description != "Other"), "ClassifiedCategoryId", "Description");
-            return View(new ClassifiedListingViewModel()
-            {
-                ClassifiedListing = new SunridgeHOA.Models.ClassifiedListing(),
-                //ClassifiedCategory = _context.ClassifiedCategory.ToList(),
-                ClassifiedImages = _context.ClassifiedImage.Where(x => x.ClassifiedListingId == classifiedListingViewModel.ClassifiedListing.ClassifiedListingId),
-            });
+            return View();
         }
 
-        // POST: Classifieds/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(ClassifiedListingViewModel listing)
+        public async Task<IActionResult> Create(ClassifiedListing listing)
         {
-
             if (ModelState.IsValid)
             {
                 var identityUser = await _userManager.GetUserAsync(HttpContext.User);
                 var loggedInUser = await _context.Owner.FindAsync(identityUser.OwnerId);
-                
-                classifiedListingViewModel.ClassifiedListing.LastModifiedBy = loggedInUser.FullName;
-                classifiedListingViewModel.ClassifiedListing.LastModifiedDate = DateTime.Now;
-                classifiedListingViewModel.ClassifiedListing.ListingDate = DateTime.Now;
-                classifiedListingViewModel.ClassifiedListing.Owner = loggedInUser;
-                classifiedListingViewModel.ClassifiedListing.OwnerId = loggedInUser.OwnerId;
 
-                _context.ClassifiedListing.Add(classifiedListingViewModel.ClassifiedListing);
+                listing.LastModifiedBy = loggedInUser.FullName;
+                listing.LastModifiedDate = DateTime.Now;
+                listing.ListingDate = DateTime.Now;
+                listing.Owner = loggedInUser;
+                listing.OwnerId = loggedInUser.OwnerId;
+
+                _context.ClassifiedListing.Add(listing);
                 await _context.SaveChangesAsync();
 
                 //image uploading
                 string webRootPath = _hostingEnvironment.WebRootPath;
                 var files = HttpContext.Request.Form.Files;
-                //var classifiedListingFromDb = _context.ClassifiedListing.Find(classifiedListingViewModel.ClassifiedListing.ClassifiedListingId);
 
                 var uploads = Path.Combine(webRootPath, @"img\ClassifiedsImages");
 
@@ -164,49 +130,50 @@ namespace SunridgeHOA.Areas.Owner.Controllers
                 {
                     i++;
                     var extension = Path.GetExtension(file.FileName);
-                    using (var filestream = new FileStream(Path.Combine(uploads, classifiedListingViewModel.ClassifiedListing.ClassifiedListingId + @"_" + i + extension), FileMode.Create))
+                    using (var filestream = new FileStream(Path.Combine(uploads, listing.ClassifiedListingId + @"_" + i + extension), FileMode.Create))
                     {
                         file.CopyTo(filestream); // moves to server and renames
                     }
                     var image = new ClassifiedImage()
                     {
-                        ClassifiedListingId = classifiedListingViewModel.ClassifiedListing.ClassifiedListingId,
+                        ClassifiedListingId = listing.ClassifiedListingId,
                         IsMainImage = (file == files.First()),
                         ImageExtension = extension,
-                        ImageURL = @"\" + @"img\ClassifiedsImages" + @"\" + classifiedListingViewModel.ClassifiedListing.ClassifiedListingId + @"_" + i + extension
+                        ImageURL = @"\" + @"img\ClassifiedsImages" + @"\" + listing.ClassifiedListingId + @"_" + i + extension
                     };
 
                     _context.ClassifiedImage.Add(image);
                 }
-
-                
-                //classifiedListingFromDb.Images.Add(image);
 
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["Category"] = new SelectList(_context.ClassifiedCategory, "ClassifiedCategoryId", "Description");
-            return View(new ClassifiedListingViewModel()
-            {
-                ClassifiedListing = listing.ClassifiedListing,
-                ClassifiedCategory = _context.ClassifiedCategory.ToList(),
-                ClassifiedImages = _context.ClassifiedImage.Where(x => x.ClassifiedListingId == classifiedListingViewModel.ClassifiedListing.ClassifiedListingId),
-            });
+            ViewData["Category"] = new SelectList(_context.ClassifiedCategory.Where(u => u.Description != "Other"), "ClassifiedCategoryId", "Description", listing.ClassifiedCategoryId);
+            return View(listing);
         }
 
-        // GET: Classifieds/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var item = await _context.ClassifiedListing.SingleOrDefaultAsync(u => u.ClassifiedListingId == id);
-
+            var item = await _context.ClassifiedListing
+                .Include(u => u.Images)
+                .SingleOrDefaultAsync(u => u.ClassifiedListingId == id);
             if (item == null)
+            {
+                return NotFound();
+            }
+
+            // Only admins and the owner can edit the classified
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+            var roles = await _userManager.GetRolesAsync(identityUser);
+            if (!roles.Contains("Admin") && !roles.Contains("SuperAdmin") && item.OwnerId != loggedInUser.OwnerId)
             {
                 return NotFound();
             }
@@ -217,12 +184,8 @@ namespace SunridgeHOA.Areas.Owner.Controllers
                 return RedirectToAction(nameof(EditService), new { id });
             }
 
-            item.Images = await _context.ClassifiedImage.Where(x => x.ClassifiedListingId == item.ClassifiedListingId).ToListAsync();
-            classifiedListingViewModel.ClassifiedListing = item;
-
             ViewData["Category"] = new SelectList(_context.ClassifiedCategory.Where(u => u.Description != "Other"), "ClassifiedCategoryId", "Description", item.ClassifiedCategoryId);
-
-            return View(classifiedListingViewModel);
+            return View(item);
         }
 
         // POST: Classifieds/Edit/5
@@ -230,7 +193,7 @@ namespace SunridgeHOA.Areas.Owner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(int? id, ClassifiedListing listing)
         {
-            if (id != classifiedListingViewModel.ClassifiedListing.ClassifiedListingId)
+            if (id != listing.ClassifiedListingId)
             {
                 return NotFound();
             }
@@ -238,54 +201,60 @@ namespace SunridgeHOA.Areas.Owner.Controllers
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
             var loggedInUser = await _context.Owner.FindAsync(identityUser.OwnerId);
 
-            classifiedListingViewModel.ClassifiedListing.LastModifiedBy = loggedInUser.FullName;
-            classifiedListingViewModel.ClassifiedListing.LastModifiedDate = DateTime.Now;
-            classifiedListingViewModel.ClassifiedListing.OwnerId = loggedInUser.OwnerId;
-
-            _context.Update(classifiedListingViewModel.ClassifiedListing);
-            await _context.SaveChangesAsync();
-
-            string webRootPath = _hostingEnvironment.WebRootPath;
-            var files = HttpContext.Request.Form.Files;
-
-            var uploads = Path.Combine(webRootPath, @"img\ClassifiedsImages");
-            ClassifiedListing item = await _context.ClassifiedListing.FindAsync(id);
-            if (files.Count != 0)
+            if (ModelState.IsValid)
             {
-                var oldImages = await _context.ClassifiedImage.Where(x => x.ClassifiedListingId == item.ClassifiedListingId).ToListAsync();
-                foreach(var oldImage in oldImages)
-                {
-                    if (System.IO.File.Exists(Path.Combine(webRootPath, oldImage.ImageURL.Substring(1))))
-                    {
-                        System.IO.File.Delete(Path.Combine(webRootPath, oldImage.ImageURL.Substring(1)));
-                    }
-                    _context.ClassifiedImage.Remove(oldImage);
-                 }
+                listing.LastModifiedBy = loggedInUser.FullName;
+                listing.LastModifiedDate = DateTime.Now;
+                listing.OwnerId = loggedInUser.OwnerId;
 
-                int i = 0;
-                foreach (var file in files)
-                {
-                    i++;
-                    var extension = Path.GetExtension(file.FileName);
-                    using (var filestream = new FileStream(Path.Combine(uploads, classifiedListingViewModel.ClassifiedListing.ClassifiedListingId + @"_" + i + extension), FileMode.Create))
-                    {
-                        file.CopyTo(filestream); // moves to server and renames
-                    }
-                    var image = new ClassifiedImage()
-                    {
-                        ClassifiedListingId = classifiedListingViewModel.ClassifiedListing.ClassifiedListingId,
-                        IsMainImage = (file == files.First()),
-                        ImageExtension = extension,
-                        ImageURL = @"\" + @"img\ClassifiedsImages" + @"\" + classifiedListingViewModel.ClassifiedListing.ClassifiedListingId + @"_" + i + extension
-                    };
-
-                    _context.ClassifiedImage.Add(image);
-                }
+                _context.Update(listing);
                 await _context.SaveChangesAsync();
-            }
 
-            ViewData["Category"] = new SelectList(_context.ClassifiedCategory, "ClassifiedCategoryId", "Description", item.ClassifiedCategoryId);
-            return RedirectToAction(nameof(Index));
+                var files = HttpContext.Request.Form.Files;
+                if (files.Count != 0)
+                {
+                    string webRootPath = _hostingEnvironment.WebRootPath;
+                    
+                    var uploads = Path.Combine(webRootPath, @"img\ClassifiedsImages");
+
+                    var oldImages = await _context.ClassifiedImage.Where(x => x.ClassifiedListingId == listing.ClassifiedListingId).ToListAsync();
+                    foreach (var oldImage in oldImages)
+                    {
+                        if (System.IO.File.Exists(Path.Combine(webRootPath, oldImage.ImageURL.Substring(1))))
+                        {
+                            System.IO.File.Delete(Path.Combine(webRootPath, oldImage.ImageURL.Substring(1)));
+                        }
+                        _context.ClassifiedImage.Remove(oldImage);
+                    }
+
+                    int i = 0;
+                    foreach (var file in files)
+                    {
+                        i++;
+                        var extension = Path.GetExtension(file.FileName);
+                        using (var filestream = new FileStream(Path.Combine(uploads, listing.ClassifiedListingId + @"_" + i + extension), FileMode.Create))
+                        {
+                            file.CopyTo(filestream); // moves to server and renames
+                        }
+                        var image = new ClassifiedImage()
+                        {
+                            ClassifiedListingId = listing.ClassifiedListingId,
+                            IsMainImage = (file == files.First()),
+                            ImageExtension = extension,
+                            ImageURL = @"\" + @"img\ClassifiedsImages" + @"\" + listing.ClassifiedListingId + @"_" + i + extension
+                        };
+
+                        _context.ClassifiedImage.Add(image);
+                    }
+                    await _context.SaveChangesAsync();
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+            
+
+            ViewData["Category"] = new SelectList(_context.ClassifiedCategory, "ClassifiedCategoryId", "Description", listing.ClassifiedCategoryId);
+            return View(listing);
         }
 
         public async Task<IActionResult> ServiceDetails(int? id)
@@ -446,9 +415,29 @@ namespace SunridgeHOA.Areas.Owner.Controllers
         }
 
         // GET: Classifieds/Delete/5
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(int? id)
         {
-            var item = await _context.ClassifiedListing.FindAsync(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var item = await _context.ClassifiedListing.SingleOrDefaultAsync(u => u.ClassifiedListingId == id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
+
+            // Only admins and the owner can delete the classified
+            var roles = await _userManager.GetRolesAsync(identityUser);
+            if (!roles.Contains("Admin") && !roles.Contains("SuperAdmin") && item.OwnerId != loggedInUser.OwnerId)
+            {
+                return NotFound();
+            }
+
             return View(item);
         }
 
