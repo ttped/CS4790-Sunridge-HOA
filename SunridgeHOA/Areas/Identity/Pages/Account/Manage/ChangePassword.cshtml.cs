@@ -105,7 +105,8 @@ namespace SunridgeHOA.Areas.Identity.Pages.Account.Manage
             _logger.LogInformation("User changed their password successfully.");
             StatusMessage = "Your password has been changed.";
 
-            return RedirectToAction("Dashboard", "General", new { area = "" });
+            //return RedirectToAction("Dashboard", "General", new { area = "" });
+            return RedirectToAction("Dashboard", "OwnerPortal", new { area = "Owner" });
         }
     }
 }

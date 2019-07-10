@@ -87,7 +87,8 @@ namespace SunridgeHOA.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        return RedirectToAction("Dashboard", "General", new { area = "" });
+                        //return RedirectToAction("Dashboard", "General", new { area = "" });
+                        return RedirectToAction("Dashboard", "OwnerPortal", new { area = "Owner" });
                     }
                 }
                 if (result.RequiresTwoFactor)

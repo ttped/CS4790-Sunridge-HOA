@@ -12,7 +12,8 @@
         <ul class="nav navbar-nav navbar-right">
             <li>
                 <span class="small d-none d-md-inline d-lg-inline">Hello @owner.FullName!</span>
-                <a asp-area="" asp-controller="General" asp-action="Dashboard" title="Manage" class="btn btn-link navbar-btn navbar-link">Dashboard</a>
+                @*<a asp-area="" asp-controller="General" asp-action="Dashboard" title="Manage" class="btn btn-link navbar-btn navbar-link">Dashboard</a>*@
+                <a asp-area="Owner" asp-controller="OwnerPortal" asp-action="Dashboard" title="Manage" class="btn btn-link navbar-btn navbar-link">Dashboard</a>
             </li>
             <li>
                 <button type="submit" class="btn btn-link navbar-btn navbar-link">Logout</button>

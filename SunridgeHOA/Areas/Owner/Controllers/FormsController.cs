@@ -147,7 +147,8 @@ namespace SunridgeHOA.Areas.Owner.Controllers
                 
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("Dashboard", "General", new { area = "" });
+                //return RedirectToAction("Dashboard", "General", new { area = "" });
+                return RedirectToAction("Dashboard", "OwnerPortal", new { area = "Owner" });
             }
 
             return View(form);
@@ -261,7 +262,8 @@ namespace SunridgeHOA.Areas.Owner.Controllers
 
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("Dashboard", "General", new { area = "" });
+                //return RedirectToAction("Dashboard", "General", new { area = "" });
+                return RedirectToAction("Dashboard", "OwnerPortal", new { area = "Owner" });
             }
 
             return View(form);
