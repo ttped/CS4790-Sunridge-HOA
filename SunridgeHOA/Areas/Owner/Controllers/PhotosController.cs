@@ -10,77 +10,68 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SunridgeHOA.Models;
-using SunridgeHOA.Models.ViewModels;
 using SunridgeHOA.Utility;
 
-namespace SunridgeHOA.Controllers
+namespace SunridgeHOA.Areas.Owner.Controllers
 {
-    [Authorize(Roles = "Admin, SuperAdmin")]
-    public class AdminPhotosController : Controller
+    [Area("Owner")]
+    [Authorize(Roles = "Owner")]
+    public class PhotosController : Controller
     {
         private readonly ApplicationDbContext _db;
         private readonly HostingEnvironment _hostingEnvironment;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        [BindProperty]
-        public AdminPhotoViewModels AdminPhotoVM { get; set; }
-
-        public AdminPhotosController(ApplicationDbContext db, HostingEnvironment hostingEnvironment, UserManager<ApplicationUser> userManager)
+        public PhotosController(ApplicationDbContext db, HostingEnvironment hostingEnvironment, UserManager<ApplicationUser> userManager)
         {
             _db = db;
             _hostingEnvironment = hostingEnvironment;
             _userManager = userManager;
-
-            /*
-            AdminPhotoVM = new AdminPhotoViewModels()
-            {
-                //Owner = _db.Owner.ToList(),
-                Photo = new Models.Photo()
-            };
-            */
         }
 
-        //GET: AdminPhoto Index
+        [Authorize(Roles = "Admin, SuperAdmin")]
         public async Task<IActionResult> Index()
         {
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
-            //var loggedInUser = _context.Owner.Find(identityUser.OwnerId);
             if (identityUser == null)
             {
-                return RedirectToAction("Index", "Home");               
+                return RedirectToAction("Index", "Home");
+            }
+
+            var roles = await _userManager.GetRolesAsync(identityUser);
+
+            // Redirect to /MyPhotos if the user is not an admin
+            if (!roles.Contains("Admin") && !roles.Contains("SuperAdmin"))
+            {
+                return RedirectToAction(nameof(MyPhotos));
             }
 
             var photos = _db.Photo.Include(m => m.Owner);
-            //var photos = _db.Photo.Include(u => u.Owner).Find(OwnerId);
             return View(await photos.ToListAsync());
         }
 
-        //public async Task<IActionResult> MyPhotos()
-        //{
-        //    var identityUser = await _userManager.GetUserAsync(HttpContext.User);
-        //    var loggedInUser = _db.Owner.Find(identityUser.OwnerId);
+        public async Task<IActionResult> MyPhotos()
+        {
+            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
+            var loggedInUser = _db.Owner.Find(identityUser.OwnerId);
 
-        //    var ownerPhotos = _db.Photo
-        //        .Include(m => m.Owner)
-        //        .Where(m => m.OwnerId == loggedInUser.OwnerId);
-        //    //.Select(m => m.)
-        //    //.ToListAsync();
+            var ownerPhotos = await _db.Photo
+                .Include(m => m.Owner)
+                .Where(m => m.OwnerId == loggedInUser.OwnerId)
+                .ToListAsync();
+            return View(ownerPhotos);
+        }
 
-        //    return View(await ownerPhotos.ToListAsync());
-        //}
-
-        //GET: AdminPhoto Create
         public IActionResult Create()
         {
-            ViewData["Category"] = new SelectList(new string[] {"Select Category", "Summer", "Winter", "People" });
-            return View(AdminPhotoVM);
-            //return View();
+            ViewData["Category"] = new SelectList(new string[] { "Summer", "Winter", "People" });
+            return View();
         }
 
         //POST: AdminPhoto Create
         [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePOST([Bind("Image, Title, Year, Category, Year")] Models.Photo photo)
+        public async Task<IActionResult> CreatePOST([Bind("Image, Title, Category, Year")] Photo photo)
         {
             if (photo.Category == "-1")
             {
@@ -100,29 +91,27 @@ namespace SunridgeHOA.Controllers
 
             if (!ModelState.IsValid)
             {
-                //return View(AdminPhotoVM);
+                ViewData["Category"] = new SelectList(new string[] { "Summer", "Winter", "People" });
                 return View();
             }
 
             var identityUser = await _userManager.GetUserAsync(HttpContext.User);
             if (identityUser == null)
             {
-                return RedirectToPage(nameof(Index));
+                return RedirectToPage(nameof(MyPhotos));
             }
 
             var loggedInUser = _db.Owner.Find(identityUser.OwnerId);
-            //var loggedInUser = _db.Owner.Find(1);
             photo.OwnerId = loggedInUser.OwnerId;
 
-            //_db.Photo.Add(AdminPhotoVM.Photo);
+            photo.Year = DateTime.Now.Year;
+
             _db.Photo.Add(photo);
             await _db.SaveChangesAsync();
-           
 
             //Save Physical Image
             string webRootPath = _hostingEnvironment.WebRootPath;
 
-            //var photosFromDb = _db.Photo.Find(AdminPhotoVM.Photo.PhotoId);
             var photosFromDb = _db.Photo.Find(photo.PhotoId);
 
             if (files.Count != 0)
@@ -147,7 +136,7 @@ namespace SunridgeHOA.Controllers
                 photosFromDb.Image = @"\" + SD.ImageFolder + @"\" + photo.PhotoId + ".jpg";
             }
             await _db.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(MyPhotos));
         }
 
         //GET: AdminPhoto Details
@@ -162,7 +151,7 @@ namespace SunridgeHOA.Controllers
             var loggedInUser = _db.Owner.Find(identityUser.OwnerId);
             if (identityUser == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("MyPhotos");
             }
 
             var photo = await _db.Photo
@@ -170,13 +159,12 @@ namespace SunridgeHOA.Controllers
                     .FirstOrDefaultAsync(m => m.PhotoId == id);
 
             photo.OwnerId = loggedInUser.OwnerId;
-          
+
             if (photo == null)
             {
                 return NotFound();
             }
             return View(photo);
-            //return View();
         }
 
         //GET: AdminPhoto Edit
@@ -196,34 +184,19 @@ namespace SunridgeHOA.Controllers
                 return NotFound();
             }
 
-            //Photo ph = new Photo();
-            //ph.Title = photo.Title;
-            //ph.Year = photo.Year;
-            //ph.Category = photo.Category;
-
-
             ViewData["Category"] = new SelectList(new string[] { "Summer", "Winter", "People" });
             return View(photo);
-
-            //return View();
         }
 
         //POST: AdminPhoto Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, [Bind("Image, Title, Year, Category")] Models.Photo photo)
+        public async Task<IActionResult> Edit(int? id, [Bind("Image, Title, Year, Category")] Photo photo)
         {
-            //if (id != photo.PhotoId)
-            //{
-            //    return NotFound();
-            //}
-
             if (id == null)
             {
                 return NotFound();
             }
-
-            //var aaa = ModelState.Values.SelectMany(v => v.Errors);
 
             if (ModelState.IsValid)
             {
@@ -261,12 +234,10 @@ namespace SunridgeHOA.Controllers
                 photoFromDb.Title = photo.Title;
                 photoFromDb.Year = photo.Year;
                 photoFromDb.Category = photo.Category;
-                //photoFromDb.OwnerId = photo.OwnerId;
-                
 
                 await _db.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
-                return RedirectToAction("Index");
+
+                return RedirectToAction("MyPhotos");
             }
 
             ViewData["Category"] = new SelectList(new string[] { "Summer", "Winter", "People" });
@@ -291,7 +262,6 @@ namespace SunridgeHOA.Controllers
             }
             return View(photo);
 
-            //return View();
         }
 
         //POST: AdminPhoto Delete
@@ -299,26 +269,20 @@ namespace SunridgeHOA.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            //var photo = await _db.Photo
-            //    .Include(m => m.Owner)
-            //    .FirstOrDefaultAsync(m => m.PhotoId == id);
-
-            var identityUser = await _userManager.GetUserAsync(HttpContext.User);
-            var loggedInUser = _db.Owner.Find(identityUser.OwnerId);
             var photo = await _db.Photo.FindAsync(id);
 
-            if (photo == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                _db.Photo.Remove(photo);
-                await _db.SaveChangesAsync();
+            string webRootPath = _hostingEnvironment.WebRootPath;
+            var uploads = Path.Combine(webRootPath, SD.ImageFolder);
 
-                return RedirectToAction(nameof(Index));
+            if (System.IO.File.Exists(Path.Combine(webRootPath, photo.Image)))
+            {
+                System.IO.File.Delete(Path.Combine(webRootPath, photo.Image));
             }
+
+            _db.Photo.Remove(photo);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(MyPhotos));
         }
-
     }
 }
