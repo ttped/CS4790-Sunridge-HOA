@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <NoWin32Manifest>true</NoWin32Manifest>
     <UserSecretsId>06326614-0bfa-46d3-91b7-7b8acbac2f41</UserSecretsId>
+    <AllowUntrustedCertificate>True</AllowUntrustedCertificate>
   </PropertyGroup>
 
   <ItemGroup>
@@ -69,6 +70,16 @@
     <Content Update="Areas\Owner\_ViewStart.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include=".well-known\acme-challenge\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\.well-known\web.config" />
   </ItemGroup>
 
 </Project>

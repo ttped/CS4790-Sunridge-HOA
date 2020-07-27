@@ -44,7 +44,7 @@ namespace SunridgeHOA.Controllers
         //GET: Create NewsItem
         public IActionResult Create()
         {
-            ViewData["Year"] = new SelectList(new string[] { "2019", "2018", "2017", "2016" });
+            ViewData["Year"] = new SelectList(new string[] { "2021", "2020", "2019", "2018" });
             return View();
         }
 
@@ -118,7 +118,7 @@ namespace SunridgeHOA.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["Year"] = new SelectList(new string[] { "2019", "2018", "2017", "2016" });
+            ViewData["Year"] = new SelectList(new string[] { "2021", "2020", "2019", "2018" });
             return View(newsItem);
         }
 
@@ -169,7 +169,7 @@ namespace SunridgeHOA.Controllers
                 return NotFound();
             }
 
-            ViewData["Year"] = new SelectList(new string[] { "2019", "2018", "2017", "2016" });
+            ViewData["Year"] = new SelectList(new string[] { "2021", "2020", "2019", "2018" });
             return View(news);
 
             //return View();
@@ -234,7 +234,7 @@ namespace SunridgeHOA.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["Year"] = new SelectList(new string[] { "2019", "2018", "2017", "2016" });
+            ViewData["Year"] = new SelectList(new string[] { "2021", "2020", "2019", "2018" });
             return View(newsItem);
         }
 

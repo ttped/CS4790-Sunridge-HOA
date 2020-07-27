@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -75,6 +77,15 @@ namespace SunridgeHOA
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
+            app.UseRouter(r =>
+            {
+                r.MapGet(".well-known/acme-challenge/{id}", async (request, response, routeData) =>
+                {
+                    var id = routeData.Values["id"] as string;
+                    var file = Path.Combine(env.WebRootPath, ".well-known", "acme-challenge", id);
+                    await response.SendFileAsync(file);
+                });
+            });
 
             app.UseMvc(routes =>
             {
@@ -85,6 +96,8 @@ namespace SunridgeHOA
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+                       
 
                 //routes.MapRoute(
                 //  name: "areas",

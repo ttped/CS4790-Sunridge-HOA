@@ -29,7 +29,10 @@ namespace SunridgeHOA.Controllers
         {
             return View();
         }
-
+        public IActionResult LostFound()
+        {
+            return View();
+        }
         public IActionResult About()
         {
             return View();

@@ -37,11 +37,36 @@
                     <div class="card-header" id="headingOne">
                         <h5 class="mb-0">
                             <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                2019
+                                2020
                             </button>
                         </h5>
                     </div>
                     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                        <div class="card-body">
+                            @foreach (var news in Model)
+                            {
+                                @if (news.Year == 2020)
+                                {
+                                    <hr class="mt-5 mb-5">
+                                    <h2>@Html.DisplayFor(m => news.Header)</h2>
+                                    <p>@Html.DisplayFor(m => news.Content)</p>
+                                    <div style="box-shadow: 10px 10px 8px 10px #888888;" class="col-sm-12 text-center mb-5">
+                                        <a class="lightbox" href="@news.FilePath" target="_blank">@news.FileName</a>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                2019
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                         <div class="card-body">
                             @foreach (var news in Model)
                             {
@@ -59,14 +84,14 @@
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-header" id="headingTwo">
+                    <div class="card-header" id="headingThree">
                         <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                 2018
                             </button>
                         </h5>
                     </div>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
                         <div class="card-body">
                             @foreach (var news in Model)
                             {
@@ -84,35 +109,10 @@
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-header" id="headingThree">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                2017
-                            </button>
-                        </h5>
-                    </div>
-                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                        <div class="card-body">
-                            @foreach (var news in Model)
-                            {
-                                @if (news.Year == 2017)
-                                {
-                                    <hr class="mt-5 mb-5">
-                                    <h2>@Html.DisplayFor(m => news.Header)</h2>
-                                    <p>@Html.DisplayFor(m => news.Content)</p>
-                                    <div style="box-shadow: 10px 10px 8px 10px #888888;" class="col-sm-12 text-center mb-5">
-                                        <a class="lightbox" href="@news.FilePath" target="_blank">@news.FileName</a>
-                                    </div>
-                                }
-                            }
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
                     <div class="card-header" id="headingFour">
                         <h5 class="mb-0">
                             <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                2016
+                                2017 and older
                             </button>
                         </h5>
                     </div>
@@ -120,7 +120,7 @@
                         <div class="card-body">
                             @foreach (var news in Model)
                             {
-                                @if (news.Year == 2016)
+                                @if (news.Year <= 2017) 
                                 {
                                     <hr class="mt-5 mb-5">
                                     <h2>@Html.DisplayFor(m => news.Header)</h2>
